@@ -1,0 +1,83 @@
+[
+ {
+  "cat": "Infrastructure",
+  "img": "alpine",
+  "source": "Global Cycling Wire",
+  "date": "2 days ago",
+  "title": "Victoria’s High Country backs a new alpine gravel network",
+  "dek": "A multi-million-dollar plan would link Bright, Beechworth and Myrtleford with waymarked gravel.",
+  "body": "<p>Plans for a connected gravel network across Victoria’s High Country would stitch the region’s towns together with hundreds of kilometres of waymarked backroads and fire trails — aimed squarely at the booming gravel-travel market.</p><p>For riders it means more car-light riding between Bright, Beechworth and Myrtleford, and another reason the region keeps topping the Cycletowns gravel rankings. Local cafés, bike shops and stays are tipped to be the biggest winners.</p>"
+ },
+ {
+  "cat": "Events",
+  "img": "gravel",
+  "source": "Race Radio",
+  "date": "4 days ago",
+  "title": "New 240km gravel epic launches in Tasmania’s north-east",
+  "dek": "Blue Derby’s backcountry gets a marquee one-day gravel race for 2026.",
+  "body": "<p>The trail town of Derby is adding a long-distance gravel event to its calendar, sending riders deep into the north-east backcountry on a 240km loop with serious climbing and remote, rainforest-lined dirt.</p><p>Organisers are pitching it as a destination event — ride Friday’s singletrack, race Saturday’s gravel, recover Sunday over coffee. Expect entries to sell fast.</p>"
+ },
+ {
+  "cat": "Industry",
+  "img": "road",
+  "source": "The Spin",
+  "date": "1 week ago",
+  "title": "Spain’s cycle-tourism push: what it means for riders",
+  "dek": "More greenways, safer roads and bike-friendly trains across Catalonia and beyond.",
+  "body": "<p>Spain continues to pour investment into cycle tourism — expanding its vías verdes (greenway) network on former railways, widening shoulders on popular routes, and making it easier to take a bike on regional trains.</p><p>For hubs like Girona and Mallorca it cements an already world-class offering, and points to the multi-modal “bike plus train” trips that are quietly becoming the smart way to ride Europe.</p>"
+ },
+ {
+  "cat": "Guides",
+  "img": "cruiser",
+  "source": "The Ride Journal",
+  "date": "1 week ago",
+  "title": "Five under-the-radar e-bike towns for 2026",
+  "dek": "Where to roll on assist — charging, hire and gentle gradients all sorted.",
+  "body": "<p>E-assist has opened up cycle travel to riders who’d never have attempted a big day on a road bike — and a wave of towns are quietly becoming brilliant e-bike bases, with hire on arrival, charging-friendly stays and rail trails that flatten the learning curve.</p><p>Our pick spans wine-country cruising, rail-trail towns and gentle coastal loops. The common thread: you can turn up with nothing and be riding within the hour.</p>"
+ },
+ {
+  "cat": "Infrastructure",
+  "img": "tour",
+  "source": "Global Cycling Wire",
+  "date": "2 weeks ago",
+  "title": "Noosa to Cooroy rail-trail extension opens to riders",
+  "dek": "A new traffic-free link joins the coast to the hinterland climbs.",
+  "body": "<p>A new section of traffic-free rail trail now links the Noosa coast with the hinterland, giving riders a safe, scenic way to reach the climbs around Cooroy and Pomona without sharing the highway.</p><p>It’s exactly the kind of quiet, family-friendly infrastructure that turns a beach town into a genuine cycling destination — and lifts everything from café trade to bike hire.</p>"
+ },
+ {
+  "cat": "Events",
+  "img": "mtb",
+  "source": "Race Radio",
+  "date": "2 weeks ago",
+  "title": "UCI Gravel World Series adds an Australian round",
+  "dek": "The dirt-drop calendar goes global — and Down Under is on it.",
+  "body": "<p>The fast-growing UCI Gravel World Series is adding an Australian qualifier, giving local riders a shot at the rainbow stripes without flying to Europe — and giving the host town a marquee weekend on the international calendar.</p><p>Gravel’s rise has been the story of the decade in cycling, blending racing, adventure and travel. Expect more regions to bid hard for a round.</p>"
+ },
+ {
+  "cat": "Industry",
+  "img": "family",
+  "source": "The Spin",
+  "date": "3 weeks ago",
+  "title": "Bike-friendly stays boom: charging, storage and wash bays",
+  "dek": "Accommodation is racing to win the cyclist (and e-biker) traveller.",
+  "body": "<p>Bike-friendly accommodation has gone from nice-to-have to a genuine booking decision. Properties are adding secure storage, wash-down bays, early breakfasts, ride-out routes — and, increasingly, e-bike charging.</p><p>It’s a direct response to data showing cycle tourists out-spend and out-stay regular visitors. On Cycletowns, the ⚡ e-bike-friendly badge is fast becoming one of the most-filtered features.</p>"
+ },
+ {
+  "cat": "Guides",
+  "img": "weather",
+  "source": "The Ride Journal",
+  "date": "3 weeks ago",
+  "title": "Fly with your bike without the baggage-fee pain",
+  "dek": "Boxes, bags and the airlines that won’t punish you for packing a bike.",
+  "body": "<p>Taking your own bike still beats hire for many riders — but airline bike policies are a minefield. We break down hard cases versus soft bags, the carriers with sane (or free) bike fees, and how to pack so nothing arrives bent.</p><p>One growing tip for e-bikers: leave the battery at home. Airlines won’t carry them, so hire a battery on arrival or ship ahead — our concierge can arrange it.</p>"
+ },
+ {
+  "cat": "Infrastructure",
+  "img": "climb",
+  "source": "Global Cycling Wire",
+  "date": "last month",
+  "title": "Mallorca trials car-free mornings on Sa Calobra",
+  "dek": "The island’s most famous descent could get quieter dawn windows.",
+  "body": "<p>Mallorca is trialling restricted vehicle access on the legendary Sa Calobra road during early-morning windows, aiming to ease congestion and make the hairpins safer for the thousands of cyclists who tackle them each spring.</p><p>If it sticks, dawn raids on the island’s most iconic climb just got a whole lot more appealing. Set the alarm.</p>"
+ }
+]

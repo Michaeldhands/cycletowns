@@ -1,0 +1,1876 @@
+[
+ {
+  "id": "bright",
+  "name": "Bright",
+  "region": "Victoria",
+  "country": "Australia",
+  "flag": "🇦🇺",
+  "cur": "$",
+  "score": 4.8,
+  "photo": "Tower Hill Lookout overlooking Bright Victoria Australia in Autumn.png",
+  "gallery": [
+   "MtBuffaloChalet August 2018.jpg"
+  ],
+  "tags": [
+   "Alpine climbs",
+   "Gravel",
+   "Cafés"
+  ],
+  "personas": [
+   "climber",
+   "gravel",
+   "cruiser",
+   "family"
+  ],
+  "blurb": "Australia’s alpine cycling heart — gateway to Mt Buffalo, Falls Creek and Hotham, with a café scene to match.",
+  "scoreDims": {
+   "cafes": 4.9,
+   "routes": 4.8,
+   "safety": 4.6,
+   "climbs": 4.9,
+   "storage": 4.4
+  },
+  "cafes": [
+   {
+    "n": "Sixpence Coffee",
+    "s": 4.9,
+    "note": "Family roastery on Wills St — the cyclists’ #1 refuel."
+   },
+   {
+    "n": "Ginger Baker",
+    "s": 4.6,
+    "note": "Riverside food & wine by the Ovens River."
+   },
+   {
+    "n": "Blackbird Cafe",
+    "s": 4.5,
+    "note": "All-day brunch in the heart of town."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Bright Brewery — Bike Hub",
+    "s": 4.7,
+    "note": "Bar, kitchen and bike hub with hire & wash bay.",
+    "hire": true,
+    "price": 55
+   }
+  ],
+  "routes": [
+   {
+    "n": "Mt Buffalo",
+    "s": 4.9,
+    "note": "21km HC climb to The Horn — the icon."
+   },
+   {
+    "n": "Tawonga Gap",
+    "s": 4.6,
+    "note": "8km of switchbacks across to Mt Beauty."
+   },
+   {
+    "n": "Murray to Mountains Rail Trail",
+    "s": 4.7,
+    "note": "40km sealed, flat and family-friendly."
+   },
+   {
+    "n": "Bright Alpine Classic",
+    "s": 4.8,
+    "note": "150km high-country queen stage over Mt Buffalo and Tawonga Gap — Alpine Classic territory.",
+    "km": 150,
+    "vert": 3400,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "Road/gravel hire — Bright Brewery Bike Hub",
+    "price": 55
+   },
+   {
+    "type": "Guided ride",
+    "name": "Mt Buffalo guided climb day",
+    "price": 145
+   },
+   {
+    "type": "Stay",
+    "name": "Cyclist-friendly stay (per night)",
+    "price": 210
+   }
+  ]
+ },
+ {
+  "id": "adelaide-hills",
+  "name": "Adelaide Hills",
+  "region": "South Australia",
+  "country": "Australia",
+  "flag": "🇦🇺",
+  "cur": "$",
+  "score": 4.7,
+  "photo": "Stirling main street 2006.jpg",
+  "gallery": [
+   "View in the Mount Lofty Ranges, Stirling(GN11950).jpg",
+   "Road Gardens at Stirling(GN08717).jpg"
+  ],
+  "tags": [
+   "Road",
+   "TDU climbs",
+   "Wine country"
+  ],
+  "personas": [
+   "climber",
+   "cruiser",
+   "racer",
+   "gravel"
+  ],
+  "blurb": "Home of the Tour Down Under — Old Willunga Hill, Norton Summit and endless ridge roads through the wine country.",
+  "scoreDims": {
+   "cafes": 4.7,
+   "routes": 4.8,
+   "safety": 4.5,
+   "climbs": 4.7,
+   "storage": 4.3
+  },
+  "cafes": [
+   {
+    "n": "The Organic Market & Cafe",
+    "s": 4.7,
+    "note": "Refuel near the top of the Old Freeway climb."
+   },
+   {
+    "n": "Cudlee Café",
+    "s": 4.6,
+    "note": "Cudlee Creek rider haunt — plenty of room for bikes."
+   },
+   {
+    "n": "Lost in a Forest",
+    "s": 4.6,
+    "note": "Wood-fired pizza in an old Uraidla church."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Will Ride (Stirling)",
+    "s": 4.7,
+    "note": "E-bike specialist — hire and guided Hills tours.",
+    "hire": true,
+    "price": 65
+   }
+  ],
+  "routes": [
+   {
+    "n": "Old Willunga Hill",
+    "s": 4.9,
+    "note": "3km — the Tour Down Under decider."
+   },
+   {
+    "n": "Norton Summit",
+    "s": 4.7,
+    "note": "The classic city-edge climb."
+   },
+   {
+    "n": "Corkscrew Road",
+    "s": 4.7,
+    "note": "Punchy switchback favourite."
+   },
+   {
+    "n": "Adelaide Hills Gran Fondo",
+    "s": 4.8,
+    "note": "140km loop over Norton Summit, the Corkscrew and Gorge Rd — a proper hills century.",
+    "km": 140,
+    "vert": 2500,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "E-bike hire — Will Ride",
+    "price": 65
+   },
+   {
+    "type": "Guided ride",
+    "name": "Willunga Hill guided day",
+    "price": 140
+   },
+   {
+    "type": "Stay",
+    "name": "Hills cyclist stay (per night)",
+    "price": 195
+   }
+  ]
+ },
+ {
+  "id": "beechworth",
+  "name": "Beechworth",
+  "region": "Victoria",
+  "country": "Australia",
+  "flag": "🇦🇺",
+  "cur": "$",
+  "score": 4.6,
+  "photo": "Beechworth Main Street.jpg",
+  "gallery": [
+   "Beechworth Tanswells Hotel.JPG",
+   "Beechworth Banner.JPG"
+  ],
+  "tags": [
+   "Gravel",
+   "Rail trail",
+   "Gourmet"
+  ],
+  "personas": [
+   "gravel",
+   "trail",
+   "cruiser",
+   "family"
+  ],
+  "blurb": "Gold-rush heritage, an award-winning MTB park and a vast gravel network — gravel by day, distilleries by night.",
+  "scoreDims": {
+   "cafes": 4.8,
+   "routes": 4.7,
+   "safety": 4.7,
+   "climbs": 4.4,
+   "storage": 4.5
+  },
+  "cafes": [
+   {
+    "n": "Peddlar",
+    "s": 4.7,
+    "note": "Excellent post-ride coffee in town."
+   },
+   {
+    "n": "Beechworth Bakery",
+    "s": 4.6,
+    "note": "Iconic — fuel up before the rail trail."
+   },
+   {
+    "n": "Bridge Road Brewers",
+    "s": 4.6,
+    "note": "Post-ride ales in a historic coach house."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Tour de Vines",
+    "s": 4.6,
+    "note": "Hire plus winery & rail-trail tours.",
+    "hire": true,
+    "price": 50
+   },
+   {
+    "n": "The Bike Hire Company",
+    "s": 4.5,
+    "note": "Rail-trail hire and shuttles.",
+    "hire": true,
+    "price": 45
+   }
+  ],
+  "routes": [
+   {
+    "n": "Beechworth MTB Park",
+    "s": 4.7,
+    "note": "Award-winning trails 2km from town."
+   },
+   {
+    "n": "Murray to Mountains Rail Trail",
+    "s": 4.7,
+    "note": "100km+ sealed network linking the towns."
+   },
+   {
+    "n": "Yackandandah gravel loop",
+    "s": 4.6,
+    "note": "Classic high-country gravel and distilleries."
+   },
+   {
+    "n": "Beechworth–Alpine Gran Fondo",
+    "s": 4.8,
+    "note": "145km loop out to the alpine foothills and back through the historic gold country.",
+    "km": 145,
+    "vert": 2300,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "Rail-trail hire — Tour de Vines",
+    "price": 50
+   },
+   {
+    "type": "Guided ride",
+    "name": "Gravel & gourmet guided day",
+    "price": 130
+   },
+   {
+    "type": "Stay",
+    "name": "Heritage cyclist stay (per night)",
+    "price": 185
+   }
+  ]
+ },
+ {
+  "id": "noosa",
+  "name": "Noosa",
+  "region": "Queensland",
+  "country": "Australia",
+  "flag": "🇦🇺",
+  "cur": "$",
+  "score": 4.6,
+  "photo": "Noosa Heads and Weyba Creek.JPG",
+  "gallery": [],
+  "tags": [
+   "Road",
+   "Coastal",
+   "Café culture"
+  ],
+  "personas": [
+   "cruiser",
+   "racer",
+   "family",
+   "climber"
+  ],
+  "blurb": "Coastal spins and hinterland climbs around Cooroy and Pomona, finished with a world-class café scene.",
+  "scoreDims": {
+   "cafes": 4.8,
+   "routes": 4.5,
+   "safety": 4.4,
+   "climbs": 4.3,
+   "storage": 4.4
+  },
+  "cafes": [
+   {
+    "n": "Little Cove Coffee",
+    "s": 4.7,
+    "note": "The classic coffee-stop finish line."
+   },
+   {
+    "n": "Raw Coffee Shop",
+    "s": 4.6,
+    "note": "Friendly Gympie Tce crew favourite."
+   },
+   {
+    "n": "Grind Cafe",
+    "s": 4.5,
+    "note": "Catch your breath by Noosa Boat Hire."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Bike On",
+    "s": 4.6,
+    "note": "Quality hire delivered to your accommodation.",
+    "hire": true,
+    "price": 45
+   },
+   {
+    "n": "Giant Noosa",
+    "s": 4.7,
+    "note": "Bunch rides and a full workshop."
+   },
+   {
+    "n": "Noosa Bike Shop",
+    "s": 4.6,
+    "note": "Home of the Noosa bunchie."
+   }
+  ],
+  "routes": [
+   {
+    "n": "The “World Champs” loop",
+    "s": 4.7,
+    "note": "45km via Cooroy and Sunrise Rd."
+   },
+   {
+    "n": "Boreen Point roll",
+    "s": 4.5,
+    "note": "Easy tempo out to the lake."
+   },
+   {
+    "n": "Montville / Palmwoods climb",
+    "s": 4.6,
+    "note": "Hinterland range with a bakery stop."
+   },
+   {
+    "n": "Noosa Hinterland Century",
+    "s": 4.8,
+    "note": "135km loop deep into the hinterland — Black Mountain, Pomona and the Range.",
+    "km": 135,
+    "vert": 1700,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "Road bike hire — Bike On (delivered)",
+    "price": 45
+   },
+   {
+    "type": "Guided ride",
+    "name": "Hinterland guided ride",
+    "price": 120
+   },
+   {
+    "type": "Stay",
+    "name": "Coastal cyclist stay (per night)",
+    "price": 230
+   }
+  ]
+ },
+ {
+  "id": "derby",
+  "name": "Derby",
+  "region": "Tasmania",
+  "country": "Australia",
+  "flag": "🇦🇺",
+  "cur": "$",
+  "score": 4.8,
+  "photo": "2018-02-13 102712 Dove Lake, Cradle Mountain anagoria.jpg",
+  "gallery": [
+   "2018-02-13 092023 Dove Lake, Cradle Mountain anagoria.jpg"
+  ],
+  "tags": [
+   "MTB",
+   "Trail town",
+   "Blue Derby"
+  ],
+  "personas": [
+   "trail",
+   "gravel",
+   "family"
+  ],
+  "blurb": "Australia’s mountain-bike mecca — 140km+ of Blue Derby trails in temperate rainforest, from flowy greens to black-diamond tech.",
+  "scoreDims": {
+   "cafes": 4.4,
+   "routes": 4.9,
+   "safety": 4.6,
+   "climbs": 4.5,
+   "storage": 4.7
+  },
+  "cafes": [
+   {
+    "n": "Lot 40 Bar & Cafe",
+    "s": 4.6,
+    "note": "Local craft brews and gin post-ride."
+   },
+   {
+    "n": "Hub Pizza",
+    "s": 4.5,
+    "note": "Trailside refuel in the village."
+   },
+   {
+    "n": "Dorset Hotel",
+    "s": 4.4,
+    "note": "Classic country-pub feed."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Evolution Biking",
+    "s": 4.8,
+    "note": "75 hire bikes incl. e-MTB, in the trail centre.",
+    "hire": true,
+    "price": 89
+   },
+   {
+    "n": "Vertigo MTB",
+    "s": 4.7,
+    "note": "Hire plus daily uplift shuttles.",
+    "hire": true,
+    "price": 79
+   },
+   {
+    "n": "Bark Off Biking",
+    "s": 4.6,
+    "note": "Hire and guided trail days.",
+    "hire": true,
+    "price": 75
+   }
+  ],
+  "routes": [
+   {
+    "n": "Blue Derby trails",
+    "s": 4.9,
+    "note": "140km+ — green to black-diamond flow."
+   },
+   {
+    "n": "Blue Tier descent",
+    "s": 4.8,
+    "note": "Epic backcountry point-to-point."
+   },
+   {
+    "n": "Krushka’s",
+    "s": 4.6,
+    "note": "The crowd-favourite flow trail."
+   },
+   {
+    "n": "Derby Big Backcountry Loop",
+    "s": 4.8,
+    "note": "130km backcountry gravel and singletrack epic linking the Blue Derby network.",
+    "km": 130,
+    "vert": 2400,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "MTB hire — Evolution Biking",
+    "price": 89
+   },
+   {
+    "type": "Guided ride",
+    "name": "Shuttle + guided day — Vertigo MTB",
+    "price": 160
+   },
+   {
+    "type": "Stay",
+    "name": "Trailside cyclist stay (per night)",
+    "price": 175
+   }
+  ]
+ },
+ {
+  "id": "girona",
+  "name": "Girona",
+  "region": "Catalonia",
+  "country": "Spain",
+  "flag": "🇪🇸",
+  "cur": "€",
+  "score": 4.9,
+  "photo": "Onyar River Houses.JPG",
+  "gallery": [
+   "Pont Eiffel and river Onyar in Girona, Catalonia, Spain.JPG",
+   "Girona 060.JPG"
+  ],
+  "tags": [
+   "Road",
+   "Pro hub",
+   "Café culture"
+  ],
+  "personas": [
+   "climber",
+   "racer",
+   "cruiser",
+   "gravel"
+  ],
+  "blurb": "The adopted home of the pro peloton — endless climbs and gravel radiating from one beautiful medieval city.",
+  "scoreDims": {
+   "cafes": 4.9,
+   "routes": 4.9,
+   "safety": 4.6,
+   "climbs": 4.9,
+   "storage": 4.5
+  },
+  "cafes": [
+   {
+    "n": "La Fàbrica",
+    "s": 4.9,
+    "note": "The pro peloton’s café — coffee and brunch."
+   },
+   {
+    "n": "Espresso Mafia",
+    "s": 4.8,
+    "note": "Specialty roaster in the old town."
+   },
+   {
+    "n": "Federal Girona",
+    "s": 4.6,
+    "note": "All-day Aussie-style brunch."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Eat Sleep Cycle",
+    "s": 4.8,
+    "note": "Hire, tours and a café hub for visiting riders.",
+    "hire": true,
+    "price": 40
+   }
+  ],
+  "routes": [
+   {
+    "n": "Rocacorba",
+    "s": 4.9,
+    "note": "The legendary HC test piece."
+   },
+   {
+    "n": "Els Àngels",
+    "s": 4.8,
+    "note": "10km — the everyday classic."
+   },
+   {
+    "n": "Sant Hilari",
+    "s": 4.7,
+    "note": "Long, quiet forest climb."
+   },
+   {
+    "n": "Girona Gran Fondo",
+    "s": 4.8,
+    "note": "150km marquee loop linking Els Àngels, Sant Hilari and the Rocacorba climb — the big day the pros train on.",
+    "km": 150,
+    "vert": 2600,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "Road bike hire — Eat Sleep Cycle",
+    "price": 40
+   },
+   {
+    "type": "Guided ride",
+    "name": "Rocacorba guided climb",
+    "price": 95
+   },
+   {
+    "type": "Stay",
+    "name": "Old-town cyclist stay (per night)",
+    "price": 140
+   }
+  ]
+ },
+ {
+  "id": "mallorca",
+  "name": "Mallorca",
+  "region": "Balearic Islands",
+  "country": "Spain",
+  "flag": "🇪🇸",
+  "cur": "€",
+  "score": 4.9,
+  "photo": "The top of the descent to Sa Calobra, Mallorca.JPG",
+  "gallery": [
+   "Cala sa Calobra, Escorca, Mallorca, España.JPG"
+  ],
+  "tags": [
+   "Road",
+   "Climbs",
+   "Winter base"
+  ],
+  "personas": [
+   "climber",
+   "racer",
+   "cruiser"
+  ],
+  "blurb": "Sa Calobra, Cap de Formentor and perfect tarmac — the winter-training mecca for road riders worldwide.",
+  "scoreDims": {
+   "cafes": 4.7,
+   "routes": 4.9,
+   "safety": 4.6,
+   "climbs": 4.9,
+   "storage": 4.5
+  },
+  "cafes": [
+   {
+    "n": "Es Grau",
+    "s": 4.8,
+    "note": "Cliff-top stop at the base of the big climbs."
+   },
+   {
+    "n": "Ca’n Toni (Caimari)",
+    "s": 4.6,
+    "note": "Climb-base institution for road riders."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Max Hürzeler Bicycle Holidays",
+    "s": 4.7,
+    "note": "The island’s big road-bike hire network.",
+    "hire": true,
+    "price": 30
+   }
+  ],
+  "routes": [
+   {
+    "n": "Sa Calobra",
+    "s": 4.9,
+    "note": "9.5km of switchbacks down to the sea."
+   },
+   {
+    "n": "Cap de Formentor",
+    "s": 4.8,
+    "note": "Lighthouse road — the postcard ride."
+   },
+   {
+    "n": "Coll de sa Batalla",
+    "s": 4.8,
+    "note": "Gateway to Puig Major."
+   },
+   {
+    "n": "Mallorca 312 — Tramuntana loop",
+    "s": 4.8,
+    "note": "155km Serra de Tramuntana epic in the spirit of the Mallorca 312, Sa Calobra and all.",
+    "km": 155,
+    "vert": 2900,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "Road bike hire — Max Hürzeler",
+    "price": 30
+   },
+   {
+    "type": "Guided ride",
+    "name": "Sa Calobra guided day",
+    "price": 85
+   },
+   {
+    "type": "Stay",
+    "name": "Winter-training stay (per night)",
+    "price": 120
+   }
+  ]
+ },
+ {
+  "id": "bentonville",
+  "name": "Bentonville",
+  "region": "Arkansas",
+  "country": "United States",
+  "flag": "🇺🇸",
+  "cur": "$",
+  "score": 4.8,
+  "photo": "",
+  "gallery": [],
+  "tags": [
+   "MTB",
+   "Gravel",
+   "Trail town"
+  ],
+  "personas": [
+   "trail",
+   "gravel",
+   "family",
+   "cruiser"
+  ],
+  "blurb": "The self-styled mountain-bike capital of the world — hundreds of kilometres of purpose-built singletrack, gravel and greenways, straight from downtown.",
+  "scoreDims": {
+   "cafes": 4.6,
+   "routes": 4.9,
+   "safety": 4.7,
+   "climbs": 4.2,
+   "storage": 4.6
+  },
+  "cafes": [
+   {
+    "n": "Onyx Coffee Lab",
+    "s": 4.9,
+    "note": "Award-winning roaster — the riders’ HQ."
+   },
+   {
+    "n": "Pedaler’s Pub",
+    "s": 4.6,
+    "note": "Trailside pints and tacos at the Railyard."
+   },
+   {
+    "n": "Airship Coffee",
+    "s": 4.7,
+    "note": "Coffee in the woods, right by the trails."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Phat Tire Bike Shop",
+    "s": 4.8,
+    "note": "Hire, demos and trail know-how — e-MTB available.",
+    "hire": true,
+    "price": 75
+   },
+   {
+    "n": "Mojo Cycling",
+    "s": 4.6,
+    "note": "Road & gravel hire plus quick service.",
+    "hire": true,
+    "price": 60
+   }
+  ],
+  "routes": [
+   {
+    "n": "Slaughter Pen",
+    "s": 4.9,
+    "note": "Flowy singletrack straight from downtown."
+   },
+   {
+    "n": "Coler Mountain Bike Preserve",
+    "s": 4.8,
+    "note": "Flow, tech and the famous Drop Machine."
+   },
+   {
+    "n": "Razorback Greenway",
+    "s": 4.7,
+    "note": "58km paved spine linking the whole region."
+   },
+   {
+    "n": "OZ Trails Big Gravel Loop",
+    "s": 4.8,
+    "note": "145km Ozark gravel and greenway epic across the OZ Trails network.",
+    "km": 145,
+    "vert": 1900,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "Trail/e-MTB hire — Phat Tire",
+    "price": 75
+   },
+   {
+    "type": "Guided ride",
+    "name": "Coler + Slaughter Pen guided day",
+    "price": 130
+   },
+   {
+    "type": "Stay",
+    "name": "Trailside cyclist stay (per night)",
+    "price": 190
+   }
+  ]
+ },
+ {
+  "id": "hualien",
+  "name": "Hualien · Taroko",
+  "region": "Taiwan",
+  "country": "Taiwan",
+  "flag": "🇹🇼",
+  "cur": "$",
+  "score": 4.8,
+  "photo": "",
+  "gallery": [],
+  "tags": [
+   "Climbs",
+   "Road",
+   "Epic"
+  ],
+  "personas": [
+   "climber",
+   "racer",
+   "cruiser"
+  ],
+  "blurb": "Home of the legendary Taroko Gorge climb — sea level to 3,275m — and Taiwan’s east-coast cycling culture, the heart of one of the world’s great road-riding nations.",
+  "scoreDims": {
+   "cafes": 4.5,
+   "routes": 4.9,
+   "safety": 4.4,
+   "climbs": 5,
+   "storage": 4.5
+  },
+  "cafes": [
+   {
+    "n": "Caffe Fiore",
+    "s": 4.6,
+    "note": "Pour-overs before you take on the gorge."
+   },
+   {
+    "n": "Giocare",
+    "s": 4.7,
+    "note": "Courtyard café loved by visiting riders."
+   },
+   {
+    "n": " Even/Coffee",
+    "s": 4.5,
+    "note": "East-coast roaster and recovery spot."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Giant Store Hualien",
+    "s": 4.8,
+    "note": "Hire road & e-bikes from cycling’s biggest maker.",
+    "hire": true,
+    "price": 45
+   },
+   {
+    "n": "Liv Cycling Hualien",
+    "s": 4.6,
+    "note": "Hire, fit and east-coast tour advice.",
+    "hire": true,
+    "price": 45
+   }
+  ],
+  "routes": [
+   {
+    "n": "Taroko Gorge → Wuling",
+    "s": 5,
+    "note": "The Taiwan KOM — 87km, sea level to 3,275m."
+   },
+   {
+    "n": "East Coast Highway (Hwy 11)",
+    "s": 4.7,
+    "note": "Pacific coastline cruising south."
+   },
+   {
+    "n": "Liwu River loop",
+    "s": 4.6,
+    "note": "Marble cliffs and gentle valley spins."
+   },
+   {
+    "n": "Taroko Gorge Grand Loop",
+    "s": 4.8,
+    "note": "150km coast-to-gorge epic climbing the Taroko pass — a serious big day.",
+    "km": 150,
+    "vert": 3200,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "Road/e-bike hire — Giant Store",
+    "price": 45
+   },
+   {
+    "type": "Guided ride",
+    "name": "Taroko Gorge KOM guided day",
+    "price": 160
+   },
+   {
+    "type": "Stay",
+    "name": "Cyclist-friendly stay (per night)",
+    "price": 120
+   }
+  ]
+ },
+ {
+  "id": "dalat",
+  "name": "Da Lat",
+  "region": "Central Highlands",
+  "country": "Vietnam",
+  "flag": "🇻🇳",
+  "cur": "$",
+  "score": 4.7,
+  "photo": "",
+  "gallery": [],
+  "tags": [
+   "Climbs",
+   "Coffee",
+   "Highlands"
+  ],
+  "personas": [
+   "climber",
+   "gravel",
+   "cruiser"
+  ],
+  "blurb": "Vietnam’s cool-climate cycling capital — pine-clad climbs, endless coffee farms and quiet highland roads at 1,500m, a short flight from the coast.",
+  "scoreDims": {
+   "cafes": 4.8,
+   "routes": 4.7,
+   "safety": 4.2,
+   "climbs": 4.7,
+   "storage": 4.3
+  },
+  "cafes": [
+   {
+    "n": "La Viet Coffee",
+    "s": 4.8,
+    "note": "Working roastery — the rider refuel of choice."
+   },
+   {
+    "n": "An Cafe",
+    "s": 4.6,
+    "note": "Garden café over the valley."
+   },
+   {
+    "n": "Túi Mơ To",
+    "s": 4.5,
+    "note": "Local roaster, big breakfasts."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Da Lat Bike Hire",
+    "s": 4.5,
+    "note": "Road & gravel hire for the highlands.",
+    "hire": true,
+    "price": 30
+   },
+   {
+    "n": "Highlands Cycle Co.",
+    "s": 4.5,
+    "note": "Guided coffee-farm gravel days.",
+    "hire": true,
+    "price": 35
+   }
+  ],
+  "routes": [
+   {
+    "n": "Ta Nung Valley",
+    "s": 4.7,
+    "note": "Quiet coffee-farm descent and climb."
+   },
+   {
+    "n": "Lang Biang approach",
+    "s": 4.7,
+    "note": "Highland climb beneath the peak."
+   },
+   {
+    "n": "Tuyen Lam Lake loop",
+    "s": 4.5,
+    "note": "Pine-forest spin by the water."
+   },
+   {
+    "n": "Da Lat Highlands Gran Fondo",
+    "s": 4.8,
+    "note": "145km Central Highlands loop over pine-clad passes and long climbs.",
+    "km": 145,
+    "vert": 3000,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "Road/gravel hire — Da Lat",
+    "price": 30
+   },
+   {
+    "type": "Guided ride",
+    "name": "Coffee-country gravel day",
+    "price": 70
+   },
+   {
+    "type": "Stay",
+    "name": "Highlands cyclist stay (per night)",
+    "price": 55
+   }
+  ]
+ },
+ {
+  "id": "hagiang",
+  "name": "Ha Giang",
+  "region": "Northern Highlands",
+  "country": "Vietnam",
+  "flag": "🇻🇳",
+  "cur": "$",
+  "score": 4.8,
+  "photo": "",
+  "gallery": [],
+  "tags": [
+   "Epic",
+   "Climbs",
+   "Adventure"
+  ],
+  "personas": [
+   "climber",
+   "gravel",
+   "trail"
+  ],
+  "blurb": "Home of the Ha Giang Loop — ~300km through karst peaks, the Ma Pi Leng Pass and hilltribe villages on Vietnam’s wild northern frontier. The fastest-rising ride in Asia.",
+  "scoreDims": {
+   "cafes": 4.2,
+   "routes": 4.9,
+   "safety": 4,
+   "climbs": 4.9,
+   "storage": 4.1
+  },
+  "cafes": [
+   {
+    "n": "Ma Pi Leng Skywalk café",
+    "s": 4.7,
+    "note": "Coffee on the canyon rim."
+   },
+   {
+    "n": "Dong Van old-town café",
+    "s": 4.5,
+    "note": "Refuel in the stone-built quarter."
+   },
+   {
+    "n": "Meo Vac market stalls",
+    "s": 4.4,
+    "note": "Pho and ca phe before the pass."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Ha Giang Loop Bikes",
+    "s": 4.6,
+    "note": "Adventure & gravel hire, loop support.",
+    "hire": true,
+    "price": 35
+   },
+   {
+    "n": "Frontier Cycles",
+    "s": 4.5,
+    "note": "Guided multi-day loop tours.",
+    "hire": true,
+    "price": 40
+   }
+  ],
+  "routes": [
+   {
+    "n": "Ma Pi Leng Pass",
+    "s": 5,
+    "note": "The “King of Passes” above the Nho Que River."
+   },
+   {
+    "n": "Tham Ma switchbacks",
+    "s": 4.8,
+    "note": "Iconic hairpins out of Yen Minh."
+   },
+   {
+    "n": "Dong Van → Meo Vac",
+    "s": 4.8,
+    "note": "The classic loop’s showpiece day."
+   },
+   {
+    "n": "Ha Giang Loop — big day",
+    "s": 4.8,
+    "note": "150km of the Ha Giang Loop's finest passes, Ma Pi Leng included — relentless climbing.",
+    "km": 150,
+    "vert": 3300,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "Adventure/gravel hire — Ha Giang",
+    "price": 35
+   },
+   {
+    "type": "Guided ride",
+    "name": "3-day Ha Giang Loop, supported",
+    "price": 240
+   },
+   {
+    "type": "Stay",
+    "name": "Homestay on the loop (per night)",
+    "price": 35
+   }
+  ]
+ },
+ {
+  "id": "onomichi",
+  "name": "Onomichi · Shimanami Kaido",
+  "region": "Setouchi",
+  "country": "Japan",
+  "flag": "🇯🇵",
+  "cur": "$",
+  "score": 4.9,
+  "photo": "",
+  "gallery": [],
+  "tags": [
+   "Island cycleway",
+   "Road",
+   "Family"
+  ],
+  "personas": [
+   "cruiser",
+   "family",
+   "racer",
+   "climber"
+  ],
+  "blurb": "The gateway to the Shimanami Kaido — Japan’s holy-grail 70km cycleway across six islands and seven bridges of the Seto Inland Sea. Flat, flawless and toll-free for bikes.",
+  "scoreDims": {
+   "cafes": 4.7,
+   "routes": 4.9,
+   "safety": 4.9,
+   "climbs": 4.2,
+   "storage": 4.8
+  },
+  "cafes": [
+   {
+    "n": "Onomichi U2 · Yard Café",
+    "s": 4.9,
+    "note": "The legendary cyclist hotel & café hub."
+   },
+   {
+    "n": "Dolce gelato (Setoda)",
+    "s": 4.7,
+    "note": "Island-citrus gelato, mid-ride."
+   },
+   {
+    "n": "Cycle Oasis stops",
+    "s": 4.6,
+    "note": "Free rider rest stops the whole route."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Giant Store Onomichi",
+    "s": 4.8,
+    "note": "One-way hire — drop the bike in Imabari.",
+    "hire": true,
+    "price": 40
+   },
+   {
+    "n": "Onomichi U2 hire",
+    "s": 4.7,
+    "note": "Premium hire right at the start line.",
+    "hire": true,
+    "price": 45
+   }
+  ],
+  "routes": [
+   {
+    "n": "Shimanami Kaido (full)",
+    "s": 5,
+    "note": "70km, six islands, seven bridges to Imabari."
+   },
+   {
+    "n": "Kurushima-Kaikyo Bridge",
+    "s": 4.9,
+    "note": "The world’s longest suspension-bridge trio."
+   },
+   {
+    "n": "Setoda & Ikuchijima loop",
+    "s": 4.7,
+    "note": "Temples, citrus groves and sea views."
+   },
+   {
+    "n": "Shimanami Grand Tour",
+    "s": 4.8,
+    "note": "140km island-hopping grand tour beyond the Shimanami Kaido — six islands and back.",
+    "km": 140,
+    "vert": 1200,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "One-way hire — Giant Onomichi",
+    "price": 40
+   },
+   {
+    "type": "Guided ride",
+    "name": "Shimanami Kaido guided crossing",
+    "price": 150
+   },
+   {
+    "type": "Stay",
+    "name": "Cyclist hotel (per night)",
+    "price": 130
+   }
+  ]
+ },
+ {
+  "id": "chiangmai",
+  "name": "Chiang Mai",
+  "region": "Northern Thailand",
+  "country": "Thailand",
+  "flag": "🇹🇭",
+  "cur": "$",
+  "score": 4.7,
+  "photo": "",
+  "gallery": [],
+  "tags": [
+   "Climbs",
+   "Road",
+   "Great value"
+  ],
+  "personas": [
+   "climber",
+   "racer",
+   "cruiser",
+   "gravel"
+  ],
+  "blurb": "Northern Thailand’s cycling base — temple climbs up Doi Suthep, the monster ascent of Doi Inthanon (the roof of Thailand), warm winters and unbeatable value.",
+  "scoreDims": {
+   "cafes": 4.7,
+   "routes": 4.8,
+   "safety": 4.2,
+   "climbs": 4.8,
+   "storage": 4.4
+  },
+  "cafes": [
+   {
+    "n": "Ristr8to Coffee",
+    "s": 4.9,
+    "note": "World-champ baristas — the ride HQ."
+   },
+   {
+    "n": "Graph Café",
+    "s": 4.6,
+    "note": "Tiny specialty spot in the old city."
+   },
+   {
+    "n": "Nimman roasters",
+    "s": 4.6,
+    "note": "Cafés on every Nimman corner."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Cycling Chiang Mai",
+    "s": 4.8,
+    "note": "Quality hire, guided climbs and SAG support.",
+    "hire": true,
+    "price": 35
+   },
+   {
+    "n": "Velo City",
+    "s": 4.6,
+    "note": "Road & gravel hire and service.",
+    "hire": true,
+    "price": 30
+   }
+  ],
+  "routes": [
+   {
+    "n": "Doi Suthep",
+    "s": 4.8,
+    "note": "10.8km at 6% to the golden temple."
+   },
+   {
+    "n": "Doi Inthanon",
+    "s": 4.9,
+    "note": "The roof of Thailand — a 2,565m summit."
+   },
+   {
+    "n": "Samoeng Loop",
+    "s": 4.7,
+    "note": "100km of rolling jungle and rice."
+   },
+   {
+    "n": "Doi Inthanon Gran Fondo",
+    "s": 4.8,
+    "note": "150km loop to the roof of Thailand and back — the region's ultimate climb day.",
+    "km": 150,
+    "vert": 3100,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "Road bike hire — Cycling Chiang Mai",
+    "price": 35
+   },
+   {
+    "type": "Guided ride",
+    "name": "Doi Inthanon summit day (with SAG)",
+    "price": 120
+   },
+   {
+    "type": "Stay",
+    "name": "Cyclist-friendly stay (per night)",
+    "price": 60
+   }
+  ]
+ },
+ {
+  "id": "pokhara",
+  "name": "Pokhara",
+  "region": "Gandaki",
+  "country": "Nepal",
+  "flag": "🇳🇵",
+  "cur": "$",
+  "score": 4.7,
+  "photo": "",
+  "gallery": [],
+  "tags": [
+   "MTB",
+   "Gravel",
+   "Himalaya"
+  ],
+  "personas": [
+   "trail",
+   "gravel",
+   "climber"
+  ],
+  "blurb": "Nepal’s adventure hub on Phewa Lake, at the foot of the Annapurna range — the launchpad for Himalayan gravel and the legendary Annapurna Circuit.",
+  "scoreDims": {
+   "cafes": 4.4,
+   "routes": 4.9,
+   "safety": 4,
+   "climbs": 4.9,
+   "storage": 4.2
+  },
+  "cafes": [
+   {
+    "n": "AM/PM Organic Café",
+    "s": 4.6,
+    "note": "Lakeside fuel before the hills."
+   },
+   {
+    "n": "Himalayan Java",
+    "s": 4.5,
+    "note": "Nepal’s home-grown coffee chain."
+   },
+   {
+    "n": "Lakeside roasters",
+    "s": 4.4,
+    "note": "Phewa-front cafés and bakeries."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Chain Heads · Nepal MTB",
+    "s": 4.7,
+    "note": "Quality MTB & gravel hire, guides.",
+    "hire": true,
+    "price": 40
+   },
+   {
+    "n": "Pokhara Cycle Hub",
+    "s": 4.5,
+    "note": "Hire, permits and circuit support.",
+    "hire": true,
+    "price": 35
+   }
+  ],
+  "routes": [
+   {
+    "n": "Annapurna Circuit (gravel)",
+    "s": 5,
+    "note": "220km Himalayan epic toward Thorong La."
+   },
+   {
+    "n": "Sarangkot sunrise climb",
+    "s": 4.8,
+    "note": "Steep climb to the famous viewpoint."
+   },
+   {
+    "n": "Begnas & Rupa lakes",
+    "s": 4.6,
+    "note": "Quiet ridgelines and lake spins."
+   },
+   {
+    "n": "Annapurna Foothills Epic",
+    "s": 4.8,
+    "note": "130km Himalayan foothills loop above Pokhara — climbing that never lets up.",
+    "km": 130,
+    "vert": 3200,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "MTB/gravel hire — Pokhara",
+    "price": 40
+   },
+   {
+    "type": "Guided ride",
+    "name": "Annapurna foothills gravel day",
+    "price": 90
+   },
+   {
+    "type": "Stay",
+    "name": "Lakeside cyclist stay (per night)",
+    "price": 45
+   }
+  ]
+ },
+ {
+  "id": "ubud",
+  "name": "Ubud · Bali",
+  "region": "Bali",
+  "country": "Indonesia",
+  "flag": "🇮🇩",
+  "cur": "$",
+  "score": 4.6,
+  "photo": "",
+  "gallery": [],
+  "tags": [
+   "Gravel",
+   "Volcano",
+   "Rice terraces"
+  ],
+  "personas": [
+   "gravel",
+   "trail",
+   "cruiser",
+   "family"
+  ],
+  "blurb": "Bali’s green heart — gravel through rice terraces and jungle, the Mount Batur volcano descent and warm island roads, all from a wellness-and-coffee base.",
+  "scoreDims": {
+   "cafes": 4.7,
+   "routes": 4.6,
+   "safety": 4,
+   "climbs": 4.4,
+   "storage": 4.3
+  },
+  "cafes": [
+   {
+    "n": "Seniman Coffee Studio",
+    "s": 4.8,
+    "note": "Ubud’s specialty-coffee institution."
+   },
+   {
+    "n": "Crate Café",
+    "s": 4.6,
+    "note": "Big brunch, big cyclist crowd."
+   },
+   {
+    "n": "Suka Espresso",
+    "s": 4.5,
+    "note": "Pre-ride fuel near the rice fields."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Bali Bintang Cycling",
+    "s": 4.6,
+    "note": "Road, gravel & volcano-descent hire.",
+    "hire": true,
+    "price": 35
+   },
+   {
+    "n": "Bali Eco Cycling",
+    "s": 4.6,
+    "note": "Guided Batur-to-Ubud rides.",
+    "hire": true,
+    "price": 40
+   }
+  ],
+  "routes": [
+   {
+    "n": "Mount Batur to Ubud",
+    "s": 4.8,
+    "note": "Caldera-rim views, then a long descent."
+   },
+   {
+    "n": "Tegallalang rice terraces",
+    "s": 4.6,
+    "note": "Gravel through the iconic terraces."
+   },
+   {
+    "n": "Sidemen Valley",
+    "s": 4.7,
+    "note": "Quiet climbs beneath Mount Agung."
+   },
+   {
+    "n": "Bali Volcano Century",
+    "s": 4.8,
+    "note": "140km loop to the Kintamani caldera and Mt Batur — a big volcanic climbing day.",
+    "km": 140,
+    "vert": 2700,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "Gravel/road hire — Ubud",
+    "price": 35
+   },
+   {
+    "type": "Guided ride",
+    "name": "Batur volcano descent day",
+    "price": 75
+   },
+   {
+    "type": "Stay",
+    "name": "Rice-field villa stay (per night)",
+    "price": 70
+   }
+  ]
+ },
+ {
+  "id": "jeju",
+  "name": "Jeju Island",
+  "region": "Jeju",
+  "country": "South Korea",
+  "flag": "🇰🇷",
+  "cur": "$",
+  "score": 4.6,
+  "photo": "",
+  "gallery": [],
+  "tags": [
+   "Coastal loop",
+   "Road",
+   "Bikeway"
+  ],
+  "personas": [
+   "cruiser",
+   "racer",
+   "family",
+   "climber"
+  ],
+  "blurb": "Korea’s volcanic island — a 234km coastal bikeway right around the island, black-basalt beaches, Hallasan climbs and a stamp-as-you-go cycling passport.",
+  "scoreDims": {
+   "cafes": 4.5,
+   "routes": 4.7,
+   "safety": 4.7,
+   "climbs": 4.5,
+   "storage": 4.6
+  },
+  "cafes": [
+   {
+    "n": "Café Mani",
+    "s": 4.6,
+    "note": "Ocean-view roaster on the ring road."
+   },
+   {
+    "n": "Bomnal Café",
+    "s": 4.6,
+    "note": "Seaside cult café for a stamp stop."
+   },
+   {
+    "n": "Halla coffee stops",
+    "s": 4.4,
+    "note": "Coffee strung around the coast."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Jeju Bike Hire",
+    "s": 4.6,
+    "note": "Hire plus the island bikeway passport.",
+    "hire": true,
+    "price": 30
+   },
+   {
+    "n": "Island Cycle",
+    "s": 4.5,
+    "note": "Road & e-bike hire near the airport.",
+    "hire": true,
+    "price": 35
+   }
+  ],
+  "routes": [
+   {
+    "n": "Jeju Fantasy Bikeway (full)",
+    "s": 4.8,
+    "note": "234km loop right around the island."
+   },
+   {
+    "n": "Hallasan foothills",
+    "s": 4.6,
+    "note": "Climb toward Korea’s highest peak."
+   },
+   {
+    "n": "Seongsan sunrise coast",
+    "s": 4.6,
+    "note": "East-coast cliffs and the tuff cone."
+   },
+   {
+    "n": "Jeju Round-the-Island",
+    "s": 4.8,
+    "note": "150km coastal loop circling the island — the classic Jeju century.",
+    "km": 150,
+    "vert": 1700,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "Road/e-bike hire — Jeju",
+    "price": 30
+   },
+   {
+    "type": "Guided ride",
+    "name": "Island-loop support (per day)",
+    "price": 95
+   },
+   {
+    "type": "Stay",
+    "name": "Coastal cyclist stay (per night)",
+    "price": 80
+   }
+  ]
+ },
+ {
+  "id": "sunmoonlake",
+  "name": "Sun Moon Lake",
+  "region": "Nantou",
+  "country": "Taiwan",
+  "flag": "🇹🇼",
+  "cur": "$",
+  "score": 4.7,
+  "photo": "",
+  "gallery": [],
+  "tags": [
+   "Scenic loop",
+   "Road",
+   "Family"
+  ],
+  "personas": [
+   "cruiser",
+   "family",
+   "racer"
+  ],
+  "blurb": "Taiwan’s most beautiful ride — a 29km lakeside loop of boardwalks and forest paths, ranked among the world’s top-10 bike trails, in the misty central mountains.",
+  "scoreDims": {
+   "cafes": 4.5,
+   "routes": 4.8,
+   "safety": 4.8,
+   "climbs": 4.3,
+   "storage": 4.6
+  },
+  "cafes": [
+   {
+    "n": "Hugosum lakeside café",
+    "s": 4.7,
+    "note": "Glass-walled coffee over the water."
+   },
+   {
+    "n": "Ita Thao stalls",
+    "s": 4.5,
+    "note": "Aboriginal-village street food."
+   },
+   {
+    "n": "Xiangshan café",
+    "s": 4.5,
+    "note": "Coffee at the architectural visitor centre."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Giant Store Sun Moon Lake",
+    "s": 4.8,
+    "note": "Lakeside hire from the Taiwan giant.",
+    "hire": true,
+    "price": 35
+   },
+   {
+    "n": "Merida hire point",
+    "s": 4.6,
+    "note": "Road & e-bike hire by the pier.",
+    "hire": true,
+    "price": 35
+   }
+  ],
+  "routes": [
+   {
+    "n": "Sun Moon Lake loop",
+    "s": 4.9,
+    "note": "29km of boardwalks and forest paths."
+   },
+   {
+    "n": "Xiangshan & Yuetan bikeways",
+    "s": 4.8,
+    "note": "The famous over-water cycleways."
+   },
+   {
+    "n": "Shuishe to Ita Thao",
+    "s": 4.6,
+    "note": "The scenic eastern shore."
+   },
+   {
+    "n": "Sun Moon Lake Grand Loop",
+    "s": 4.8,
+    "note": "145km lake circuit reaching toward the Wuling climb — a strong-rider epic.",
+    "km": 145,
+    "vert": 3200,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "Lakeside hire — Giant",
+    "price": 35
+   },
+   {
+    "type": "Guided ride",
+    "name": "Lake loop + climbs day",
+    "price": 90
+   },
+   {
+    "type": "Stay",
+    "name": "Lakeside cyclist stay (per night)",
+    "price": 95
+   }
+  ]
+ },
+ {
+  "id": "medellin",
+  "name": "Medellín",
+  "region": "Antioquia",
+  "country": "Colombia",
+  "flag": "🇨🇴",
+  "cur": "$",
+  "score": 4.8,
+  "photo": "",
+  "gallery": [],
+  "tags": [
+   "Climbs",
+   "Altitude",
+   "Pro culture"
+  ],
+  "personas": [
+   "climber",
+   "racer",
+   "gravel"
+  ],
+  "blurb": "Colombia’s cycling powerhouse — the City of Eternal Spring, ringed by big Andean climbs and steeped in the pro culture that produced Quintana and Bernal. Gateway to Alto de Letras.",
+  "scoreDims": {
+   "cafes": 4.7,
+   "routes": 4.9,
+   "safety": 4.1,
+   "climbs": 5,
+   "storage": 4.4
+  },
+  "cafes": [
+   {
+    "n": "Pergamino Café",
+    "s": 4.8,
+    "note": "Colombia’s best beans — the riders’ stop."
+   },
+   {
+    "n": "Café Velódromo",
+    "s": 4.6,
+    "note": "Cyclist café in El Poblado."
+   },
+   {
+    "n": "Rituales Café",
+    "s": 4.6,
+    "note": "Specialty roaster, big breakfasts."
+   }
+  ],
+  "shops": [
+   {
+    "n": "Suricato Pro Bike",
+    "s": 4.7,
+    "note": "High-end road hire and guided climbs.",
+    "hire": true,
+    "price": 50
+   },
+   {
+    "n": "Colombia Cycling Co.",
+    "s": 4.7,
+    "note": "Altitude camps and SAG support.",
+    "hire": true,
+    "price": 55
+   }
+  ],
+  "routes": [
+   {
+    "n": "Alto de Las Palmas",
+    "s": 4.8,
+    "note": "The classic ~13km city climb to the plateau."
+   },
+   {
+    "n": "Alto de Santa Elena",
+    "s": 4.8,
+    "note": "A long, steady Andean ascent from the city."
+   },
+   {
+    "n": "Alto de Letras (day trip)",
+    "s": 5,
+    "note": "The world’s longest paved climb — ~80km."
+   },
+   {
+    "n": "Alto de Letras Gran Fondo",
+    "s": 4.8,
+    "note": "150km on the legendary Alto de Letras flank — the world's longest paved climb.",
+    "km": 150,
+    "vert": 4000,
+    "big": true
+   }
+  ],
+  "book": [
+   {
+    "type": "Bike hire",
+    "name": "Road bike hire — Medellín",
+    "price": 50
+   },
+   {
+    "type": "Guided ride",
+    "name": "Andean climbs day (with SAG)",
+    "price": 110
+   },
+   {
+    "type": "Stay",
+    "name": "Cyclist-friendly stay (per night)",
+    "price": 75
+   }
+  ]
+ }
+]

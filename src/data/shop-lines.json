@@ -1,0 +1,189 @@
+[
+ {
+  "k": "Line 01 — On the bike",
+  "t": "Performance cycling gear",
+  "s": "Race-cut kit in the Cycletowns colours, your town on the chest.",
+  "items": [
+   {
+    "name": "Pro race jersey",
+    "price": 145,
+    "cls": "m-split",
+    "type": "jersey",
+    "tag": "Pro fit"
+   },
+   {
+    "name": "Bib shorts",
+    "price": 135,
+    "cls": "m-char",
+    "type": "shorts"
+   },
+   {
+    "name": "Aero cycling cap",
+    "price": 35,
+    "cls": "m-teal",
+    "type": "cap"
+   },
+   {
+    "name": "Lightweight wind vest",
+    "price": 110,
+    "cls": "m-char",
+    "type": "vest"
+   },
+   {
+    "name": "Merino ride socks",
+    "price": 26,
+    "cls": "m-char",
+    "type": "socks"
+   }
+  ]
+ },
+ {
+  "k": "Line 02 — Off the bike",
+  "t": "Lifestyle apparel",
+  "s": "Everyday wear for repping your town at the café and beyond.",
+  "items": [
+   {
+    "name": "Heavyweight hoodie",
+    "price": 89,
+    "cls": "m-char",
+    "type": "hoodie"
+   },
+   {
+    "name": "Merino tech tee",
+    "price": 55,
+    "cls": "m-slate",
+    "type": "tee"
+   },
+   {
+    "name": "Long-sleeve crewneck",
+    "price": 69,
+    "cls": "m-slate",
+    "type": "longtee"
+   },
+   {
+    "name": "Cuffed beanie",
+    "price": 32,
+    "cls": "m-char",
+    "type": "beanie"
+   },
+   {
+    "name": "Dad cap",
+    "price": 38,
+    "cls": "m-teal",
+    "type": "dadcap"
+   }
+  ]
+ },
+ {
+  "k": "Line 03 — Ride accessories",
+  "t": "Ride accessories",
+  "s": "The bits that travel with you — bottles, bags and badges.",
+  "items": [
+   {
+    "name": "Purist water bottle",
+    "price": 22,
+    "cls": "m-white",
+    "type": "bottle"
+   },
+   {
+    "name": "Waxed handlebar bag",
+    "price": 79,
+    "cls": "m-char",
+    "type": "bag"
+   },
+   {
+    "name": "Canvas tote",
+    "price": 28,
+    "cls": "m-cream",
+    "type": "tote"
+   },
+   {
+    "name": "Die-cut sticker pack",
+    "price": 12,
+    "cls": "m-white",
+    "type": "stickers",
+    "tag": "Pack of 8"
+   },
+   {
+    "name": "Embroidered patch",
+    "price": 14,
+    "cls": "m-teal",
+    "type": "patch"
+   }
+  ]
+ },
+ {
+  "k": "Line 04 — Bike identity",
+  "t": "Bike identity pack",
+  "s": "Put your town on your frame — decals and badges, neat UCI-legal placement.",
+  "items": [
+   {
+    "name": "Downtube decal set",
+    "price": 34,
+    "cls": "m-carbon",
+    "type": "tube"
+   },
+   {
+    "name": "Head-tube enamel badge",
+    "price": 24,
+    "cls": "m-carbon",
+    "type": "badge"
+   },
+   {
+    "name": "Seat-tube badge",
+    "price": 18,
+    "cls": "m-carbon",
+    "type": "badge"
+   },
+   {
+    "name": "Custom frame wrap kit",
+    "price": 59,
+    "cls": "m-carbon",
+    "type": "wrap"
+   },
+   {
+    "name": "Event number plate",
+    "price": 16,
+    "cls": "m-white",
+    "type": "plate"
+   }
+  ]
+ },
+ {
+  "k": "Line 05 — Events & community",
+  "t": "Event & community items",
+  "s": "For ride days, finish lines and proud-town front windows.",
+  "items": [
+   {
+    "name": "Event ride tee",
+    "price": 42,
+    "cls": "m-slate",
+    "type": "tee"
+   },
+   {
+    "name": "Finisher medal",
+    "price": 20,
+    "cls": "m-teal",
+    "type": "medal"
+   },
+   {
+    "name": "Lanyard + ride pass",
+    "price": 15,
+    "cls": "m-teal",
+    "type": "lanyard"
+   },
+   {
+    "name": "“Proud Cycle Town” window decal",
+    "price": 10,
+    "cls": "m-white",
+    "type": "decal"
+   },
+   {
+    "name": "Town map art print",
+    "price": 30,
+    "cls": "m-cream",
+    "type": "poster"
+   }
+  ]
+ }
+]

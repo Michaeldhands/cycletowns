@@ -1,0 +1,44 @@
+[
+ {
+  "id": "climber",
+  "e": "⛰️",
+  "n": "The Climber",
+  "t": "Road · cols & KOMs",
+  "d": "Travels for the great climbs and iconic road routes."
+ },
+ {
+  "id": "gravel",
+  "e": "🌾",
+  "n": "The Gravel Explorer",
+  "t": "Gravel · backroads",
+  "d": "Chasing dirt roads, adventure and the road less ridden."
+ },
+ {
+  "id": "trail",
+  "e": "🚵",
+  "n": "The Trail Seeker",
+  "t": "MTB · flow & tech",
+  "d": "Plans trips around the best mountain-bike networks."
+ },
+ {
+  "id": "cruiser",
+  "e": "☕",
+  "n": "The Café Cruiser",
+  "t": "E-bike · scenic & social",
+  "d": "Relaxed scenic rides, great coffee and a long lunch."
+ },
+ {
+  "id": "family",
+  "e": "👨‍👩‍👧",
+  "n": "The Cycling Family",
+  "t": "Leisure · rail trails",
+  "d": "Easy, safe trails the whole family can enjoy."
+ },
+ {
+  "id": "racer",
+  "e": "🏆",
+  "n": "The Racer",
+  "t": "Events · training camps",
+  "d": "Gran fondos, races and training camps."
+ }
+]

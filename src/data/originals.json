@@ -1,0 +1,62 @@
+[
+ {
+  "kind": "Series",
+  "series": "Town in Focus",
+  "ep": 1,
+  "town": "girona",
+  "by": "Mara Velasco",
+  "role": "Cycletowns Correspondent · Europe",
+  "img": "road",
+  "date": "New this week",
+  "title": "Town in Focus: Girona — the town that adopted the pro peloton",
+  "dek": "Our launch film. A week inside the cafés, climbs and crews that made a medieval city the unofficial capital of pro cycling.",
+  "body": "<p>For the first episode of Town in Focus, our European correspondent Mara Velasco spent a week living like a Girona local — dawn espressos at the riders’ cafés, a lap of the Rocacorba climb, and long lunches with the mechanics, soigneurs and pros who quietly call this medieval city home.</p><p>What emerges is a portrait of a town that didn’t chase cycling — cycling came to it, drawn by quiet roads, a perfect airport-to-saddle radius and a community that adopts every rider who turns up. It’s the blueprint for what a Cycletown can be.</p>"
+ },
+ {
+  "kind": "Series",
+  "series": "Town in Focus",
+  "ep": 2,
+  "town": "bright",
+  "by": "Tom Hapgood",
+  "role": "Cycletowns Correspondent · Australia & Pacific",
+  "img": "alpine",
+  "date": "Coming Friday",
+  "title": "Town in Focus: Bright — inside Australia’s alpine cycling heart",
+  "dek": "Episode 2. Mt Buffalo at sunrise, gravel in the afternoon, and the main-street café culture that fuels it all.",
+  "body": "<p>Episode two heads to Victoria’s High Country, where Tom Hapgood rides Mt Buffalo before the valley fog lifts and chases gravel into the foothills by afternoon.</p><p>Bright punches far above its size: three of Australia’s great climbs on the doorstep, a rail trail for the family, and a main street of cafés and bike shops that turn a ride into a weekend. We meet the locals keeping it that way.</p>"
+ },
+ {
+  "kind": "Series",
+  "series": "Town in Focus",
+  "ep": 3,
+  "town": "medellin",
+  "by": "Sofía Duarte",
+  "role": "Cycletowns Correspondent · Latin America",
+  "img": "climb",
+  "date": "Next week",
+  "title": "Town in Focus: Medellín — climbing at altitude with the locals",
+  "dek": "Episode 3. Dawn on Las Palmas, the city that makes Grand Tour champions, and a riding culture like nowhere else.",
+  "body": "<p>Our Latin America correspondent Sofía Duarte joins the famous dawn bunches grinding up Alto de Las Palmas, where weekend riders share the road with future Grand Tour winners.</p><p>Medellín rides at altitude, year-round, with a passion that has to be seen. Episode three explores how a city reinvented itself — and why its climbs are becoming a bucket-list pilgrimage for travelling cyclists.</p>"
+ },
+ {
+  "kind": "Feature",
+  "by": "Tom Hapgood",
+  "role": "Cycletowns Correspondent · Australia & Pacific",
+  "img": "gravel",
+  "date": "1 week ago",
+  "title": "Why gravel travel is the fastest-growing way to see the world",
+  "dek": "A Cycletowns feature on the boom reshaping where — and how — we ride.",
+  "body": "<p>Gravel has gone from niche to the defining story of modern cycling, and it’s changing travel with it: riders are swapping busy tourist roads for quiet backcountry, and small towns are reaping the reward.</p><p>We unpack the trend with the riders, guides and tourism boards living it — and pick the regions getting it right.</p>"
+ },
+ {
+  "kind": "Photo essay",
+  "town": "onomichi",
+  "by": "Kenji Mori",
+  "role": "Cycletowns Correspondent · Asia",
+  "img": "road",
+  "date": "2 weeks ago",
+  "title": "Seven bridges at first light: the Shimanami Kaido, in photographs",
+  "dek": "A Cycletowns photo essay across Japan’s most beautiful cycle route.",
+  "body": "<p>Our Asia correspondent Kenji Mori rode the Shimanami Kaido from Onomichi to Imabari at dawn, camera in the jersey pocket, to capture the island-hopping route that has become a symbol of Japanese cycle tourism.</p><p>Six islands, seven bridges, and a quality of morning light that explains why this ride sits on so many bucket lists.</p>"
+ }
+]

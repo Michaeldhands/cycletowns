@@ -1,0 +1,110 @@
+{
+ "girona": {
+  "n": "Girona Gran Fondo",
+  "km": 150,
+  "vert": 2600,
+  "note": "150km marquee loop linking Els Àngels, Sant Hilari and the Rocacorba climb — the big day the pros train on."
+ },
+ "mallorca": {
+  "n": "Mallorca 312 — Tramuntana loop",
+  "km": 155,
+  "vert": 2900,
+  "note": "155km Serra de Tramuntana epic in the spirit of the Mallorca 312, Sa Calobra and all."
+ },
+ "bright": {
+  "n": "Bright Alpine Classic",
+  "km": 150,
+  "vert": 3400,
+  "note": "150km high-country queen stage over Mt Buffalo and Tawonga Gap — Alpine Classic territory."
+ },
+ "adelaide-hills": {
+  "n": "Adelaide Hills Gran Fondo",
+  "km": 140,
+  "vert": 2500,
+  "note": "140km loop over Norton Summit, the Corkscrew and Gorge Rd — a proper hills century."
+ },
+ "beechworth": {
+  "n": "Beechworth–Alpine Gran Fondo",
+  "km": 145,
+  "vert": 2300,
+  "note": "145km loop out to the alpine foothills and back through the historic gold country."
+ },
+ "noosa": {
+  "n": "Noosa Hinterland Century",
+  "km": 135,
+  "vert": 1700,
+  "note": "135km loop deep into the hinterland — Black Mountain, Pomona and the Range."
+ },
+ "derby": {
+  "n": "Derby Big Backcountry Loop",
+  "km": 130,
+  "vert": 2400,
+  "note": "130km backcountry gravel and singletrack epic linking the Blue Derby network."
+ },
+ "bentonville": {
+  "n": "OZ Trails Big Gravel Loop",
+  "km": 145,
+  "vert": 1900,
+  "note": "145km Ozark gravel and greenway epic across the OZ Trails network."
+ },
+ "hualien": {
+  "n": "Taroko Gorge Grand Loop",
+  "km": 150,
+  "vert": 3200,
+  "note": "150km coast-to-gorge epic climbing the Taroko pass — a serious big day."
+ },
+ "dalat": {
+  "n": "Da Lat Highlands Gran Fondo",
+  "km": 145,
+  "vert": 3000,
+  "note": "145km Central Highlands loop over pine-clad passes and long climbs."
+ },
+ "hagiang": {
+  "n": "Ha Giang Loop — big day",
+  "km": 150,
+  "vert": 3300,
+  "note": "150km of the Ha Giang Loop's finest passes, Ma Pi Leng included — relentless climbing."
+ },
+ "onomichi": {
+  "n": "Shimanami Grand Tour",
+  "km": 140,
+  "vert": 1200,
+  "note": "140km island-hopping grand tour beyond the Shimanami Kaido — six islands and back."
+ },
+ "chiangmai": {
+  "n": "Doi Inthanon Gran Fondo",
+  "km": 150,
+  "vert": 3100,
+  "note": "150km loop to the roof of Thailand and back — the region's ultimate climb day."
+ },
+ "pokhara": {
+  "n": "Annapurna Foothills Epic",
+  "km": 130,
+  "vert": 3200,
+  "note": "130km Himalayan foothills loop above Pokhara — climbing that never lets up."
+ },
+ "ubud": {
+  "n": "Bali Volcano Century",
+  "km": 140,
+  "vert": 2700,
+  "note": "140km loop to the Kintamani caldera and Mt Batur — a big volcanic climbing day."
+ },
+ "jeju": {
+  "n": "Jeju Round-the-Island",
+  "km": 150,
+  "vert": 1700,
+  "note": "150km coastal loop circling the island — the classic Jeju century."
+ },
+ "sunmoonlake": {
+  "n": "Sun Moon Lake Grand Loop",
+  "km": 145,
+  "vert": 3200,
+  "note": "145km lake circuit reaching toward the Wuling climb — a strong-rider epic."
+ },
+ "medellin": {
+  "n": "Alto de Letras Gran Fondo",
+  "km": 150,
+  "vert": 4000,
+  "note": "150km on the legendary Alto de Letras flank — the world's longest paved climb."
+ }
+}

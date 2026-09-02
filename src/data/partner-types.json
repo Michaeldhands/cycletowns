@@ -1,0 +1,98 @@
+[
+ {
+  "id": "cafe",
+  "e": "🏪",
+  "name": "Small business",
+  "pitch": "Cafés, bike shops &amp; local services — get in front of the riders rolling through your town and turn them into regulars.",
+  "bullets": [
+   "Verified bike-friendly badge on the town guide",
+   "Rider footfall, search terms &amp; reviews",
+   "List repairs, hire or experiences",
+   "You see only your own data"
+  ]
+ },
+ {
+  "id": "brand",
+  "e": "🚲",
+  "name": "Brands",
+  "pitch": "Bikes, gear &amp; apparel — reach riders ready to buy, and see who already rides you.",
+  "bullets": [
+   "Brand-affinity &amp; purchase-intent audience",
+   "Promo-code redemptions + full click→buy funnel",
+   "Attributed sales, AOV &amp; ROAS",
+   "Featured next to real rider reviews"
+  ]
+ },
+ {
+  "id": "tourism",
+  "e": "🧭",
+  "name": "Tourism",
+  "pitch": "Boards &amp; destinations — put your region in riders’ plans and prove the spend to your funders.",
+  "bullets": [
+   "Live travel-intent &amp; origin markets",
+   "Attributed visits, room-nights &amp; visitor spend",
+   "Co-op campaign ROI, by partner",
+   "Disperse riders across your whole region"
+  ]
+ },
+ {
+  "id": "stay",
+  "e": "🏡",
+  "name": "Accommodation",
+  "pitch": "Hotels, stays &amp; B&amp;Bs — fill rooms with high-spend, long-stay cyclists.",
+  "bullets": [
+   "Bookings from the planner &amp; concierge",
+   "Occupancy, pace &amp; payout dashboard",
+   "Booker insights &amp; reviews",
+   "Member-rate visibility"
+  ]
+ },
+ {
+  "id": "travel",
+  "e": "✈️",
+  "name": "Travel &amp; transport",
+  "pitch": "Airlines, bike transport, transfers, rail &amp; car hire — move riders and their bikes to the start line.",
+  "bullets": [
+   "Offered in the concierge at the moment of need",
+   "Bookings, attach rate &amp; top corridors",
+   "Solve cycling’s #1 stress: getting the bike there",
+   "Attributed GMV &amp; ROAS"
+  ]
+ },
+ {
+  "id": "guide",
+  "e": "🧑‍🦱",
+  "name": "Guides &amp; experiences",
+  "pitch": "Local guides, tour operators &amp; clinics — sell out your rides.",
+  "bullets": [
+   "Bookable on every town page",
+   "Earnings + ratings dashboard",
+   "Concierge referrals",
+   "Keep your own pricing"
+  ]
+ },
+ {
+  "id": "insure",
+  "e": "🛡️",
+  "name": "Insurance &amp; cover",
+  "pitch": "Travel insurance, bike cover &amp; roadside — protect every ride.",
+  "bullets": [
+   "High-intent, long-cookie audience",
+   "Offered at booking &amp; checkout",
+   "Attach-rate &amp; redemption reporting",
+   "Bundle with transport &amp; trips"
+  ]
+ },
+ {
+  "id": "events",
+  "e": "🏁",
+  "name": "Events &amp; camps",
+  "pitch": "Gran fondos, gravel events &amp; training camps — fill your start list.",
+  "bullets": [
+   "Promote by discipline &amp; region",
+   "Registrations &amp; reach",
+   "Creator briefs &amp; town takeovers",
+   "Drive shoulder-season demand"
+  ]
+ }
+]

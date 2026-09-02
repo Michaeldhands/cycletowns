@@ -1,0 +1,235 @@
+[
+ {
+  "key": "account",
+  "title": "Create your account",
+  "sub": "Your rider profile starts here.",
+  "fields": [
+   {
+    "id": "fullName",
+    "label": "Full name",
+    "type": "text",
+    "ph": "Dan Jones",
+    "req": true
+   },
+   {
+    "id": "email",
+    "label": "Email",
+    "type": "email",
+    "ph": "you@email.com",
+    "req": true
+   },
+   {
+    "id": "password",
+    "label": "Password",
+    "type": "password",
+    "ph": "8+ characters",
+    "req": true
+   }
+  ]
+ },
+ {
+  "key": "riding",
+  "title": "Your riding",
+  "sub": "So we can match you to the right towns and groups.",
+  "fields": [
+   {
+    "id": "riderTypes",
+    "label": "What do you ride?",
+    "type": "chips",
+    "opts": [
+     "Road",
+     "Gravel",
+     "Mountain",
+     "E-bike",
+     "Tourer",
+     "Commuter"
+    ],
+    "req": true
+   },
+   {
+    "id": "ability",
+    "label": "Ability",
+    "type": "opts",
+    "opts": [
+     "Beginner",
+     "Intermediate",
+     "Advanced",
+     "Racer"
+    ],
+    "req": true
+   },
+   {
+    "id": "volume",
+    "label": "Typical weekly riding",
+    "type": "opts",
+    "opts": [
+     "<2 hrs",
+     "2–5 hrs",
+     "5–10 hrs",
+     "10+ hrs"
+    ]
+   }
+  ]
+ },
+ {
+  "key": "persona",
+  "title": "Your style of trip",
+  "sub": "We tailor towns, routes, cafés and partners to riders like you.",
+  "fields": [
+   {
+    "id": "persona",
+    "label": "What kind of cycling are you here for?",
+    "type": "persona",
+    "req": true
+   }
+  ]
+ },
+ {
+  "key": "town",
+  "title": "Your home town",
+  "sub": "Connect with your local cycling community.",
+  "fields": [
+   {
+    "id": "homeTown",
+    "label": "Choose your home cycling town",
+    "type": "townpick",
+    "req": true
+   }
+  ]
+ },
+ {
+  "key": "travel",
+  "title": "You & your travel",
+  "sub": "This shapes what tourism partners can offer you.",
+  "fields": [
+   {
+    "id": "ageBand",
+    "label": "Age",
+    "type": "opts",
+    "opts": [
+     "18–24",
+     "25–34",
+     "35–44",
+     "45–54",
+     "55–64",
+     "65+"
+    ]
+   },
+   {
+    "id": "homeCountry",
+    "label": "Home country",
+    "type": "text",
+    "ph": "Australia"
+   },
+   {
+    "id": "travelIntent",
+    "label": "Planning a cycling trip in the next 12 months?",
+    "type": "opts",
+    "opts": [
+     "Yes, definitely",
+     "Maybe",
+     "No"
+    ],
+    "req": true
+   },
+   {
+    "id": "dreamDestinations",
+    "label": "Dream cycling destinations",
+    "type": "destinations",
+    "hint": "Pick any that appeal — fuels the travel insights partners love."
+   },
+   {
+    "id": "tripBudget",
+    "label": "Typical trip budget",
+    "type": "opts",
+    "opts": [
+     "<$1k",
+     "$1–3k",
+     "$3–5k",
+     "$5–10k",
+     "$10k+"
+    ]
+   }
+  ]
+ },
+ {
+  "key": "gear",
+  "title": "Your gear & spend",
+  "sub": "Helps cycling brands tailor offers. You control sharing.",
+  "fields": [
+   {
+    "id": "bikeBrands",
+    "label": "Bike brands you ride",
+    "type": "chips",
+    "opts": [
+     "Trek",
+     "Specialized",
+     "Canyon",
+     "Giant",
+     "Cervélo",
+     "Pinarello",
+     "Cannondale",
+     "Bianchi",
+     "Cube",
+     "Other"
+    ]
+   },
+   {
+    "id": "annualSpend",
+    "label": "Annual spend on cycling",
+    "type": "opts",
+    "opts": [
+     "<$500",
+     "$500–1.5k",
+     "$1.5–3k",
+     "$3–6k",
+     "$6k+"
+    ]
+   },
+   {
+    "id": "purchaseIntent",
+    "label": "Planning to buy in the next 12 months",
+    "type": "chips",
+    "opts": [
+     "New bike",
+     "Wheels",
+     "Apparel",
+     "Components",
+     "Bike computer",
+     "Nothing"
+    ]
+   }
+  ]
+ },
+ {
+  "key": "consent",
+  "title": "Almost there",
+  "sub": "",
+  "fields": [
+   {
+    "id": "handle",
+    "label": "Rider handle",
+    "type": "text",
+    "ph": "@dan"
+   },
+   {
+    "id": "marketingOptIn",
+    "label": "Send me rides, events & town updates",
+    "type": "toggle",
+    "def": true
+   },
+   {
+    "id": "partnerOptIn",
+    "label": "Share anonymised insights with tourism & brand partners",
+    "type": "toggle",
+    "def": true
+   },
+   {
+    "id": "tos",
+    "label": "I agree to the Terms & Privacy Policy, and I’m 16 or older.",
+    "type": "check",
+    "req": true
+   }
+  ]
+ }
+]

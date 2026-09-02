@@ -1,0 +1,27 @@
+{
+ "cafe": {
+  "convert": "You’re found ~3,420 times but only 612 ask for directions. The gap is trust — riders search “bike-friendly café” and can’t tell if you have parking, storage or early hours. Add the Verified Bike-Friendly badge, 3 photos (bike parking, coffee, interior) and your 6am open time. Comparable cafés lifted directions ~2×.",
+  "midweek": "Footfall dips Tue–Wed while ~612 riders are near you weekly. Publish a midweek “Ride &amp; Refuel” offer (free pastry with a coffee before 9am) to road &amp; gravel riders in Bright — we push it to their feed. Similar offers lift midweek covers ~22%.",
+  "listing": "Here’s a draft: “Sixpence Coffee — Bright’s bike-friendly fuel stop. Secure parking, 6am starts, wash bay out back. Single-origin espresso, big breakfasts and the best banana bread on the Murray to Mountains trail.” Want me to publish it and open photo slots?"
+ },
+ "brand": {
+  "convert": "9,240 clicked, 5,180 viewed bikes, 1,290 bought — your biggest leak is browse→cart (60% drop), mostly the 7,950 who browsed and left. They convert at 3× with a code. Trigger CT-TREK-10 to that segment within 48h.",
+  "audience": "Your affinity cohort skews Road (38%) and Gravel (27%), is 58% new-to-brand, mostly Melbourne &amp; Sydney, planning Girona, Bright and Mallorca. The standout: gravel is your fastest-growing, under-served wedge.",
+  "code": "A winning code here is unique-per-rider (not one shared code), 10% off, 30-day window, gravel-weighted. Unique codes let us attribute per-creator and stop abuse. At your 31% redemption rate: ~A$18k incremental on the abandoned segment alone."
+ },
+ "tourism": {
+  "disperse": "41% of demand lands on Bright. Riders into gravel (29%) and rail-trail/e-bike (15%) are ideal to redirect to Beechworth, Myrtleford and Mt Beauty. A shoulder-season gravel campaign to those towns spreads spend and eases Bright in peak — modelled +38% off-peak trips.",
+  "roi": "Show funders: 2,180 attributed visits, ~A$1.05M visitor spend (≈A$483/rider/day), 7.4× on matched co-op spend, and dispersal across 5 towns — straight onto the spend→jobs→tax story.",
+  "season": "Autumn already over-indexes for gravel. Stack a March–May campaign plus a signature gravel event, push to high-intent Melbourne/Sydney riders, and bundle midweek stays. Shoulder-season trips are up 38% where we’ve run this."
+ },
+ "stay": {
+  "occ": "Midweek occupancy lags peak by 24pts despite a 4.9 rating and 34-day lead time. Open midweek + shoulder dates and publish a 2-night cyclist rate — we surface it on the Bright planner card to high-intent riders.",
+  "rate": "Hold your peak rate, but add a midweek 2-night rate ~12% below peak — it fills empty nights without touching your strong weekends. Projected ~A$3.1k/month at current demand.",
+  "reviews": "You have 41 reviews at 4.9 but ask few guests. Auto-request after checkout via Cycletowns — recent, verified reviews lift listing→booking conversion ~15%."
+ },
+ "travel": {
+  "attach": "You’re shown on 18,900 trips but only 1,840 book — the drop is “shown → clicked”. Riders don’t realise transport is handled until late. Surface an instant quote on the trip page itself; partners who do lift attach ~24%.",
+  "routes": "Lead with the long-haul corridors: Melbourne→Bright, Sydney→Derby and International→Girona carry the most bikes and the highest order value. Regional transfers convert too, but at a lower basket — prioritise the fly-with-a-bike routes.",
+  "intl": "International riders heading to Girona and Mallorca have the biggest pain and the deepest pockets. Bundle a flight-friendly bike case + door-to-door shipping for those routes and promote it to riders who set an international destination in the planner — modelled +A$31k."
+ }
+}

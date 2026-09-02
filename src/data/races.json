@@ -1,0 +1,293 @@
+{
+ "hualien": [
+  {
+   "kind": "pro",
+   "badge": "🏔️",
+   "name": "Taiwan KOM Challenge",
+   "series": "Taiwan KOM Challenge",
+   "km": 105,
+   "vert": 3200,
+   "date": "2026-10-23",
+   "status": "upcoming",
+   "disc": "climbs",
+   "note": "Sea level at Qixingtan to 3,275m at Wuling through Taroko Gorge — ~7% for 90km, then ramps to 27%. One of the world's hardest climbs."
+  }
+ ],
+ "mallorca": [
+  {
+   "kind": "fondo",
+   "badge": "🏆",
+   "name": "Mallorca 312 — 167 route",
+   "series": "Mallorca 312 OK Mobility",
+   "km": 167,
+   "vert": 2500,
+   "date": "2027-04-24",
+   "status": "upcoming",
+   "disc": "road",
+   "note": "The island classic across the Serra de Tramuntana from Playa de Muro. 312 / 225 / 167km options; next edition late April 2027."
+  }
+ ],
+ "bentonville": [
+  {
+   "kind": "fondo",
+   "badge": "🌾",
+   "name": "Big Sugar Gravel — 100mi",
+   "series": "Life Time Big Sugar (Grand Prix)",
+   "km": 161,
+   "vert": 2130,
+   "date": "2026-10-17",
+   "status": "upcoming",
+   "disc": "gravel",
+   "note": "Life Time Grand Prix finale on the chunky Ozark gravel around Bentonville — 104mi / ~7,000ft. Full pro field."
+  }
+ ],
+ "medellin": [
+  {
+   "kind": "fondo",
+   "badge": "🏆",
+   "name": "El Giro de Rigo — Medellín route",
+   "series": "El Giro de Rigo",
+   "km": 160,
+   "vert": 2600,
+   "date": "",
+   "status": "historic",
+   "disc": "climbs",
+   "note": "Rigoberto Urán's gran fondo as it ran from Medellín over Alto de Las Palmas to Rionegro (Reto Caimán, 160km). The 2026 edition moves to Barranquilla."
+  },
+  {
+   "kind": "pro",
+   "badge": "🏁",
+   "name": "Tour Colombia — Alto de Las Palmas",
+   "series": "Tour Colombia 2.1",
+   "km": 130,
+   "vert": 2500,
+   "date": "",
+   "status": "historic",
+   "disc": "climbs",
+   "note": "The WorldTour peloton raced the Antioquia climbs of Las Palmas and Santa Elena around Medellín and Rionegro in 2019–2020."
+  }
+ ],
+ "adelaide-hills": [
+  {
+   "kind": "pro",
+   "badge": "🏁",
+   "name": "Tour Down Under — Willunga stage",
+   "series": "Santos Tour Down Under",
+   "km": 150,
+   "vert": 1900,
+   "date": "2027-01-24",
+   "status": "upcoming",
+   "disc": "climbs",
+   "note": "Ride the iconic Willunga Hill decider and the Adelaide Hills circuits from the WorldTour season-opener. Next edition January 2027."
+  }
+ ],
+ "bright": [
+  {
+   "kind": "fondo",
+   "badge": "🏆",
+   "name": "Audax Alpine Classic — 250km",
+   "series": "Audax Alpine Classic",
+   "km": 250,
+   "vert": 4000,
+   "date": "2027-01-16",
+   "status": "upcoming",
+   "disc": "climbs",
+   "note": "Australia Day weekend institution from Bright over Mt Buffalo, Tawonga Gap and Falls Creek. 320 / 250 / 200 / 140km options."
+  },
+  {
+   "kind": "fondo",
+   "badge": "🏆",
+   "name": "Peaks Challenge Falls Creek",
+   "series": "Peaks Challenge",
+   "km": 235,
+   "vert": 4500,
+   "date": "2027-03-07",
+   "status": "upcoming",
+   "disc": "climbs",
+   "note": "235km / 4,500m around the high country — Tawonga Gap, Mt Hotham and the ‘Beast’ at the back of Falls Creek. 13-hour limit."
+  }
+ ],
+ "girona": [
+  {
+   "kind": "fondo",
+   "badge": "🏆",
+   "name": "Sea Otter Europe — Gran Fondo",
+   "series": "Sea Otter Europe Girona",
+   "km": 140,
+   "vert": 2200,
+   "date": "2026-09-20",
+   "status": "upcoming",
+   "disc": "road",
+   "note": "Europe's biggest cycling festival — road & gravel gran fondos and the UCI Gravel World Series, all from Girona."
+  },
+  {
+   "kind": "pro",
+   "badge": "🏁",
+   "name": "Volta a Catalunya — Girona roads",
+   "series": "Volta a Catalunya",
+   "km": 150,
+   "vert": 2400,
+   "date": "2027-03-22",
+   "status": "upcoming",
+   "disc": "climbs",
+   "note": "WorldTour racing regularly rolls through the Girona hills the pros call home. Next Volta late March 2027."
+  }
+ ],
+ "derby": [
+  {
+   "kind": "mtb",
+   "badge": "🏁",
+   "name": "UCI Enduro World Cup — Derby",
+   "series": "UCI MTB World Series (EDR)",
+   "km": 45,
+   "vert": 1500,
+   "date": "2027-03-31",
+   "status": "upcoming",
+   "disc": "mtb",
+   "note": "Blue Derby hosts a round of the UCI Enduro World Cup — the world's best gravity racers on the famous Tasmanian loam."
+  }
+ ],
+ "onomichi": [
+  {
+   "kind": "fondo",
+   "badge": "🏆",
+   "name": "Cycling Shimanami — Long Course",
+   "series": "Cycling Shimanami",
+   "km": 140,
+   "vert": 1200,
+   "date": "2026-10-25",
+   "status": "upcoming",
+   "disc": "road",
+   "note": "Held once every two years, the Nishiseto Expressway closes to cars and opens to 7,000 riders — Onomichi to Imabari and back."
+  }
+ ],
+ "dalat": [
+  {
+   "kind": "pro",
+   "badge": "🏁",
+   "name": "HTV Cup — Stage to Da Lat",
+   "series": "HTV Cup (Cúp Truyền hình TP.HCM)",
+   "km": 135,
+   "vert": 2400,
+   "date": "2027-04-12",
+   "status": "upcoming",
+   "disc": "climbs",
+   "note": "Vietnam's biggest stage race climbs to Da Lat over the Khanh Le and Giang Ly passes, run each April around Reunification Day."
+  }
+ ],
+ "ubud": [
+  {
+   "kind": "fondo",
+   "badge": "🏆",
+   "name": "GFNY Bali — Gran Fondo Kintamani",
+   "series": "GFNY Bali",
+   "km": 134,
+   "vert": 2500,
+   "date": "",
+   "status": "annual",
+   "disc": "climbs",
+   "note": "A 20km ascent to the Kintamani crater rim above Lake Batur — 134km gran fondo / 94km medio. Dates via GFNY Bali."
+  }
+ ],
+ "jeju": [
+  {
+   "kind": "fondo",
+   "badge": "🏆",
+   "name": "Jeju Round-the-Island",
+   "series": "Jeju Cycling Festival",
+   "km": 234,
+   "vert": 1700,
+   "date": "",
+   "status": "annual",
+   "disc": "road",
+   "note": "Circumnavigate the island on the 234km Fantasy Bikeway with the Jeju Tourism Organisation festival. Dates via the organiser."
+  }
+ ],
+ "sunmoonlake": [
+  {
+   "kind": "fondo",
+   "badge": "🏆",
+   "name": "Come! BikeDay — Round-the-Lake",
+   "series": "Taiwan Cycling Festival",
+   "km": 30,
+   "vert": 400,
+   "date": "2026-11-07",
+   "status": "upcoming",
+   "disc": "road",
+   "note": "The Taiwan Cycling Festival's flagship ride around Sun Moon Lake — culture, music and the classic 30km lake loop."
+  }
+ ],
+ "pokhara": [
+  {
+   "kind": "mtb",
+   "badge": "🏁",
+   "name": "Pokhara Enduro",
+   "series": "Pokhara Enduro",
+   "km": 35,
+   "vert": 1400,
+   "date": "2026-12-10",
+   "status": "upcoming",
+   "disc": "mtb",
+   "note": "Three days of technical Himalayan descents and flowy corners above Pokhara — 4th edition, 10–12 December 2026."
+  }
+ ],
+ "noosa": [
+  {
+   "kind": "fondo",
+   "badge": "🏆",
+   "name": "Noosa Classic",
+   "series": "The Classics · Bicycling Australia",
+   "km": 160,
+   "vert": 1800,
+   "date": "",
+   "status": "annual",
+   "disc": "road",
+   "note": "Sunshine Coast gran fondo into the Noosa hinterland — 160 / 120 / 65km. Register interest for the next date."
+  }
+ ],
+ "chiangmai": [
+  {
+   "kind": "fondo",
+   "badge": "🏆",
+   "name": "Doi Inthanon Hill Climb",
+   "series": "illustrative",
+   "km": 48,
+   "vert": 2200,
+   "date": "",
+   "status": "annual",
+   "disc": "climbs",
+   "illustrative": true,
+   "note": "A timed assault on the roof of Thailand. Illustrative — Chiang Mai's race calendar is still being verified."
+  }
+ ],
+ "hagiang": [
+  {
+   "kind": "fondo",
+   "badge": "🏆",
+   "name": "Ha Giang Loop Challenge",
+   "series": "illustrative",
+   "km": 150,
+   "vert": 3300,
+   "date": "",
+   "status": "annual",
+   "disc": "climbs",
+   "illustrative": true,
+   "note": "The legendary Ma Pi Leng circuit as a timed challenge. Illustrative event for the demo."
+  }
+ ],
+ "beechworth": [
+  {
+   "kind": "fondo",
+   "badge": "🏆",
+   "name": "Murray to Mountains Gran Fondo",
+   "series": "illustrative",
+   "km": 120,
+   "vert": 1500,
+   "date": "",
+   "status": "annual",
+   "disc": "road",
+   "illustrative": true,
+   "note": "A rail-trail-and-hills century through historic gold country. Illustrative event for the demo."
+  }
+ ]
+}

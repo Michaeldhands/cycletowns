@@ -1,0 +1,51 @@
+[
+ {
+  "id": "road",
+  "label": "Road",
+  "icon": "🚴",
+  "tag": "road",
+  "blurb": "Smooth tarmac, iconic loops and the best road riding on earth."
+ },
+ {
+  "id": "climb",
+  "label": "Climbs",
+  "icon": "⛰️",
+  "tag": "climb",
+  "blurb": "Legendary cols, switchbacks and the climbs riders cross oceans for."
+ },
+ {
+  "id": "gravel",
+  "label": "Gravel",
+  "icon": "🌾",
+  "tag": "gravel",
+  "blurb": "Backroads, fire trails and dirt adventure off the beaten path."
+ },
+ {
+  "id": "mtb",
+  "label": "Mountain bike",
+  "icon": "🚵",
+  "tag": "mtb",
+  "blurb": "World-class trail networks — flow, tech and descents for every level."
+ },
+ {
+  "id": "ebike",
+  "label": "E-bike",
+  "icon": "⚡",
+  "tag": "ebike",
+  "blurb": "Effortless climbs and longer days — e-assist opens every route to every rider, with hire in every town."
+ },
+ {
+  "id": "alpine",
+  "label": "Alpine",
+  "icon": "🏔️",
+  "tag": "alpine",
+  "blurb": "High-country passes, summer snow lines and big mountain days."
+ },
+ {
+  "id": "pro",
+  "label": "Pro hub",
+  "icon": "🏆",
+  "tag": "road",
+  "blurb": "Where the pros train — café culture, group rides and racing pedigree."
+ }
+]

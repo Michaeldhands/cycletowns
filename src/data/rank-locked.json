@@ -1,0 +1,518 @@
+[
+ [
+  "Boulder",
+  "Colorado",
+  "United States",
+  "🇺🇸"
+ ],
+ [
+  "Nice",
+  "Côte d’Azur",
+  "France",
+  "🇫🇷"
+ ],
+ [
+  "Innsbruck",
+  "Tyrol",
+  "Austria",
+  "🇦🇹"
+ ],
+ [
+  "Stellenbosch",
+  "Western Cape",
+  "South Africa",
+  "🇿🇦"
+ ],
+ [
+  "Queenstown",
+  "Otago",
+  "New Zealand",
+  "🇳🇿"
+ ],
+ [
+  "Lucca",
+  "Tuscany",
+  "Italy",
+  "🇮🇹"
+ ],
+ [
+  "Andorra la Vella",
+  "Andorra",
+  "Andorra",
+  "🇦🇩"
+ ],
+ [
+  "Calpe",
+  "Valencia",
+  "Spain",
+  "🇪🇸"
+ ],
+ [
+  "Bédoin",
+  "Provence",
+  "France",
+  "🇫🇷"
+ ],
+ [
+  "Livigno",
+  "Lombardy",
+  "Italy",
+  "🇮🇹"
+ ],
+ [
+  "Davos",
+  "Graubünden",
+  "Switzerland",
+  "🇨🇭"
+ ],
+ [
+  "Morzine",
+  "Haute-Savoie",
+  "France",
+  "🇫🇷"
+ ],
+ [
+  "Finale Ligure",
+  "Liguria",
+  "Italy",
+  "🇮🇹"
+ ],
+ [
+  "Bend",
+  "Oregon",
+  "United States",
+  "🇺🇸"
+ ],
+ [
+  "Rotorua",
+  "Bay of Plenty",
+  "New Zealand",
+  "🇳🇿"
+ ],
+ [
+  "Squamish",
+  "British Columbia",
+  "Canada",
+  "🇨🇦"
+ ],
+ [
+  "Maleny",
+  "Queensland",
+  "Australia",
+  "🇦🇺"
+ ],
+ [
+  "Bowral",
+  "New South Wales",
+  "Australia",
+  "🇦🇺"
+ ],
+ [
+  "Jindabyne",
+  "New South Wales",
+  "Australia",
+  "🇦🇺"
+ ],
+ [
+  "Tenerife",
+  "Canary Islands",
+  "Spain",
+  "🇪🇸"
+ ],
+ [
+  "Sierra Nevada",
+  "Andalusia",
+  "Spain",
+  "🇪🇸"
+ ],
+ [
+  "Chamonix",
+  "Haute-Savoie",
+  "France",
+  "🇫🇷"
+ ],
+ [
+  "Asheville",
+  "North Carolina",
+  "United States",
+  "🇺🇸"
+ ],
+ [
+  "Moab",
+  "Utah",
+  "United States",
+  "🇺🇸"
+ ],
+ [
+  "Bellagio",
+  "Lombardy",
+  "Italy",
+  "🇮🇹"
+ ],
+ [
+  "Whistler",
+  "British Columbia",
+  "Canada",
+  "🇨🇦"
+ ],
+ [
+  "Maydena",
+  "Tasmania",
+  "Australia",
+  "🇦🇺"
+ ],
+ [
+  "Margaret River",
+  "Western Australia",
+  "Australia",
+  "🇦🇺"
+ ],
+ [
+  "Sedona",
+  "Arizona",
+  "United States",
+  "🇺🇸"
+ ],
+ [
+  "Bentonville",
+  "Arkansas",
+  "United States",
+  "🇺🇸"
+ ],
+ [
+  "Park City",
+  "Utah",
+  "United States",
+  "🇺🇸"
+ ],
+ [
+  "Santa Cruz",
+  "California",
+  "United States",
+  "🇺🇸"
+ ],
+ [
+  "Tucson",
+  "Arizona",
+  "United States",
+  "🇺🇸"
+ ],
+ [
+  "Durango",
+  "Colorado",
+  "United States",
+  "🇺🇸"
+ ],
+ [
+  "Crested Butte",
+  "Colorado",
+  "United States",
+  "🇺🇸"
+ ],
+ [
+  "Fruita",
+  "Colorado",
+  "United States",
+  "🇺🇸"
+ ],
+ [
+  "Sun Valley",
+  "Idaho",
+  "United States",
+  "🇺🇸"
+ ],
+ [
+  "Brevard",
+  "North Carolina",
+  "United States",
+  "🇺🇸"
+ ],
+ [
+  "Banff",
+  "Alberta",
+  "Canada",
+  "🇨🇦"
+ ],
+ [
+  "Canmore",
+  "Alberta",
+  "Canada",
+  "🇨🇦"
+ ],
+ [
+  "Mont-Sainte-Anne",
+  "Quebec",
+  "Canada",
+  "🇨🇦"
+ ],
+ [
+  "Stowe",
+  "Vermont",
+  "United States",
+  "🇺🇸"
+ ],
+ [
+  "Bormio",
+  "Lombardy",
+  "Italy",
+  "🇮🇹"
+ ],
+ [
+  "Bourg d’Oisans",
+  "Isère",
+  "France",
+  "🇫🇷"
+ ],
+ [
+  "Annecy",
+  "Haute-Savoie",
+  "France",
+  "🇫🇷"
+ ],
+ [
+  "Riva del Garda",
+  "Trentino",
+  "Italy",
+  "🇮🇹"
+ ],
+ [
+  "Corvara",
+  "South Tyrol",
+  "Italy",
+  "🇮🇹"
+ ],
+ [
+  "Bolzano",
+  "South Tyrol",
+  "Italy",
+  "🇮🇹"
+ ],
+ [
+  "Sölden",
+  "Tyrol",
+  "Austria",
+  "🇦🇹"
+ ],
+ [
+  "Saalbach",
+  "Salzburg",
+  "Austria",
+  "🇦🇹"
+ ],
+ [
+  "Leogang",
+  "Salzburg",
+  "Austria",
+  "🇦🇹"
+ ],
+ [
+  "Les Gets",
+  "Haute-Savoie",
+  "France",
+  "🇫🇷"
+ ],
+ [
+  "Verbier",
+  "Valais",
+  "Switzerland",
+  "🇨🇭"
+ ],
+ [
+  "Laax",
+  "Graubünden",
+  "Switzerland",
+  "🇨🇭"
+ ],
+ [
+  "Kranjska Gora",
+  "Upper Carniola",
+  "Slovenia",
+  "🇸🇮"
+ ],
+ [
+  "Bled",
+  "Upper Carniola",
+  "Slovenia",
+  "🇸🇮"
+ ],
+ [
+  "Poreč",
+  "Istria",
+  "Croatia",
+  "🇭🇷"
+ ],
+ [
+  "Freiburg",
+  "Black Forest",
+  "Germany",
+  "🇩🇪"
+ ],
+ [
+  "Garmisch-Partenkirchen",
+  "Bavaria",
+  "Germany",
+  "🇩🇪"
+ ],
+ [
+  "Funchal",
+  "Madeira",
+  "Portugal",
+  "🇵🇹"
+ ],
+ [
+  "Faro",
+  "Algarve",
+  "Portugal",
+  "🇵🇹"
+ ],
+ [
+  "Gran Canaria",
+  "Canary Islands",
+  "Spain",
+  "🇪🇸"
+ ],
+ [
+  "Lanzarote",
+  "Canary Islands",
+  "Spain",
+  "🇪🇸"
+ ],
+ [
+  "Dénia",
+  "Valencia",
+  "Spain",
+  "🇪🇸"
+ ],
+ [
+  "Catania",
+  "Sicily",
+  "Italy",
+  "🇮🇹"
+ ],
+ [
+  "Aviemore",
+  "Cairngorms",
+  "United Kingdom",
+  "🇬🇧"
+ ],
+ [
+  "Betws-y-Coed",
+  "Snowdonia",
+  "United Kingdom",
+  "🇬🇧"
+ ],
+ [
+  "Hawes",
+  "Yorkshire Dales",
+  "United Kingdom",
+  "🇬🇧"
+ ],
+ [
+  "Bakewell",
+  "Peak District",
+  "United Kingdom",
+  "🇬🇧"
+ ],
+ [
+  "Douglas",
+  "Isle of Man",
+  "Isle of Man",
+  "🇮🇲"
+ ],
+ [
+  "Killarney",
+  "Kerry",
+  "Ireland",
+  "🇮🇪"
+ ],
+ [
+  "Chiang Mai",
+  "Chiang Mai",
+  "Thailand",
+  "🇹🇭"
+ ],
+ [
+  "Niseko",
+  "Hokkaido",
+  "Japan",
+  "🇯🇵"
+ ],
+ [
+  "Hualien",
+  "Taroko",
+  "Taiwan",
+  "🇹🇼"
+ ],
+ [
+  "Pokhara",
+  "Gandaki",
+  "Nepal",
+  "🇳🇵"
+ ],
+ [
+  "Bariloche",
+  "Río Negro",
+  "Argentina",
+  "🇦🇷"
+ ],
+ [
+  "Medellín",
+  "Antioquia",
+  "Colombia",
+  "🇨🇴"
+ ],
+ [
+  "Cape Town",
+  "Western Cape",
+  "South Africa",
+  "🇿🇦"
+ ],
+ [
+  "Wanaka",
+  "Otago",
+  "New Zealand",
+  "🇳🇿"
+ ],
+ [
+  "Nelson",
+  "Tasman",
+  "New Zealand",
+  "🇳🇿"
+ ],
+ [
+  "Mansfield",
+  "Victoria",
+  "Australia",
+  "🇦🇺"
+ ],
+ [
+  "Falls Creek",
+  "Victoria",
+  "Australia",
+  "🇦🇺"
+ ],
+ [
+  "Warburton",
+  "Victoria",
+  "Australia",
+  "🇦🇺"
+ ],
+ [
+  "Daylesford",
+  "Victoria",
+  "Australia",
+  "🇦🇺"
+ ],
+ [
+  "Thredbo",
+  "New South Wales",
+  "Australia",
+  "🇦🇺"
+ ],
+ [
+  "Smithfield",
+  "Cairns · Queensland",
+  "Australia",
+  "🇦🇺"
+ ]
+]

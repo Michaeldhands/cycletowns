@@ -1,0 +1,86 @@
+{
+ "road": [
+  "girona",
+  "mallorca",
+  "Nice",
+  "Calpe",
+  "Lucca",
+  "Annecy",
+  "Bowral",
+  "Dénia",
+  "Maleny",
+  "Bellagio"
+ ],
+ "climb": [
+  "mallorca",
+  "Bédoin",
+  "Andorra la Vella",
+  "Sierra Nevada",
+  "Tenerife",
+  "Bormio",
+  "Bourg d’Oisans",
+  "Bolzano",
+  "Sölden",
+  "Falls Creek"
+ ],
+ "gravel": [
+  "adelaide-hills",
+  "Bentonville",
+  "Bend",
+  "Margaret River",
+  "Daylesford",
+  "Stellenbosch",
+  "Warburton",
+  "Maleny",
+  "beechworth",
+  "Bowral"
+ ],
+ "mtb": [
+  "derby",
+  "Maydena",
+  "Rotorua",
+  "Squamish",
+  "Whistler",
+  "Finale Ligure",
+  "Morzine",
+  "Bentonville",
+  "Moab",
+  "Queenstown"
+ ],
+ "ebike": [
+  "adelaide-hills",
+  "bright",
+  "beechworth",
+  "Maleny",
+  "Daylesford",
+  "Noosa",
+  "mallorca",
+  "Calpe",
+  "Bowral",
+  "Warburton"
+ ],
+ "alpine": [
+  "bright",
+  "Davos",
+  "Livigno",
+  "Innsbruck",
+  "Chamonix",
+  "Bormio",
+  "Sölden",
+  "Verbier",
+  "Thredbo",
+  "Falls Creek"
+ ],
+ "pro": [
+  "girona",
+  "Calpe",
+  "Nice",
+  "Andorra la Vella",
+  "Lucca",
+  "Tenerife",
+  "mallorca",
+  "Sierra Nevada",
+  "Bédoin",
+  "Annecy"
+ ]
+}

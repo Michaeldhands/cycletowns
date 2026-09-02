@@ -1,0 +1,194 @@
+[
+ {
+  "id": "girona",
+  "name": "Girona",
+  "region": "Catalonia",
+  "country": "Spain",
+  "flag": "🇪🇸",
+  "score": 4.9,
+  "scene": "tuscan",
+  "seed": 7,
+  "tags": [
+   "Road",
+   "Pro hub",
+   "Café culture"
+  ],
+  "blurb": "The adopted home of the pro peloton — endless climbs from one medieval city."
+ },
+ {
+  "id": "mallorca",
+  "name": "Mallorca",
+  "region": "Balearic Islands",
+  "country": "Spain",
+  "flag": "🇪🇸",
+  "score": 4.9,
+  "scene": "coastal",
+  "seed": 13,
+  "tags": [
+   "Road",
+   "Climbs",
+   "Winter base"
+  ],
+  "blurb": "Sa Calobra, Cap de Formentor and perfect tarmac — the winter-training mecca."
+ },
+ {
+  "id": "bright",
+  "name": "Bright",
+  "region": "Victoria",
+  "country": "Australia",
+  "flag": "🇦🇺",
+  "score": 4.8,
+  "scene": "alpine",
+  "seed": 21,
+  "tags": [
+   "Alpine climbs",
+   "Gravel",
+   "Cafés"
+  ],
+  "blurb": "Gateway to Mt Buffalo, Falls Creek and Hotham — Australia’s alpine cycling heart."
+ },
+ {
+  "id": "adelaide-hills",
+  "name": "Adelaide Hills",
+  "region": "South Australia",
+  "country": "Australia",
+  "flag": "🇦🇺",
+  "score": 4.7,
+  "scene": "vineyard",
+  "seed": 29,
+  "tags": [
+   "Road",
+   "Climbs",
+   "Wine country"
+  ],
+  "blurb": "Home of the Tour Down Under — Willunga Hill and endless ridge roads."
+ },
+ {
+  "id": "noosa",
+  "name": "Noosa",
+  "region": "Queensland",
+  "country": "Australia",
+  "flag": "🇦🇺",
+  "score": 4.6,
+  "scene": "coastal",
+  "seed": 33,
+  "tags": [
+   "Road",
+   "Coastal",
+   "Tri"
+  ],
+  "blurb": "Hinterland climbs and coastal spins, with a world-class café scene."
+ },
+ {
+  "id": "nice",
+  "name": "Nice",
+  "region": "Côte d’Azur",
+  "country": "France",
+  "flag": "🇫🇷",
+  "score": 4.8,
+  "scene": "coastal",
+  "seed": 41,
+  "tags": [
+   "Road",
+   "Climbs",
+   "Coastal"
+  ],
+  "blurb": "Col de la Madone and the Riviera backroads, minutes from the sea."
+ },
+ {
+  "id": "boulder",
+  "name": "Boulder",
+  "region": "Colorado",
+  "country": "USA",
+  "flag": "🇺🇸",
+  "score": 4.7,
+  "scene": "altitude",
+  "seed": 47,
+  "tags": [
+   "Road",
+   "Gravel",
+   "Altitude"
+  ],
+  "blurb": "Flatirons climbs and high-altitude gravel — America’s endurance capital."
+ },
+ {
+  "id": "lucca",
+  "name": "Lucca",
+  "region": "Tuscany",
+  "country": "Italy",
+  "flag": "🇮🇹",
+  "score": 4.7,
+  "scene": "tuscan",
+  "seed": 53,
+  "tags": [
+   "Gravel",
+   "Strade Bianche",
+   "Road"
+  ],
+  "blurb": "White-gravel strade and Tuscan hill towns from a walled-city base."
+ },
+ {
+  "id": "stellenbosch",
+  "name": "Stellenbosch",
+  "region": "Western Cape",
+  "country": "South Africa",
+  "flag": "🇿🇦",
+  "score": 4.6,
+  "scene": "vineyard",
+  "seed": 61,
+  "tags": [
+   "Gravel",
+   "MTB",
+   "Wine country"
+  ],
+  "blurb": "World MTB and gravel hub among the Cape winelands."
+ },
+ {
+  "id": "queenstown",
+  "name": "Queenstown",
+  "region": "Otago",
+  "country": "New Zealand",
+  "flag": "🇳🇿",
+  "score": 4.7,
+  "scene": "lake",
+  "seed": 67,
+  "tags": [
+   "MTB",
+   "Gravel",
+   "Alpine"
+  ],
+  "blurb": "Southern Alps singletrack and the Otago rail trails."
+ },
+ {
+  "id": "andorra",
+  "name": "Andorra",
+  "region": "Pyrenees",
+  "country": "Andorra",
+  "flag": "🇦🇩",
+  "score": 4.7,
+  "scene": "alpine",
+  "seed": 71,
+  "tags": [
+   "Climbs",
+   "Altitude",
+   "Pro hub"
+  ],
+  "blurb": "High-altitude micro-state where the pros spend their summers."
+ },
+ {
+  "id": "bedoin",
+  "name": "Bédoin",
+  "region": "Provence",
+  "country": "France",
+  "flag": "🇫🇷",
+  "score": 4.8,
+  "scene": "altitude",
+  "seed": 79,
+  "tags": [
+   "Mont Ventoux",
+   "Climbs",
+   "Road"
+  ],
+  "blurb": "The classic base camp for the Giant of Provence, Mont Ventoux."
+ }
+]

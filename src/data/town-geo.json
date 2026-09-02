@@ -1,0 +1,74 @@
+{
+ "girona": {
+  "lat": 41.98,
+  "lng": 2.82
+ },
+ "mallorca": {
+  "lat": 39.57,
+  "lng": 2.65
+ },
+ "bright": {
+  "lat": -36.73,
+  "lng": 146.96
+ },
+ "adelaide-hills": {
+  "lat": -35,
+  "lng": 138.7
+ },
+ "beechworth": {
+  "lat": -36.36,
+  "lng": 146.69
+ },
+ "noosa": {
+  "lat": -26.4,
+  "lng": 153.1
+ },
+ "derby": {
+  "lat": -41.14,
+  "lng": 147.8
+ },
+ "bentonville": {
+  "lat": 36.37,
+  "lng": -94.21
+ },
+ "hualien": {
+  "lat": 24,
+  "lng": 121.6
+ },
+ "dalat": {
+  "lat": 11.94,
+  "lng": 108.44
+ },
+ "hagiang": {
+  "lat": 22.82,
+  "lng": 104.98
+ },
+ "onomichi": {
+  "lat": 34.41,
+  "lng": 133.2
+ },
+ "chiangmai": {
+  "lat": 18.79,
+  "lng": 98.98
+ },
+ "pokhara": {
+  "lat": 28.21,
+  "lng": 83.99
+ },
+ "ubud": {
+  "lat": -8.52,
+  "lng": 115.26
+ },
+ "jeju": {
+  "lat": 33.49,
+  "lng": 126.53
+ },
+ "sunmoonlake": {
+  "lat": 23.86,
+  "lng": 120.92
+ },
+ "medellin": {
+  "lat": 6.24,
+  "lng": -75.58
+ }
+}

@@ -1,0 +1,22 @@
+[
+ {
+  "id": "all",
+  "label": "🌏 Worldwide"
+ },
+ {
+  "id": "oceania",
+  "label": "🇦🇺 Australia & NZ"
+ },
+ {
+  "id": "europe",
+  "label": "🇪🇺 Europe"
+ },
+ {
+  "id": "americas",
+  "label": "🌎 Americas"
+ },
+ {
+  "id": "asia",
+  "label": "🌏 Asia"
+ }
+]

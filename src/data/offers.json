@@ -1,0 +1,20 @@
+{
+ "trek": {
+  "brand": "Trek",
+  "tag": "Cycling brand · partner offer",
+  "head": "10% off Trek bikes &amp; gear",
+  "code": "CT-TREK-10",
+  "cta": "Shop Trek",
+  "url": "https://www.trekbikes.com",
+  "note": "Show this code at checkout on trekbikes.com — your Cycletowns member discount, free to use. A verified Cycletowns partner."
+ },
+ "hc": {
+  "brand": "Ride High Country",
+  "tag": "Destination partner · Visit Victoria",
+  "head": "Member deals for a cycling escape to Bright",
+  "code": "CT-BRIGHT-25",
+  "cta": "Plan with Ride High Country",
+  "url": "https://www.victoriashighcountry.com.au/ride/",
+  "note": "Unlocks member rates on stays, shuttles and event passes across Bright &amp; the High Country — verified bike-friendly by real cyclists."
+ }
+}

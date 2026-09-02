@@ -1,0 +1,343 @@
+{
+ "dalat": [
+  [
+   "☕",
+   "Coffee farms",
+   "Tour the highland arabica & robusta estates."
+  ],
+  [
+   "🌸",
+   "Valley of Love & lakes",
+   "Pine forests, flower gardens and Tuyen Lam."
+  ],
+  [
+   "🚞",
+   "Crémaillère railway",
+   "The historic cog railway out to Trai Mat."
+  ]
+ ],
+ "hagiang": [
+  [
+   "🏞️",
+   "Ma Pi Leng Pass",
+   "Vietnam’s grandest canyon viewpoint."
+  ],
+  [
+   "🛶",
+   "Nho Que River boat",
+   "Glide the emerald gorge below the pass."
+  ],
+  [
+   "🏘️",
+   "Dong Van Old Quarter",
+   "Sunday market and stone-built streets."
+  ]
+ ],
+ "onomichi": [
+  [
+   "⛩️",
+   "Senkoji temple & ropeway",
+   "Hillside temples over the strait."
+  ],
+  [
+   "🍋",
+   "Setoda & Kosanji",
+   "Island lemons and the marble temple."
+  ],
+  [
+   "🚲",
+   "Onomichi U2",
+   "The cyclist hotel, café and bike-shop hub."
+  ]
+ ],
+ "chiangmai": [
+  [
+   "⛩️",
+   "Doi Suthep temple",
+   "Golden pagodas high above the city."
+  ],
+  [
+   "🏯",
+   "Old City temples",
+   "Wander the moat-ringed historic core."
+  ],
+  [
+   "🍜",
+   "Nimman & night markets",
+   "Khao soi, cafés and street food."
+  ]
+ ],
+ "pokhara": [
+  [
+   "🏔️",
+   "Sarangkot sunrise",
+   "Annapurna glowing over Phewa Lake."
+  ],
+  [
+   "🛶",
+   "Phewa Lake",
+   "Row to the island temple at dusk."
+  ],
+  [
+   "🪂",
+   "Paragliding",
+   "World-class flights over the valley."
+  ]
+ ],
+ "ubud": [
+  [
+   "🌾",
+   "Tegallalang terraces",
+   "The postcard rice-terrace staircase."
+  ],
+  [
+   "🌋",
+   "Mount Batur",
+   "Sunrise on the active volcano rim."
+  ],
+  [
+   "🐒",
+   "Sacred Monkey Forest",
+   "Jungle temples in the heart of Ubud."
+  ]
+ ],
+ "jeju": [
+  [
+   "🌋",
+   "Hallasan & Seongsan",
+   "Korea’s highest peak and the sunrise tuff cone."
+  ],
+  [
+   "🏖️",
+   "Black-basalt coast",
+   "Volcanic beaches and sea-women villages."
+  ],
+  [
+   "🍊",
+   "Citrus & cafés",
+   "Hallabong oranges and ocean-view coffee."
+  ]
+ ],
+ "sunmoonlake": [
+  [
+   "🚡",
+   "Ropeway & temples",
+   "Cable car and lakeside shrines."
+  ],
+  [
+   "🛶",
+   "Lake boat & Lalu",
+   "Cruise to the sacred island."
+  ],
+  [
+   "🍵",
+   "Assam tea farms",
+   "Hilltop tea and Thao culture."
+  ]
+ ],
+ "medellin": [
+  [
+   "🚡",
+   "Metrocable & Comuna 13",
+   "Cable cars and the famous street-art barrio."
+  ],
+  [
+   "🌸",
+   "Guatapé day trip",
+   "El Peñol rock and the lakes."
+  ],
+  [
+   "☕",
+   "Coffee region",
+   "Ride out into the Eje Cafetero."
+  ]
+ ],
+ "bentonville": [
+  [
+   "🚵",
+   "Coler Bike Preserve",
+   "World-class flow and tech minutes from downtown."
+  ],
+  [
+   "🎨",
+   "Crystal Bridges Museum",
+   "Free world-class art museum, with trails to its door."
+  ],
+  [
+   "🍺",
+   "Bentonville Square",
+   "Breweries, tacos and the Saturday farmers’ market."
+  ]
+ ],
+ "hualien": [
+  [
+   "🏞️",
+   "Taroko Gorge",
+   "Marble canyon, cliffs and tunnels — a world wonder."
+  ],
+  [
+   "🌊",
+   "Qixingtan Beach",
+   "Pebble crescent with Pacific views and a mountain backdrop."
+  ],
+  [
+   "🍜",
+   "Dongdamen Night Market",
+   "Taiwan’s east-coast street-food institution."
+  ]
+ ],
+ "bright": [
+  [
+   "🍁",
+   "Autumn in Bright",
+   "The famous autumn leaves along Gavan St and the Ovens River."
+  ],
+  [
+   "🏔️",
+   "Mt Buffalo lookouts",
+   "The Horn, the Gorge and the historic 1910 Chalet."
+  ],
+  [
+   "🍺",
+   "Bright Brewery",
+   "Riverside brews, food and the bike hub."
+  ],
+  [
+   "💦",
+   "Canyon Walk & swimming holes",
+   "Riverside trail and a cool-down after the ride."
+  ]
+ ],
+ "adelaide-hills": [
+  [
+   "🌄",
+   "Mount Lofty Summit",
+   "Sweeping views over Adelaide and the Piccadilly Valley."
+  ],
+  [
+   "🏘️",
+   "Hahndorf",
+   "Australia’s oldest German settlement — pubs and bakeries."
+  ],
+  [
+   "🐨",
+   "Cleland Wildlife Park",
+   "Koalas and kangaroos on the way down the hill."
+  ],
+  [
+   "🍷",
+   "Cellar doors",
+   "Shaw + Smith, Hahndorf Hill and the Piccadilly wineries."
+  ]
+ ],
+ "beechworth": [
+  [
+   "⛏️",
+   "Historic gold town",
+   "Honey-coloured 1850s streetscape and Ned Kelly history."
+  ],
+  [
+   "🥧",
+   "Beechworth Bakery",
+   "The institution — fuel for the rail trail."
+  ],
+  [
+   "🍫",
+   "Distilleries & brewers",
+   "Bridge Road, Billson’s and the gourmet trail."
+  ],
+  [
+   "🌳",
+   "Woolshed Falls",
+   "A short spin to the cascades."
+  ]
+ ],
+ "noosa": [
+  [
+   "🏖️",
+   "Noosa National Park",
+   "Coastal walk, Hell’s Gates and the resident dolphins."
+  ],
+  [
+   "🛶",
+   "Noosa Everglades",
+   "One of only two everglade systems on earth."
+  ],
+  [
+   "🍴",
+   "Hastings Street",
+   "Beachfront dining and the famous café scene."
+  ],
+  [
+   "🌲",
+   "The hinterland",
+   "Montville, Maleny and Kin Kin villages."
+  ]
+ ],
+ "derby": [
+  [
+   "🚵",
+   "Blue Derby trails",
+   "140km+ of World Cup–level mountain biking."
+  ],
+  [
+   "💧",
+   "Briseis Dam",
+   "The tin-mining history that shaped the town."
+  ],
+  [
+   "🐉",
+   "Tin Dragon Trail",
+   "Rainforest, Weldborough and the Chinese heritage."
+  ],
+  [
+   "🍕",
+   "Hub Pizza & Lot 40",
+   "Where riders gather after the shuttle."
+  ]
+ ],
+ "girona": [
+  [
+   "🏰",
+   "Old town & Cathedral",
+   "Game-of-Thrones steps and the Jewish Quarter."
+  ],
+  [
+   "🌈",
+   "Cases de l’Onyar",
+   "The painted riverside houses and Eiffel bridge."
+  ],
+  [
+   "☕",
+   "La Fàbrica",
+   "The pro peloton’s café HQ."
+  ],
+  [
+   "🍽️",
+   "El Celler de Can Roca",
+   "One of the world’s most celebrated restaurants."
+  ]
+ ],
+ "mallorca": [
+  [
+   "🌊",
+   "Cap de Formentor",
+   "The lighthouse road and cliff-top lookouts."
+  ],
+  [
+   "⛰️",
+   "Serra de Tramuntana",
+   "UNESCO mountains, Valldemossa and Sóller."
+  ],
+  [
+   "🚂",
+   "Sóller wooden train",
+   "The vintage train through the orange groves."
+  ],
+  [
+   "🏝️",
+   "Hidden coves",
+   "Cala swims to reward the climbing."
+  ]
+ ]
+}

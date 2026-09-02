@@ -1,0 +1,114 @@
+{
+ "bright": {
+  "season": "Oct–Apr (alpine summer)",
+  "getThere": "~3.5 hrs from Melbourne",
+  "reviews": [
+   [
+    "Saturday bunch then Sixpence coffee — unbeatable. Mt Buffalo the next day.",
+    5,
+    "Road"
+   ],
+   [
+    "Tarmac, gravel and a brewery bike hub. Bright does everything.",
+    5,
+    "Gravel"
+   ]
+  ]
+ },
+ "adelaide-hills": {
+  "season": "Sep–Apr · TDU in January",
+  "getThere": "~30 min from Adelaide CBD",
+  "reviews": [
+   [
+    "Willunga Hill is a rite of passage, café at the top sealed it.",
+    5,
+    "Climber"
+   ],
+   [
+    "Quiet roads, endless climbs, great coffee. Back next year.",
+    5,
+    "Road"
+   ]
+  ]
+ },
+ "beechworth": {
+  "season": "Sep–May",
+  "getThere": "~3 hrs from Melbourne",
+  "reviews": [
+   [
+    "Gravel heaven and the bakery is dangerous. Loved every km.",
+    5,
+    "Gravel"
+   ],
+   [
+    "Rail trail with the kids, MTB park for me — perfect mix.",
+    5,
+    "Family"
+   ]
+  ]
+ },
+ "noosa": {
+  "season": "Year-round (mild winters)",
+  "getThere": "~2 hrs north of Brisbane",
+  "reviews": [
+   [
+    "Dawn bunchie on Gympie Tce then a swim. Living the dream.",
+    5,
+    "Road"
+   ],
+   [
+    "Hinterland loop to Montville, bakery stop, coast home.",
+    4,
+    "Café Cruiser"
+   ]
+  ]
+ },
+ "derby": {
+  "season": "Oct–Apr",
+  "getThere": "~1.5 hrs from Launceston",
+  "reviews": [
+   [
+    "Blue Derby is world-class — shuttle days are addictive.",
+    5,
+    "MTB"
+   ],
+   [
+    "Greens for the kids, blacks for me. The whole family rode.",
+    5,
+    "Family"
+   ]
+  ]
+ },
+ "girona": {
+  "season": "Mar–Jun & Sep–Oct",
+  "getThere": "~40 min train from Barcelona",
+  "reviews": [
+   [
+    "Coffee at La Fàbrica, then Els Àngels. Cyclist heaven.",
+    5,
+    "Road"
+   ],
+   [
+    "Rocacorba hurt. Worth every metre.",
+    5,
+    "Climber"
+   ]
+  ]
+ },
+ "mallorca": {
+  "season": "Feb–May & Sep–Oct",
+  "getThere": "Fly to Palma; island-wide transfers",
+  "reviews": [
+   [
+    "Sa Calobra at sunrise — bucket-list ride done.",
+    5,
+    "Road"
+   ],
+   [
+    "Perfect winter block: empty roads, warm sun.",
+    5,
+    "Racer"
+   ]
+  ]
+ }
+}
