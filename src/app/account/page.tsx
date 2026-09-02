@@ -40,6 +40,7 @@ export default async function Account() {
               <div style={{ color: "var(--grey-d)", fontSize: 13.5 }}>{[p?.rider_type, p?.home_town].filter(Boolean).join(" · ") || "Tell us how you ride below."}</div>
             </div>
             <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
+              <Link href="/partners/dashboard" className="lk-ghost">Partner dashboard</Link>
               {p?.is_admin && <Link href="/admin" className="lk-coral">Admin backend</Link>}
               <SignOutButton />
             </div>

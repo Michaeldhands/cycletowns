@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       const cs = event.data.object as Stripe.Checkout.Session;
       if (cs.mode === "subscription" && cs.subscription) {
         const sub = await s.subscriptions.retrieve(typeof cs.subscription === "string" ? cs.subscription : cs.subscription.id);
-        if (!sub.metadata?.user_id && cs.client_reference_id) sub.metadata = { ...sub.metadata, user_id: cs.client_reference_id };
+        if (!sub.metadata?.user_id && !sub.metadata?.partner_id) sub.metadata = { ...sub.metadata, ...(cs.metadata || {}), user_id: cs.client_reference_id || cs.metadata?.user_id || "" };
         await syncSubscription(sub);
       }
       break;

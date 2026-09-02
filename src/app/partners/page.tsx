@@ -32,7 +32,8 @@ export default function Partners() {
               shape the product, and lock in launch pricing.
             </div>
             <div className="wbar" style={{ marginTop: 14 }}>
-              <a href="#enquire" className="lk-coral big">Request your partner pack</a>
+              <Link href="/partners/claim" className="lk-coral big">Claim your listing — free</Link>
+              <a href="#enquire" className="lk-ghost big" style={{ color: "#fff", borderColor: "rgba(255,255,255,.6)", background: "rgba(255,255,255,.1)" }}>Request a partner pack</a>
             </div>
           </div>
         </div>
@@ -80,7 +81,7 @@ export default function Partners() {
       <div className="wsec">
         <div className="wh"><div><h2>Membership tiers</h2><span className="wsub">claim your spot free · become a member for the growth tools</span></div></div>
         <div className="pkg">
-          <div className="pkgcard"><div className="pn">Claim</div><div className="pp">Free</div><div className="pd">Claim your business, earn the verified bike-friendly badge and collect honest rider reviews.</div></div>
+          <div className="pkgcard"><div className="pn">Claim</div><div className="pp">Free</div><div className="pd">Claim your business, earn the verified bike-friendly badge and collect honest rider reviews. <Link href="/partners/claim">Claim now ›</Link></div></div>
           <div className="pkgcard feat"><div className="pn">Member</div><div className="pp">$49<span style={{ fontSize: 13 }}>/mo</span></div><div className="pd">Your live dashboard, audience insights and member offers — the tools to win more riders.</div></div>
           <div className="pkgcard"><div className="pn">Featured</div><div className="pp">$290<span style={{ fontSize: 13 }}>/mo</span></div><div className="pd">Everything in Member, plus priority placement on your town &amp; category pages and a richer, photo-led profile.</div></div>
           <div className="pkgcard"><div className="pn">Brand &amp; Tourism</div><div className="pp">Custom</div><div className="pd">For brands, boards &amp; travel partners — promo codes, deeper audience insights and co-op campaigns with attributed ROI.</div></div>
