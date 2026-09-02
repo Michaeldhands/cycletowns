@@ -37,7 +37,8 @@ export default async function Account() {
               <div className="h2" style={{ textAlign: "left", margin: "2px 0 0", fontSize: 40 }}>{name}</div>
               <div style={{ color: "var(--grey-d)", fontSize: 13.5 }}>{[p?.rider_type, p?.home_town].filter(Boolean).join(" · ") || "Tell us how you ride below."}</div>
             </div>
-            <div style={{ marginLeft: "auto" }}>
+            <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
+              {p?.is_admin && <Link href="/admin" className="lk-coral">Admin backend</Link>}
               <SignOutButton />
             </div>
           </div>

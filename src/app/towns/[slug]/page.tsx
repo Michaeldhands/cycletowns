@@ -12,6 +12,8 @@ import { ReviewForm } from "@/components/ReviewForm";
 import { Avatar } from "@/components/Avatar";
 import { currentUser } from "@/lib/supabase/server";
 import { REVIEWS_TO_TAKE_OVER, effectiveScore, fetchTownReviews } from "@/lib/reviews";
+import { fetchFeed, fetchTownGroups } from "@/lib/community";
+import { PostCard, PostComposer } from "@/components/Community";
 import { photoURL, ridePic, townHero, townImages } from "@/lib/images";
 import {
   DIM_LABELS,
@@ -117,7 +119,7 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
   const me = await currentUser();
   if (!t) return <LiteTownPage slug={slug} userId={me?.id ?? null} />;
 
-  const { reviews, score } = await fetchTownReviews(t.id);
+  const [{ reviews, score }, groups, posts] = await Promise.all([fetchTownReviews(t.id), fetchTownGroups(t.id), fetchFeed({ townId: t.id, limit: 6 })]);
   const eff = effectiveScore(t, score);
   const mine = me ? reviews.find((r) => r.user_id === me.id) : undefined;
   const imgs = townImages(t);
@@ -369,6 +371,56 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
           </div>
         </div>
       )}
+
+      {/* GROUPS */}
+      <div className="wsec">
+        <div className="wh">
+          <div>
+            <h2>Groups in {t.name}</h2>
+            <span className="wsub">{groups.length ? `${groups.length} club${groups.length === 1 ? "" : "s"} & crews to join` : "clubs & crews to join"}</span>
+          </div>
+          <Link href={`/groups/new?town=${t.id}`} className="lk-ghost" style={{ padding: "7px 13px", fontSize: 12.5 }}>+ Start a group</Link>
+        </div>
+        {groups.length === 0 ? (
+          <div className="unlocknote" style={{ fontSize: 14, padding: 14 }}>
+            No groups here yet. Ride here regularly? <Link href={`/groups/new?town=${t.id}`}>Start the first one</Link> and riders visiting {t.name} will find you.
+          </div>
+        ) : (
+          <div className="wgrid">
+            {groups.slice(0, 8).map((g) => (
+              <Link href={`/groups/${g.id}`} className="wcard" key={g.id} style={{ textDecoration: "none" }}>
+                <div className="wph" style={{ height: 110 }}>
+                  <Photo src={ridePic("group", "grp-" + g.id, 520)} />
+                  <span className="wpill">{g.privacy === "public" ? "Public" : "🔒 Private"}</span>
+                </div>
+                <div className="wcb">
+                  <div className="wcn">{g.name}</div>
+                  <div className="wcd">{g.description || [g.discipline, g.ride_day, g.ride_time].filter(Boolean).join(" · ")}</div>
+                  <span className="wlink">{g.member_count} member{g.member_count === 1 ? "" : "s"} · View ›</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* TOWN FEED */}
+      <div className="wsec">
+        <div className="wh">
+          <div>
+            <h2>From the saddle in {t.name}</h2>
+            <span className="wsub">ride reports & intel from riders here</span>
+          </div>
+          <Link href="/feed" className="lk-ghost" style={{ padding: "7px 13px", fontSize: 12.5 }}>Whole feed ›</Link>
+        </div>
+        <div className="twocol">
+          <div>
+            {posts.length === 0 && <p className="wsub" style={{ display: "block", marginBottom: 10 }}>Nothing posted yet — be the first to report a ride in {t.name}.</p>}
+            {posts.map((p) => <PostCard key={p.id} p={p} />)}
+          </div>
+          <PostComposer userId={me?.id ?? null} townId={t.id} />
+        </div>
+      </div>
 
       {/* CAFÉS / SHOPS / THINGS */}
       <SectionCarousel

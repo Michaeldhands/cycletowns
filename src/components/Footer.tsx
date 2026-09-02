@@ -38,6 +38,7 @@ export function Footer() {
           <div className="ftcol">
             <h4>Riders</h4>
             <Link href="/join">Join the bunch</Link>
+            <Link href="/feed">The feed</Link>
             <Link href="/membership">Membership &amp; rewards</Link>
             <Link href="/creators">Become a creator</Link>
             <Link href="/login">Log in</Link>
