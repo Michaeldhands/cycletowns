@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
-import { useSaved } from "./SaveButton";
+import { useSaved, useSyncSaved } from "./SaveButton";
 import { TownCard } from "./Cards";
 import { getLiteTown, getTown } from "@/lib/towns";
 
-export function SavedList() {
+export function SavedList({ userId }: { userId?: string | null }) {
+  useSyncSaved(userId);
   const ids = useSaved();
   if (!ids.length)
     return (

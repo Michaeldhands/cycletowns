@@ -1,0 +1,970 @@
+-- Cycletowns — phase 2 schema
+-- Run in the Supabase SQL editor (or `supabase db push`). Safe to re-run: everything is IF NOT EXISTS / OR REPLACE.
+
+create extension if not exists "pgcrypto";
+
+-- ---------------------------------------------------------------- towns & content
+create table if not exists towns (
+  id          text primary key,              -- slug, e.g. 'bright'
+  name        text not null,
+  region      text not null,
+  country     text not null,
+  flag        text not null default '',
+  currency    text not null default '$',
+  status      text not null default 'full' check (status in ('full','radar','hidden')),
+  editorial_score numeric(3,1),              -- launch score until reviews take over
+  editorial_dims  jsonb,                     -- {cafes,routes,safety,climbs,storage}
+  photo       text,                          -- Wikimedia file name or storage URL
+  gallery     text[] not null default '{}',
+  tags        text[] not null default '{}',
+  personas    text[] not null default '{}',
+  blurb       text not null default '',
+  lat         double precision,
+  lng         double precision,
+  when_info   jsonb,                         -- ride/crowd months, best/peak/quiet, climate…
+  see_do      jsonb,                         -- [[emoji,name,note],…]
+  created_at  timestamptz not null default now(),
+  updated_at  timestamptz not null default now()
+);
+
+create table if not exists places (
+  id          uuid primary key default gen_random_uuid(),
+  town_id     text not null references towns(id) on delete cascade,
+  kind        text not null check (kind in ('cafe','shop','route','stay','thing')),
+  name        text not null,
+  note        text not null default '',
+  editorial_rating numeric(2,1),
+  hire        boolean not null default false,
+  price       numeric,
+  discipline  text,                          -- routes: road/gravel/mtb/climbs
+  km          numeric,
+  vert        integer,
+  lat         double precision,
+  lng         double precision,
+  sort        integer not null default 0,
+  created_at  timestamptz not null default now()
+);
+create index if not exists places_town_kind on places(town_id, kind, sort);
+
+create table if not exists races (
+  id          uuid primary key default gen_random_uuid(),
+  town_id     text not null references towns(id) on delete cascade,
+  kind        text not null check (kind in ('pro','fondo','mtb')),
+  badge       text not null default '🏁',
+  name        text not null,
+  series      text,
+  km          numeric,
+  vert        integer,
+  race_date   date,
+  status      text,
+  discipline  text,
+  note        text,
+  sort        integer not null default 0
+);
+
+create table if not exists articles (
+  id          uuid primary key default gen_random_uuid(),
+  slug        text unique not null,
+  title       text not null,
+  dek         text not null default '',
+  body        text not null default '',     -- HTML
+  kind        text,                          -- Series / Feature
+  series      text,
+  episode     integer,
+  town_id     text references towns(id) on delete set null,
+  image_kind  text not null default 'road',
+  image_url   text,
+  published   boolean not null default false,
+  published_at timestamptz,
+  created_at  timestamptz not null default now()
+);
+
+-- ---------------------------------------------------------------- riders
+create table if not exists profiles (
+  id          uuid primary key references auth.users(id) on delete cascade,
+  handle      text unique,
+  display_name text,
+  avatar_url  text,
+  home_town   text,
+  country     text,
+  rider_type  text,                          -- Road / Gravel / …
+  ability     text,
+  bio         text,
+  points      integer not null default 0,
+  tier        text not null default 'rider' check (tier in ('rider','insider','champion')),
+  is_admin    boolean not null default false,
+  onboarded   boolean not null default false,
+  created_at  timestamptz not null default now()
+);
+
+-- create a profile row automatically when a user signs up
+create or replace function handle_new_user() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  insert into profiles (id, display_name, avatar_url)
+  values (new.id,
+          coalesce(new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'name', split_part(new.email,'@',1)),
+          new.raw_user_meta_data->>'avatar_url')
+  on conflict (id) do nothing;
+  return new;
+end $$;
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created after insert on auth.users
+  for each row execute function handle_new_user();
+
+create table if not exists saved_towns (
+  user_id     uuid not null references profiles(id) on delete cascade,
+  town_id     text not null,                 -- may be a radar slug without a towns row
+  created_at  timestamptz not null default now(),
+  primary key (user_id, town_id)
+);
+
+create table if not exists reviews (
+  id          uuid primary key default gen_random_uuid(),
+  user_id     uuid not null references profiles(id) on delete cascade,
+  town_id     text not null references towns(id) on delete cascade,
+  cafes       smallint not null check (cafes between 1 and 5),
+  routes      smallint not null check (routes between 1 and 5),
+  safety      smallint not null check (safety between 1 and 5),
+  climbs      smallint not null check (climbs between 1 and 5),
+  storage     smallint not null check (storage between 1 and 5),
+  body        text not null default '',
+  ride_type   text,
+  visited_on  date,
+  status      text not null default 'published' check (status in ('published','hidden')),
+  created_at  timestamptz not null default now(),
+  updated_at  timestamptz not null default now(),
+  unique (user_id, town_id)
+);
+create index if not exists reviews_town on reviews(town_id, status);
+
+-- per-town score: average of the five dimensions across published reviews, recency-weighted
+create or replace view town_scores as
+select
+  r.town_id,
+  count(*)::int as review_count,
+  round(avg((r.cafes+r.routes+r.safety+r.climbs+r.storage)/5.0)::numeric, 1) as score,
+  round(avg(r.cafes)::numeric,1)  as cafes,
+  round(avg(r.routes)::numeric,1) as routes,
+  round(avg(r.safety)::numeric,1) as safety,
+  round(avg(r.climbs)::numeric,1) as climbs,
+  round(avg(r.storage)::numeric,1) as storage
+from reviews r
+where r.status = 'published'
+group by r.town_id;
+
+-- ---------------------------------------------------------------- community
+create table if not exists groups (
+  id          uuid primary key default gen_random_uuid(),
+  town_id     text not null references towns(id) on delete cascade,
+  name        text not null,
+  description text not null default '',
+  privacy     text not null default 'public' check (privacy in ('public','private')),
+  ride_day    text,
+  ride_time   text,
+  discipline  text,
+  created_by  uuid references profiles(id) on delete set null,
+  created_at  timestamptz not null default now()
+);
+create table if not exists group_members (
+  group_id    uuid not null references groups(id) on delete cascade,
+  user_id     uuid not null references profiles(id) on delete cascade,
+  role        text not null default 'member' check (role in ('member','admin','pending')),
+  created_at  timestamptz not null default now(),
+  primary key (group_id, user_id)
+);
+create table if not exists posts (
+  id          uuid primary key default gen_random_uuid(),
+  user_id     uuid not null references profiles(id) on delete cascade,
+  town_id     text references towns(id) on delete cascade,
+  group_id    uuid references groups(id) on delete cascade,
+  body        text not null,
+  image_url   text,
+  status      text not null default 'published' check (status in ('published','hidden')),
+  created_at  timestamptz not null default now()
+);
+create index if not exists posts_town on posts(town_id, created_at desc);
+create index if not exists posts_group on posts(group_id, created_at desc);
+
+create table if not exists point_events (
+  id          bigserial primary key,
+  user_id     uuid not null references profiles(id) on delete cascade,
+  kind        text not null,                 -- review / post / place / referral …
+  points      integer not null,
+  ref_id      text,
+  created_at  timestamptz not null default now()
+);
+
+-- award points and keep profiles.points in sync
+create or replace function award_points(p_user uuid, p_kind text, p_points int, p_ref text)
+returns void language plpgsql security definer set search_path = public as $$
+begin
+  perform set_config('ct.award', '1', true);   -- lets the profile-protection trigger through
+  insert into point_events(user_id, kind, points, ref_id) values (p_user, p_kind, p_points, p_ref);
+  update profiles set points = points + p_points,
+    tier = case when points + p_points >= 1000 then 'champion' when points + p_points >= 250 then 'insider' else tier end
+  where id = p_user;
+  perform set_config('ct.award', '', true);
+end $$;
+
+create or replace function on_review_insert() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  perform award_points(new.user_id, 'review', 50, new.id::text);
+  return new;
+end $$;
+drop trigger if exists reviews_award on reviews;
+create trigger reviews_award after insert on reviews for each row execute function on_review_insert();
+
+create or replace function on_post_insert() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  perform award_points(new.user_id, 'post', 10, new.id::text);
+  return new;
+end $$;
+drop trigger if exists posts_award on posts;
+create trigger posts_award after insert on posts for each row execute function on_post_insert();
+
+-- ---------------------------------------------------------------- partners & waitlists
+create table if not exists partners (
+  id          uuid primary key default gen_random_uuid(),
+  business    text not null,
+  type        text not null,
+  town_id     text references towns(id) on delete set null,
+  contact_name text,
+  email       text,
+  plan        text not null default 'claim' check (plan in ('claim','member','featured','custom')),
+  status      text not null default 'enquiry' check (status in ('enquiry','active','paused')),
+  owner_id    uuid references profiles(id) on delete set null,
+  created_at  timestamptz not null default now()
+);
+
+-- ---------------------------------------------------------------- row level security
+alter table towns          enable row level security;
+alter table places         enable row level security;
+alter table races          enable row level security;
+alter table articles       enable row level security;
+alter table profiles       enable row level security;
+alter table saved_towns    enable row level security;
+alter table reviews        enable row level security;
+alter table groups         enable row level security;
+alter table group_members  enable row level security;
+alter table posts          enable row level security;
+alter table point_events   enable row level security;
+alter table partners       enable row level security;
+
+create or replace function is_admin() returns boolean language sql stable security definer set search_path = public as $$
+  select coalesce((select is_admin from profiles where id = auth.uid()), false)
+$$;
+
+-- public content: anyone can read; only admins write
+do $$ begin
+  perform 1;
+  drop policy if exists towns_read on towns;      create policy towns_read on towns for select using (status <> 'hidden' or is_admin());
+  drop policy if exists towns_admin on towns;     create policy towns_admin on towns for all using (is_admin()) with check (is_admin());
+  drop policy if exists places_read on places;    create policy places_read on places for select using (true);
+  drop policy if exists places_admin on places;   create policy places_admin on places for all using (is_admin()) with check (is_admin());
+  drop policy if exists races_read on races;      create policy races_read on races for select using (true);
+  drop policy if exists races_admin on races;     create policy races_admin on races for all using (is_admin()) with check (is_admin());
+  drop policy if exists articles_read on articles; create policy articles_read on articles for select using (published or is_admin());
+  drop policy if exists articles_admin on articles; create policy articles_admin on articles for all using (is_admin()) with check (is_admin());
+
+  -- profiles: readable by all (public rider profiles), editable by the owner
+  drop policy if exists profiles_read on profiles;   create policy profiles_read on profiles for select using (true);
+  drop policy if exists profiles_update on profiles; create policy profiles_update on profiles for update using (auth.uid() = id) with check (auth.uid() = id);
+  drop policy if exists profiles_admin on profiles;  create policy profiles_admin on profiles for update using (is_admin());
+
+  drop policy if exists saved_own on saved_towns;    create policy saved_own on saved_towns for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+  drop policy if exists reviews_read on reviews;     create policy reviews_read on reviews for select using (status = 'published' or auth.uid() = user_id or is_admin());
+  drop policy if exists reviews_insert on reviews;   create policy reviews_insert on reviews for insert with check (auth.uid() = user_id);
+  drop policy if exists reviews_update on reviews;   create policy reviews_update on reviews for update using (auth.uid() = user_id or is_admin());
+  drop policy if exists reviews_delete on reviews;   create policy reviews_delete on reviews for delete using (auth.uid() = user_id or is_admin());
+
+  drop policy if exists groups_read on groups;       create policy groups_read on groups for select using (true);
+  drop policy if exists groups_insert on groups;     create policy groups_insert on groups for insert with check (auth.uid() = created_by);
+  drop policy if exists groups_update on groups;     create policy groups_update on groups for update using (auth.uid() = created_by or is_admin());
+  drop policy if exists gm_read on group_members;    create policy gm_read on group_members for select using (true);
+  drop policy if exists gm_own on group_members;     create policy gm_own on group_members for all using (auth.uid() = user_id or is_admin()) with check (auth.uid() = user_id or is_admin());
+
+  drop policy if exists posts_read on posts;         create policy posts_read on posts for select using (status = 'published' or auth.uid() = user_id or is_admin());
+  drop policy if exists posts_insert on posts;       create policy posts_insert on posts for insert with check (auth.uid() = user_id);
+  drop policy if exists posts_own on posts;          create policy posts_own on posts for update using (auth.uid() = user_id or is_admin());
+  drop policy if exists posts_del on posts;          create policy posts_del on posts for delete using (auth.uid() = user_id or is_admin());
+
+  drop policy if exists points_read on point_events; create policy points_read on point_events for select using (auth.uid() = user_id or is_admin());
+
+  drop policy if exists partners_admin on partners;  create policy partners_admin on partners for all using (is_admin()) with check (is_admin());
+  drop policy if exists partners_owner on partners;  create policy partners_owner on partners for select using (auth.uid() = owner_id);
+end $$;
+
+-- nobody can promote themselves: only admins may change is_admin / points / tier
+create or replace function protect_profile_fields() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  if not is_admin() and coalesce(current_setting('ct.award', true), '') <> '1' then
+    new.is_admin := old.is_admin;
+    new.points   := old.points;
+    new.tier     := old.tier;
+  end if;
+  return new;
+end $$;
+drop trigger if exists profiles_protect on profiles;
+create trigger profiles_protect before update on profiles for each row execute function protect_profile_fields();
+
+grant select on town_scores to anon, authenticated;
+-- Cycletowns launch content (generated by scripts/build-seed-sql.js)
+
+begin;
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('bright','Bright','Victoria','Australia','🇦🇺','$','full',4.8,'{"cafes":4.9,"routes":4.8,"safety":4.6,"climbs":4.9,"storage":4.4}'::jsonb,'Tower Hill Lookout overlooking Bright Victoria Australia in Autumn.png',array['MtBuffaloChalet August 2018.jpg']::text[],array['Alpine climbs','Gravel','Cafés']::text[],array['climber','gravel','cruiser','family']::text[],'Australia’s alpine cycling heart — gateway to Mt Buffalo, Falls Creek and Hotham, with a café scene to match.',-36.73,146.96,'{"ride":[2,2,2,2,1,0,0,1,1,2,2,2],"crowd":[2,1,1,2,2,0,1,1,1,1,1,2],"best":"Oct–Apr, with autumn (Mar–May) the local favourite — golden colours and crisp, clear climbs.","peak":"Summer school holidays (Dec–Jan) and the Bright Autumn Festival (late Apr–May).","quiet":"September and early November — mild, uncrowded and great value.","climate":"Alpine — warm-to-hot summers (to ~32°C), crisp autumns, cold snowy winters.","getting":"≈4 hr drive from Melbourne; nearest airport is Albury (~1.5 hr).","terrain":"Iconic alpine road climbs (Hotham, Mt Buffalo), the Murray to Mountains rail trail and gravel.","tip":"In summer, ride early to beat the heat — autumn mornings are pure magic."}'::jsonb,'[["🍁","Autumn in Bright","The famous autumn leaves along Gavan St and the Ovens River."],["🏔️","Mt Buffalo lookouts","The Horn, the Gorge and the historic 1910 Chalet."],["🍺","Bright Brewery","Riverside brews, food and the bike hub."],["💦","Canyon Walk & swimming holes","Riverside trail and a cool-down after the ride."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='bright';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('bright','cafe','Sixpence Coffee','Family roastery on Wills St — the cyclists’ #1 refuel.',4.9,false,null,null,0),
+('bright','cafe','Ginger Baker','Riverside food & wine by the Ovens River.',4.6,false,null,null,1),
+('bright','cafe','Blackbird Cafe','All-day brunch in the heart of town.',4.5,false,null,null,2),
+('bright','shop','Bright Brewery — Bike Hub','Bar, kitchen and bike hub with hire & wash bay.',4.7,true,55,null,0),
+('bright','route','Mt Buffalo','21km HC climb to The Horn — the icon.',4.9,false,null,'climbs',0),
+('bright','route','Tawonga Gap','8km of switchbacks across to Mt Beauty.',4.6,false,null,'climbs',1),
+('bright','route','Murray to Mountains Rail Trail','40km sealed, flat and family-friendly.',4.7,false,null,'road',2),
+('bright','route','Bright Alpine Classic','150km high-country queen stage over Mt Buffalo and Tawonga Gap — Alpine Classic territory.',4.8,false,null,'climbs',3),
+('bright','stay','Cyclist-friendly stay (per night)','',null,false,210,null,0),
+('bright','thing','Autumn in Bright','🍁 The famous autumn leaves along Gavan St and the Ovens River.',null,false,null,null,0),
+('bright','thing','Mt Buffalo lookouts','🏔️ The Horn, the Gorge and the historic 1910 Chalet.',null,false,null,null,1),
+('bright','thing','Bright Brewery','🍺 Riverside brews, food and the bike hub.',null,false,null,null,2),
+('bright','thing','Canyon Walk & swimming holes','💦 Riverside trail and a cool-down after the ride.',null,false,null,null,3);
+
+delete from races where town_id='bright';
+
+insert into races (town_id,kind,badge,name,series,km,vert,race_date,status,discipline,note,sort) values
+('bright','fondo','🏆','Audax Alpine Classic — 250km','Audax Alpine Classic',250,4000,'2027-01-16','upcoming','climbs','Australia Day weekend institution from Bright over Mt Buffalo, Tawonga Gap and Falls Creek. 320 / 250 / 200 / 140km options.',0),
+('bright','fondo','🏆','Peaks Challenge Falls Creek','Peaks Challenge',235,4500,'2027-03-07','upcoming','climbs','235km / 4,500m around the high country — Tawonga Gap, Mt Hotham and the ‘Beast’ at the back of Falls Creek. 13-hour limit.',1);
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('adelaide-hills','Adelaide Hills','South Australia','Australia','🇦🇺','$','full',4.7,'{"cafes":4.7,"routes":4.8,"safety":4.5,"climbs":4.7,"storage":4.3}'::jsonb,'Stirling main street 2006.jpg',array['View in the Mount Lofty Ranges, Stirling(GN11950).jpg','Road Gardens at Stirling(GN08717).jpg']::text[],array['Road','TDU climbs','Wine country']::text[],array['climber','cruiser','racer','gravel']::text[],'Home of the Tour Down Under — Old Willunga Hill, Norton Summit and endless ridge roads through the wine country.',-35,138.7,'{"ride":[2,2,2,2,1,1,1,1,2,2,2,2],"crowd":[2,1,1,2,1,1,1,1,1,2,1,2],"best":"Sept–Nov and Mar–May — mild days, quiet roads and the harvest buzz.","peak":"Summer and the autumn vintage and festival season.","quiet":"Winter — green, cool and very quiet (pack a rain layer).","climate":"Mediterranean — warm dry summers, cool wet winters.","getting":"20–30 min from Adelaide’s CBD and airport.","terrain":"Punchy Hills climbs (Willunga, Corkscrew), wineries and rail trails.","tip":"Climb Willunga Hill — the Tour Down Under’s famous finish."}'::jsonb,'[["🌄","Mount Lofty Summit","Sweeping views over Adelaide and the Piccadilly Valley."],["🏘️","Hahndorf","Australia’s oldest German settlement — pubs and bakeries."],["🐨","Cleland Wildlife Park","Koalas and kangaroos on the way down the hill."],["🍷","Cellar doors","Shaw + Smith, Hahndorf Hill and the Piccadilly wineries."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='adelaide-hills';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('adelaide-hills','cafe','The Organic Market & Cafe','Refuel near the top of the Old Freeway climb.',4.7,false,null,null,0),
+('adelaide-hills','cafe','Cudlee Café','Cudlee Creek rider haunt — plenty of room for bikes.',4.6,false,null,null,1),
+('adelaide-hills','cafe','Lost in a Forest','Wood-fired pizza in an old Uraidla church.',4.6,false,null,null,2),
+('adelaide-hills','shop','Will Ride (Stirling)','E-bike specialist — hire and guided Hills tours.',4.7,true,65,null,0),
+('adelaide-hills','route','Old Willunga Hill','3km — the Tour Down Under decider.',4.9,false,null,'climbs',0),
+('adelaide-hills','route','Norton Summit','The classic city-edge climb.',4.7,false,null,'climbs',1),
+('adelaide-hills','route','Corkscrew Road','Punchy switchback favourite.',4.7,false,null,'climbs',2),
+('adelaide-hills','route','Adelaide Hills Gran Fondo','140km loop over Norton Summit, the Corkscrew and Gorge Rd — a proper hills century.',4.8,false,null,'climbs',3),
+('adelaide-hills','stay','Hills cyclist stay (per night)','',null,false,195,null,0),
+('adelaide-hills','thing','Mount Lofty Summit','🌄 Sweeping views over Adelaide and the Piccadilly Valley.',null,false,null,null,0),
+('adelaide-hills','thing','Hahndorf','🏘️ Australia’s oldest German settlement — pubs and bakeries.',null,false,null,null,1),
+('adelaide-hills','thing','Cleland Wildlife Park','🐨 Koalas and kangaroos on the way down the hill.',null,false,null,null,2),
+('adelaide-hills','thing','Cellar doors','🍷 Shaw + Smith, Hahndorf Hill and the Piccadilly wineries.',null,false,null,null,3);
+
+delete from races where town_id='adelaide-hills';
+
+insert into races (town_id,kind,badge,name,series,km,vert,race_date,status,discipline,note,sort) values
+('adelaide-hills','pro','🏁','Tour Down Under — Willunga stage','Santos Tour Down Under',150,1900,'2027-01-24','upcoming','climbs','Ride the iconic Willunga Hill decider and the Adelaide Hills circuits from the WorldTour season-opener. Next edition January 2027.',0);
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('beechworth','Beechworth','Victoria','Australia','🇦🇺','$','full',4.6,'{"cafes":4.8,"routes":4.7,"safety":4.7,"climbs":4.4,"storage":4.5}'::jsonb,'Beechworth Main Street.jpg',array['Beechworth Tanswells Hotel.JPG','Beechworth Banner.JPG']::text[],array['Gravel','Rail trail','Gourmet']::text[],array['gravel','trail','cruiser','family']::text[],'Gold-rush heritage, an award-winning MTB park and a vast gravel network — gravel by day, distilleries by night.',-36.36,146.69,'{"ride":[2,2,2,2,1,0,0,1,1,2,2,2],"crowd":[2,1,1,2,2,0,0,1,1,1,1,2],"best":"Oct–Apr; autumn for colour, spring for wildflowers and full creeks.","peak":"Summer holidays and autumn long weekends and festivals.","quiet":"September and November — warm days, quiet historic streets.","climate":"Four-season inland — hot summers, frosty winters.","getting":"≈3 hr from Melbourne; Albury airport ~50 min.","terrain":"Gold-country gravel, granite climbs and the Murray to Mountains rail trail.","tip":"Loop the Beechworth Gorge, then hit the bakery — it’s the law."}'::jsonb,'[["⛏️","Historic gold town","Honey-coloured 1850s streetscape and Ned Kelly history."],["🥧","Beechworth Bakery","The institution — fuel for the rail trail."],["🍫","Distilleries & brewers","Bridge Road, Billson’s and the gourmet trail."],["🌳","Woolshed Falls","A short spin to the cascades."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='beechworth';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('beechworth','cafe','Peddlar','Excellent post-ride coffee in town.',4.7,false,null,null,0),
+('beechworth','cafe','Beechworth Bakery','Iconic — fuel up before the rail trail.',4.6,false,null,null,1),
+('beechworth','cafe','Bridge Road Brewers','Post-ride ales in a historic coach house.',4.6,false,null,null,2),
+('beechworth','shop','Tour de Vines','Hire plus winery & rail-trail tours.',4.6,true,50,null,0),
+('beechworth','shop','The Bike Hire Company','Rail-trail hire and shuttles.',4.5,true,45,null,1),
+('beechworth','route','Beechworth MTB Park','Award-winning trails 2km from town.',4.7,false,null,'mtb',0),
+('beechworth','route','Murray to Mountains Rail Trail','100km+ sealed network linking the towns.',4.7,false,null,'road',1),
+('beechworth','route','Yackandandah gravel loop','Classic high-country gravel and distilleries.',4.6,false,null,'gravel',2),
+('beechworth','route','Beechworth–Alpine Gran Fondo','145km loop out to the alpine foothills and back through the historic gold country.',4.8,false,null,'road',3),
+('beechworth','stay','Heritage cyclist stay (per night)','',null,false,185,null,0),
+('beechworth','thing','Historic gold town','⛏️ Honey-coloured 1850s streetscape and Ned Kelly history.',null,false,null,null,0),
+('beechworth','thing','Beechworth Bakery','🥧 The institution — fuel for the rail trail.',null,false,null,null,1),
+('beechworth','thing','Distilleries & brewers','🍫 Bridge Road, Billson’s and the gourmet trail.',null,false,null,null,2),
+('beechworth','thing','Woolshed Falls','🌳 A short spin to the cascades.',null,false,null,null,3);
+
+delete from races where town_id='beechworth';
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('noosa','Noosa','Queensland','Australia','🇦🇺','$','full',4.6,'{"cafes":4.8,"routes":4.5,"safety":4.4,"climbs":4.3,"storage":4.4}'::jsonb,'Noosa Heads and Weyba Creek.JPG',array[]::text[],array['Road','Coastal','Café culture']::text[],array['cruiser','racer','family','climber']::text[],'Coastal spins and hinterland climbs around Cooroy and Pomona, finished with a world-class café scene.',-26.4,153.1,'{"ride":[1,1,2,2,2,2,2,2,2,2,1,1],"crowd":[2,2,1,1,1,2,2,1,1,1,1,2],"best":"Apr–Oct — warm, dry and free of the summer humidity.","peak":"Summer holidays (Dec–Jan) and the mid-year sunshine escape.","quiet":"Feb–Mar and November — fewer crowds, still plenty warm.","climate":"Subtropical — hot, humid (wet) summers; mild, sunny winters.","getting":"≈30 min from Sunshine Coast airport; 2 hr from Brisbane.","terrain":"Coastal road spins, hinterland climbs to Maleny and gravel options.","tip":"Beat the heat and traffic with a dawn hinterland loop."}'::jsonb,'[["🏖️","Noosa National Park","Coastal walk, Hell’s Gates and the resident dolphins."],["🛶","Noosa Everglades","One of only two everglade systems on earth."],["🍴","Hastings Street","Beachfront dining and the famous café scene."],["🌲","The hinterland","Montville, Maleny and Kin Kin villages."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='noosa';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('noosa','cafe','Little Cove Coffee','The classic coffee-stop finish line.',4.7,false,null,null,0),
+('noosa','cafe','Raw Coffee Shop','Friendly Gympie Tce crew favourite.',4.6,false,null,null,1),
+('noosa','cafe','Grind Cafe','Catch your breath by Noosa Boat Hire.',4.5,false,null,null,2),
+('noosa','shop','Bike On','Quality hire delivered to your accommodation.',4.6,true,45,null,0),
+('noosa','shop','Giant Noosa','Bunch rides and a full workshop.',4.7,false,null,null,1),
+('noosa','shop','Noosa Bike Shop','Home of the Noosa bunchie.',4.6,false,null,null,2),
+('noosa','route','The “World Champs” loop','45km via Cooroy and Sunrise Rd.',4.7,false,null,'road',0),
+('noosa','route','Boreen Point roll','Easy tempo out to the lake.',4.5,false,null,'road',1),
+('noosa','route','Montville / Palmwoods climb','Hinterland range with a bakery stop.',4.6,false,null,'climbs',2),
+('noosa','route','Noosa Hinterland Century','135km loop deep into the hinterland — Black Mountain, Pomona and the Range.',4.8,false,null,'road',3),
+('noosa','stay','Coastal cyclist stay (per night)','',null,false,230,null,0),
+('noosa','thing','Noosa National Park','🏖️ Coastal walk, Hell’s Gates and the resident dolphins.',null,false,null,null,0),
+('noosa','thing','Noosa Everglades','🛶 One of only two everglade systems on earth.',null,false,null,null,1),
+('noosa','thing','Hastings Street','🍴 Beachfront dining and the famous café scene.',null,false,null,null,2),
+('noosa','thing','The hinterland','🌲 Montville, Maleny and Kin Kin villages.',null,false,null,null,3);
+
+delete from races where town_id='noosa';
+
+insert into races (town_id,kind,badge,name,series,km,vert,race_date,status,discipline,note,sort) values
+('noosa','fondo','🏆','Noosa Classic','The Classics · Bicycling Australia',160,1800,null,'annual','road','Sunshine Coast gran fondo into the Noosa hinterland — 160 / 120 / 65km. Register interest for the next date.',0);
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('derby','Derby','Tasmania','Australia','🇦🇺','$','full',4.8,'{"cafes":4.4,"routes":4.9,"safety":4.6,"climbs":4.5,"storage":4.7}'::jsonb,'2018-02-13 102712 Dove Lake, Cradle Mountain anagoria.jpg',array['2018-02-13 092023 Dove Lake, Cradle Mountain anagoria.jpg']::text[],array['MTB','Trail town','Blue Derby']::text[],array['trail','gravel','family']::text[],'Australia’s mountain-bike mecca — 140km+ of Blue Derby trails in temperate rainforest, from flowy greens to black-diamond tech.',-41.14,147.8,'{"ride":[2,2,2,2,1,0,0,1,1,2,2,2],"crowd":[2,1,2,1,1,0,0,1,1,1,1,2],"best":"Oct–Apr — Tasmania’s warm, long-daylight trail season.","peak":"Summer and the big enduro race weekends (book early).","quiet":"Shoulder spring and autumn — tacky loam and far fewer bikes on trail.","climate":"Cool temperate — mild summers, cold wet winters.","getting":"≈1.5 hr drive from Launceston airport.","terrain":"World-class MTB — 125 km+ of flow, tech and descents at Blue Derby.","tip":"Ride mid-week to skip the weekend shuttle queues."}'::jsonb,'[["🚵","Blue Derby trails","140km+ of World Cup–level mountain biking."],["💧","Briseis Dam","The tin-mining history that shaped the town."],["🐉","Tin Dragon Trail","Rainforest, Weldborough and the Chinese heritage."],["🍕","Hub Pizza & Lot 40","Where riders gather after the shuttle."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='derby';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('derby','cafe','Lot 40 Bar & Cafe','Local craft brews and gin post-ride.',4.6,false,null,null,0),
+('derby','cafe','Hub Pizza','Trailside refuel in the village.',4.5,false,null,null,1),
+('derby','cafe','Dorset Hotel','Classic country-pub feed.',4.4,false,null,null,2),
+('derby','shop','Evolution Biking','75 hire bikes incl. e-MTB, in the trail centre.',4.8,true,89,null,0),
+('derby','shop','Vertigo MTB','Hire plus daily uplift shuttles.',4.7,true,79,null,1),
+('derby','shop','Bark Off Biking','Hire and guided trail days.',4.6,true,75,null,2),
+('derby','route','Blue Derby trails','140km+ — green to black-diamond flow.',4.9,false,null,'mtb',0),
+('derby','route','Blue Tier descent','Epic backcountry point-to-point.',4.8,false,null,'road',1),
+('derby','route','Krushka’s','The crowd-favourite flow trail.',4.6,false,null,'mtb',2),
+('derby','route','Derby Big Backcountry Loop','130km backcountry gravel and singletrack epic linking the Blue Derby network.',4.8,false,null,'gravel',3),
+('derby','stay','Trailside cyclist stay (per night)','',null,false,175,null,0),
+('derby','thing','Blue Derby trails','🚵 140km+ of World Cup–level mountain biking.',null,false,null,null,0),
+('derby','thing','Briseis Dam','💧 The tin-mining history that shaped the town.',null,false,null,null,1),
+('derby','thing','Tin Dragon Trail','🐉 Rainforest, Weldborough and the Chinese heritage.',null,false,null,null,2),
+('derby','thing','Hub Pizza & Lot 40','🍕 Where riders gather after the shuttle.',null,false,null,null,3);
+
+delete from races where town_id='derby';
+
+insert into races (town_id,kind,badge,name,series,km,vert,race_date,status,discipline,note,sort) values
+('derby','mtb','🏁','UCI Enduro World Cup — Derby','UCI MTB World Series (EDR)',45,1500,'2027-03-31','upcoming','mtb','Blue Derby hosts a round of the UCI Enduro World Cup — the world''s best gravity racers on the famous Tasmanian loam.',0);
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('girona','Girona','Catalonia','Spain','🇪🇸','€','full',4.9,'{"cafes":4.9,"routes":4.9,"safety":4.6,"climbs":4.9,"storage":4.5}'::jsonb,'Onyar River Houses.JPG',array['Pont Eiffel and river Onyar in Girona, Catalonia, Spain.JPG','Girona 060.JPG']::text[],array['Road','Pro hub','Café culture']::text[],array['climber','racer','cruiser','gravel']::text[],'The adopted home of the pro peloton — endless climbs and gravel radiating from one beautiful medieval city.',41.98,2.82,'{"ride":[1,1,2,2,2,1,1,1,2,2,1,1],"crowd":[1,1,2,2,2,2,2,2,2,1,1,1],"best":"Apr–Jun and Sep–Oct — warm, dry and gloriously quiet roads.","peak":"Spring (the pros are in town) and high summer.","quiet":"Late autumn and winter — mild and calm, café scene still humming.","climate":"Mediterranean — hot summers, mild winters, perfect shoulders.","getting":"35 min from Girona–Costa Brava airport; 40 min by train from Barcelona.","terrain":"Endless quiet road climbs, gravel in Les Gavarres, the coast nearby.","tip":"Coffee at a pro café, then spin up Els Àngels — the local classic.","currency":"Euro (€) · Catalan & Spanish"}'::jsonb,'[["🏰","Old town & Cathedral","Game-of-Thrones steps and the Jewish Quarter."],["🌈","Cases de l’Onyar","The painted riverside houses and Eiffel bridge."],["☕","La Fàbrica","The pro peloton’s café HQ."],["🍽️","El Celler de Can Roca","One of the world’s most celebrated restaurants."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='girona';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('girona','cafe','La Fàbrica','The pro peloton’s café — coffee and brunch.',4.9,false,null,null,0),
+('girona','cafe','Espresso Mafia','Specialty roaster in the old town.',4.8,false,null,null,1),
+('girona','cafe','Federal Girona','All-day Aussie-style brunch.',4.6,false,null,null,2),
+('girona','shop','Eat Sleep Cycle','Hire, tours and a café hub for visiting riders.',4.8,true,40,null,0),
+('girona','route','Rocacorba','The legendary HC test piece.',4.9,false,null,'climbs',0),
+('girona','route','Els Àngels','10km — the everyday classic.',4.8,false,null,'road',1),
+('girona','route','Sant Hilari','Long, quiet forest climb.',4.7,false,null,'climbs',2),
+('girona','route','Girona Gran Fondo','150km marquee loop linking Els Àngels, Sant Hilari and the Rocacorba climb — the big day the pros train on.',4.8,false,null,'climbs',3),
+('girona','stay','Old-town cyclist stay (per night)','',null,false,140,null,0),
+('girona','thing','Old town & Cathedral','🏰 Game-of-Thrones steps and the Jewish Quarter.',null,false,null,null,0),
+('girona','thing','Cases de l’Onyar','🌈 The painted riverside houses and Eiffel bridge.',null,false,null,null,1),
+('girona','thing','La Fàbrica','☕ The pro peloton’s café HQ.',null,false,null,null,2),
+('girona','thing','El Celler de Can Roca','🍽️ One of the world’s most celebrated restaurants.',null,false,null,null,3);
+
+delete from races where town_id='girona';
+
+insert into races (town_id,kind,badge,name,series,km,vert,race_date,status,discipline,note,sort) values
+('girona','fondo','🏆','Sea Otter Europe — Gran Fondo','Sea Otter Europe Girona',140,2200,'2026-09-20','upcoming','road','Europe''s biggest cycling festival — road & gravel gran fondos and the UCI Gravel World Series, all from Girona.',0),
+('girona','pro','🏁','Volta a Catalunya — Girona roads','Volta a Catalunya',150,2400,'2027-03-22','upcoming','climbs','WorldTour racing regularly rolls through the Girona hills the pros call home. Next Volta late March 2027.',1);
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('mallorca','Mallorca','Balearic Islands','Spain','🇪🇸','€','full',4.9,'{"cafes":4.7,"routes":4.9,"safety":4.6,"climbs":4.9,"storage":4.5}'::jsonb,'The top of the descent to Sa Calobra, Mallorca.JPG',array['Cala sa Calobra, Escorca, Mallorca, España.JPG']::text[],array['Road','Climbs','Winter base']::text[],array['climber','racer','cruiser']::text[],'Sa Calobra, Cap de Formentor and perfect tarmac — the winter-training mecca for road riders worldwide.',39.57,2.65,'{"ride":[1,2,2,2,2,1,1,1,2,2,2,1],"crowd":[1,1,2,2,2,2,2,2,2,2,1,1],"best":"Mar–May and Sep–Oct — the classic cycling-camp seasons.","peak":"Spring training camps and the Jul–Aug beach-tourism crush.","quiet":"November — empty roads, still warm, cheap flights.","climate":"Mediterranean — mild springs, hot summers, gentle winters.","getting":"Palma airport hub; ~45 min to the Tramuntana climbs.","terrain":"Sa Calobra, the Serra de Tramuntana and flat plains for fast bunches.","tip":"Do Sa Calobra at dawn, before the tour buses arrive.","currency":"Euro (€) · Catalan & Spanish"}'::jsonb,'[["🌊","Cap de Formentor","The lighthouse road and cliff-top lookouts."],["⛰️","Serra de Tramuntana","UNESCO mountains, Valldemossa and Sóller."],["🚂","Sóller wooden train","The vintage train through the orange groves."],["🏝️","Hidden coves","Cala swims to reward the climbing."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='mallorca';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('mallorca','cafe','Es Grau','Cliff-top stop at the base of the big climbs.',4.8,false,null,null,0),
+('mallorca','cafe','Ca’n Toni (Caimari)','Climb-base institution for road riders.',4.6,false,null,null,1),
+('mallorca','shop','Max Hürzeler Bicycle Holidays','The island’s big road-bike hire network.',4.7,true,30,null,0),
+('mallorca','route','Sa Calobra','9.5km of switchbacks down to the sea.',4.9,false,null,'climbs',0),
+('mallorca','route','Cap de Formentor','Lighthouse road — the postcard ride.',4.8,false,null,'road',1),
+('mallorca','route','Coll de sa Batalla','Gateway to Puig Major.',4.8,false,null,'road',2),
+('mallorca','route','Mallorca 312 — Tramuntana loop','155km Serra de Tramuntana epic in the spirit of the Mallorca 312, Sa Calobra and all.',4.8,false,null,'road',3),
+('mallorca','stay','Winter-training stay (per night)','',null,false,120,null,0),
+('mallorca','thing','Cap de Formentor','🌊 The lighthouse road and cliff-top lookouts.',null,false,null,null,0),
+('mallorca','thing','Serra de Tramuntana','⛰️ UNESCO mountains, Valldemossa and Sóller.',null,false,null,null,1),
+('mallorca','thing','Sóller wooden train','🚂 The vintage train through the orange groves.',null,false,null,null,2),
+('mallorca','thing','Hidden coves','🏝️ Cala swims to reward the climbing.',null,false,null,null,3);
+
+delete from races where town_id='mallorca';
+
+insert into races (town_id,kind,badge,name,series,km,vert,race_date,status,discipline,note,sort) values
+('mallorca','fondo','🏆','Mallorca 312 — 167 route','Mallorca 312 OK Mobility',167,2500,'2027-04-24','upcoming','road','The island classic across the Serra de Tramuntana from Playa de Muro. 312 / 225 / 167km options; next edition late April 2027.',0);
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('bentonville','Bentonville','Arkansas','United States','🇺🇸','$','full',4.8,'{"cafes":4.6,"routes":4.9,"safety":4.7,"climbs":4.2,"storage":4.6}'::jsonb,'',array[]::text[],array['MTB','Gravel','Trail town']::text[],array['trail','gravel','family','cruiser']::text[],'The self-styled mountain-bike capital of the world — hundreds of kilometres of purpose-built singletrack, gravel and greenways, straight from downtown.',36.37,-94.21,null,'[["🚵","Coler Bike Preserve","World-class flow and tech minutes from downtown."],["🎨","Crystal Bridges Museum","Free world-class art museum, with trails to its door."],["🍺","Bentonville Square","Breweries, tacos and the Saturday farmers’ market."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='bentonville';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('bentonville','cafe','Onyx Coffee Lab','Award-winning roaster — the riders’ HQ.',4.9,false,null,null,0),
+('bentonville','cafe','Pedaler’s Pub','Trailside pints and tacos at the Railyard.',4.6,false,null,null,1),
+('bentonville','cafe','Airship Coffee','Coffee in the woods, right by the trails.',4.7,false,null,null,2),
+('bentonville','shop','Phat Tire Bike Shop','Hire, demos and trail know-how — e-MTB available.',4.8,true,75,null,0),
+('bentonville','shop','Mojo Cycling','Road & gravel hire plus quick service.',4.6,true,60,null,1),
+('bentonville','route','Slaughter Pen','Flowy singletrack straight from downtown.',4.9,false,null,'mtb',0),
+('bentonville','route','Coler Mountain Bike Preserve','Flow, tech and the famous Drop Machine.',4.8,false,null,'mtb',1),
+('bentonville','route','Razorback Greenway','58km paved spine linking the whole region.',4.7,false,null,'road',2),
+('bentonville','route','OZ Trails Big Gravel Loop','145km Ozark gravel and greenway epic across the OZ Trails network.',4.8,false,null,'road',3),
+('bentonville','stay','Trailside cyclist stay (per night)','',null,false,190,null,0),
+('bentonville','thing','Coler Bike Preserve','🚵 World-class flow and tech minutes from downtown.',null,false,null,null,0),
+('bentonville','thing','Crystal Bridges Museum','🎨 Free world-class art museum, with trails to its door.',null,false,null,null,1),
+('bentonville','thing','Bentonville Square','🍺 Breweries, tacos and the Saturday farmers’ market.',null,false,null,null,2);
+
+delete from races where town_id='bentonville';
+
+insert into races (town_id,kind,badge,name,series,km,vert,race_date,status,discipline,note,sort) values
+('bentonville','fondo','🌾','Big Sugar Gravel — 100mi','Life Time Big Sugar (Grand Prix)',161,2130,'2026-10-17','upcoming','gravel','Life Time Grand Prix finale on the chunky Ozark gravel around Bentonville — 104mi / ~7,000ft. Full pro field.',0);
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('hualien','Hualien · Taroko','Taiwan','Taiwan','🇹🇼','$','full',4.8,'{"cafes":4.5,"routes":4.9,"safety":4.4,"climbs":5,"storage":4.5}'::jsonb,'',array[]::text[],array['Climbs','Road','Epic']::text[],array['climber','racer','cruiser']::text[],'Home of the legendary Taroko Gorge climb — sea level to 3,275m — and Taiwan’s east-coast cycling culture, the heart of one of the world’s great road-riding nations.',24,121.6,null,'[["🏞️","Taroko Gorge","Marble canyon, cliffs and tunnels — a world wonder."],["🌊","Qixingtan Beach","Pebble crescent with Pacific views and a mountain backdrop."],["🍜","Dongdamen Night Market","Taiwan’s east-coast street-food institution."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='hualien';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('hualien','cafe','Caffe Fiore','Pour-overs before you take on the gorge.',4.6,false,null,null,0),
+('hualien','cafe','Giocare','Courtyard café loved by visiting riders.',4.7,false,null,null,1),
+('hualien','cafe',' Even/Coffee','East-coast roaster and recovery spot.',4.5,false,null,null,2),
+('hualien','shop','Giant Store Hualien','Hire road & e-bikes from cycling’s biggest maker.',4.8,true,45,null,0),
+('hualien','shop','Liv Cycling Hualien','Hire, fit and east-coast tour advice.',4.6,true,45,null,1),
+('hualien','route','Taroko Gorge → Wuling','The Taiwan KOM — 87km, sea level to 3,275m.',5,false,null,'climbs',0),
+('hualien','route','East Coast Highway (Hwy 11)','Pacific coastline cruising south.',4.7,false,null,'road',1),
+('hualien','route','Liwu River loop','Marble cliffs and gentle valley spins.',4.6,false,null,'road',2),
+('hualien','route','Taroko Gorge Grand Loop','150km coast-to-gorge epic climbing the Taroko pass — a serious big day.',4.8,false,null,'climbs',3),
+('hualien','stay','Cyclist-friendly stay (per night)','',null,false,120,null,0),
+('hualien','thing','Taroko Gorge','🏞️ Marble canyon, cliffs and tunnels — a world wonder.',null,false,null,null,0),
+('hualien','thing','Qixingtan Beach','🌊 Pebble crescent with Pacific views and a mountain backdrop.',null,false,null,null,1),
+('hualien','thing','Dongdamen Night Market','🍜 Taiwan’s east-coast street-food institution.',null,false,null,null,2);
+
+delete from races where town_id='hualien';
+
+insert into races (town_id,kind,badge,name,series,km,vert,race_date,status,discipline,note,sort) values
+('hualien','pro','🏔️','Taiwan KOM Challenge','Taiwan KOM Challenge',105,3200,'2026-10-23','upcoming','climbs','Sea level at Qixingtan to 3,275m at Wuling through Taroko Gorge — ~7% for 90km, then ramps to 27%. One of the world''s hardest climbs.',0);
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('dalat','Da Lat','Central Highlands','Vietnam','🇻🇳','$','full',4.7,'{"cafes":4.8,"routes":4.7,"safety":4.2,"climbs":4.7,"storage":4.3}'::jsonb,'',array[]::text[],array['Climbs','Coffee','Highlands']::text[],array['climber','gravel','cruiser']::text[],'Vietnam’s cool-climate cycling capital — pine-clad climbs, endless coffee farms and quiet highland roads at 1,500m, a short flight from the coast.',11.94,108.44,'{"ride":[2,2,2,2,1,1,0,1,1,1,2,2],"crowd":[2,2,1,1,1,1,2,1,1,1,1,2],"best":"Dec–Apr — cool, dry highland days; the wet season eases off May–Oct.","peak":"Vietnamese holidays (Tet, late Jan–Feb) and the July domestic peak.","quiet":"Sept–Nov — green, quiet and cheap between the rains.","climate":"Temperate highland (~1,500m) — spring-like all year, wettest May–Oct.","getting":"30-min flight from Ho Chi Minh City to Lien Khuong, then 30 min to town.","terrain":"Pine-clad climbs, coffee-farm gravel and quiet highland roads.","tip":"Carry a rain shell in the wet season — afternoons can pour.","currency":"Vietnamese đồng (₫) · Vietnamese"}'::jsonb,'[["☕","Coffee farms","Tour the highland arabica & robusta estates."],["🌸","Valley of Love & lakes","Pine forests, flower gardens and Tuyen Lam."],["🚞","Crémaillère railway","The historic cog railway out to Trai Mat."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='dalat';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('dalat','cafe','La Viet Coffee','Working roastery — the rider refuel of choice.',4.8,false,null,null,0),
+('dalat','cafe','An Cafe','Garden café over the valley.',4.6,false,null,null,1),
+('dalat','cafe','Túi Mơ To','Local roaster, big breakfasts.',4.5,false,null,null,2),
+('dalat','shop','Da Lat Bike Hire','Road & gravel hire for the highlands.',4.5,true,30,null,0),
+('dalat','shop','Highlands Cycle Co.','Guided coffee-farm gravel days.',4.5,true,35,null,1),
+('dalat','route','Ta Nung Valley','Quiet coffee-farm descent and climb.',4.7,false,null,'climbs',0),
+('dalat','route','Lang Biang approach','Highland climb beneath the peak.',4.7,false,null,'climbs',1),
+('dalat','route','Tuyen Lam Lake loop','Pine-forest spin by the water.',4.5,false,null,'road',2),
+('dalat','route','Da Lat Highlands Gran Fondo','145km Central Highlands loop over pine-clad passes and long climbs.',4.8,false,null,'climbs',3),
+('dalat','stay','Highlands cyclist stay (per night)','',null,false,55,null,0),
+('dalat','thing','Coffee farms','☕ Tour the highland arabica & robusta estates.',null,false,null,null,0),
+('dalat','thing','Valley of Love & lakes','🌸 Pine forests, flower gardens and Tuyen Lam.',null,false,null,null,1),
+('dalat','thing','Crémaillère railway','🚞 The historic cog railway out to Trai Mat.',null,false,null,null,2);
+
+delete from races where town_id='dalat';
+
+insert into races (town_id,kind,badge,name,series,km,vert,race_date,status,discipline,note,sort) values
+('dalat','pro','🏁','HTV Cup — Stage to Da Lat','HTV Cup (Cúp Truyền hình TP.HCM)',135,2400,'2027-04-12','upcoming','climbs','Vietnam''s biggest stage race climbs to Da Lat over the Khanh Le and Giang Ly passes, run each April around Reunification Day.',0);
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('hagiang','Ha Giang','Northern Highlands','Vietnam','🇻🇳','$','full',4.8,'{"cafes":4.2,"routes":4.9,"safety":4,"climbs":4.9,"storage":4.1}'::jsonb,'',array[]::text[],array['Epic','Climbs','Adventure']::text[],array['climber','gravel','trail']::text[],'Home of the Ha Giang Loop — ~300km through karst peaks, the Ma Pi Leng Pass and hilltribe villages on Vietnam’s wild northern frontier. The fastest-rising ride in Asia.',22.82,104.98,'{"ride":[2,2,2,2,1,0,0,1,2,2,2,2],"crowd":[1,1,2,1,1,0,0,1,2,2,1,1],"best":"Oct–Apr — dry roads and clear passes; Oct–Nov brings the buckwheat bloom.","peak":"The Oct–Nov flower season and spring holidays.","quiet":"Late Feb–Mar — quiet roads before the heat.","climate":"Northern monsoon — dry, cool winters; wet, slip-prone Jun–Aug.","getting":"6–7 hr by road from Hanoi (overnight bus or private transfer).","terrain":"Big karst passes, switchbacks and remote frontier roads.","tip":"Avoid Jun–Aug — monsoon rain and landslides hit the loop.","currency":"Vietnamese đồng (₫) · Vietnamese"}'::jsonb,'[["🏞️","Ma Pi Leng Pass","Vietnam’s grandest canyon viewpoint."],["🛶","Nho Que River boat","Glide the emerald gorge below the pass."],["🏘️","Dong Van Old Quarter","Sunday market and stone-built streets."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='hagiang';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('hagiang','cafe','Ma Pi Leng Skywalk café','Coffee on the canyon rim.',4.7,false,null,null,0),
+('hagiang','cafe','Dong Van old-town café','Refuel in the stone-built quarter.',4.5,false,null,null,1),
+('hagiang','cafe','Meo Vac market stalls','Pho and ca phe before the pass.',4.4,false,null,null,2),
+('hagiang','shop','Ha Giang Loop Bikes','Adventure & gravel hire, loop support.',4.6,true,35,null,0),
+('hagiang','shop','Frontier Cycles','Guided multi-day loop tours.',4.5,true,40,null,1),
+('hagiang','route','Ma Pi Leng Pass','The “King of Passes” above the Nho Que River.',5,false,null,'climbs',0),
+('hagiang','route','Tham Ma switchbacks','Iconic hairpins out of Yen Minh.',4.8,false,null,'climbs',1),
+('hagiang','route','Dong Van → Meo Vac','The classic loop’s showpiece day.',4.8,false,null,'road',2),
+('hagiang','route','Ha Giang Loop — big day','150km of the Ha Giang Loop''s finest passes, Ma Pi Leng included — relentless climbing.',4.8,false,null,'climbs',3),
+('hagiang','stay','Homestay on the loop (per night)','',null,false,35,null,0),
+('hagiang','thing','Ma Pi Leng Pass','🏞️ Vietnam’s grandest canyon viewpoint.',null,false,null,null,0),
+('hagiang','thing','Nho Que River boat','🛶 Glide the emerald gorge below the pass.',null,false,null,null,1),
+('hagiang','thing','Dong Van Old Quarter','🏘️ Sunday market and stone-built streets.',null,false,null,null,2);
+
+delete from races where town_id='hagiang';
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('onomichi','Onomichi · Shimanami Kaido','Setouchi','Japan','🇯🇵','$','full',4.9,'{"cafes":4.7,"routes":4.9,"safety":4.9,"climbs":4.2,"storage":4.8}'::jsonb,'',array[]::text[],array['Island cycleway','Road','Family']::text[],array['cruiser','family','racer','climber']::text[],'The gateway to the Shimanami Kaido — Japan’s holy-grail 70km cycleway across six islands and seven bridges of the Seto Inland Sea. Flat, flawless and toll-free for bikes.',34.41,133.2,'{"ride":[1,1,2,2,2,1,1,1,2,2,2,1],"crowd":[1,1,2,2,1,1,2,2,1,2,1,1],"best":"Mar–May and Oct–Nov — mild, dry and the bridges at their best.","peak":"Cherry-blossom spring (late Mar–Apr) and the autumn colour.","quiet":"Early summer (Jun) and winter — cool, calm, fewer riders.","climate":"Mild Setouchi coast — hot humid summers, gentle winters.","getting":"Shinkansen to Fukuyama or Shin-Onomichi, then ride from the port.","terrain":"Flat island-hopping cycleway; only the bridge ramps climb.","tip":"Bikes cross the bridges toll-free through March 2028 — go now.","currency":"Japanese yen (¥) · Japanese"}'::jsonb,'[["⛩️","Senkoji temple & ropeway","Hillside temples over the strait."],["🍋","Setoda & Kosanji","Island lemons and the marble temple."],["🚲","Onomichi U2","The cyclist hotel, café and bike-shop hub."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='onomichi';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('onomichi','cafe','Onomichi U2 · Yard Café','The legendary cyclist hotel & café hub.',4.9,false,null,null,0),
+('onomichi','cafe','Dolce gelato (Setoda)','Island-citrus gelato, mid-ride.',4.7,false,null,null,1),
+('onomichi','cafe','Cycle Oasis stops','Free rider rest stops the whole route.',4.6,false,null,null,2),
+('onomichi','shop','Giant Store Onomichi','One-way hire — drop the bike in Imabari.',4.8,true,40,null,0),
+('onomichi','shop','Onomichi U2 hire','Premium hire right at the start line.',4.7,true,45,null,1),
+('onomichi','route','Shimanami Kaido (full)','70km, six islands, seven bridges to Imabari.',5,false,null,'road',0),
+('onomichi','route','Kurushima-Kaikyo Bridge','The world’s longest suspension-bridge trio.',4.9,false,null,'road',1),
+('onomichi','route','Setoda & Ikuchijima loop','Temples, citrus groves and sea views.',4.7,false,null,'road',2),
+('onomichi','route','Shimanami Grand Tour','140km island-hopping grand tour beyond the Shimanami Kaido — six islands and back.',4.8,false,null,'road',3),
+('onomichi','stay','Cyclist hotel (per night)','',null,false,130,null,0),
+('onomichi','thing','Senkoji temple & ropeway','⛩️ Hillside temples over the strait.',null,false,null,null,0),
+('onomichi','thing','Setoda & Kosanji','🍋 Island lemons and the marble temple.',null,false,null,null,1),
+('onomichi','thing','Onomichi U2','🚲 The cyclist hotel, café and bike-shop hub.',null,false,null,null,2);
+
+delete from races where town_id='onomichi';
+
+insert into races (town_id,kind,badge,name,series,km,vert,race_date,status,discipline,note,sort) values
+('onomichi','fondo','🏆','Cycling Shimanami — Long Course','Cycling Shimanami',140,1200,'2026-10-25','upcoming','road','Held once every two years, the Nishiseto Expressway closes to cars and opens to 7,000 riders — Onomichi to Imabari and back.',0);
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('chiangmai','Chiang Mai','Northern Thailand','Thailand','🇹🇭','$','full',4.7,'{"cafes":4.7,"routes":4.8,"safety":4.2,"climbs":4.8,"storage":4.4}'::jsonb,'',array[]::text[],array['Climbs','Road','Great value']::text[],array['climber','racer','cruiser','gravel']::text[],'Northern Thailand’s cycling base — temple climbs up Doi Suthep, the monster ascent of Doi Inthanon (the roof of Thailand), warm winters and unbeatable value.',18.79,98.98,'{"ride":[2,2,0,0,1,1,1,1,1,2,2,2],"crowd":[2,1,1,1,1,1,1,1,1,1,2,2],"best":"Nov–Feb — cool, dry mornings and perfect climbing weather.","peak":"Dec–Jan high season and Songkran (mid-April).","quiet":"The green season (Jun–Oct) — warm, wet afternoons, low prices.","climate":"Tropical — cool-dry Nov–Feb, hot Mar–May, wet Jun–Oct.","getting":"Direct flights to Chiang Mai (CNX); ride from the old city.","terrain":"Temple climbs, the Doi Inthanon monster and rolling loops.","tip":"Skip Mar–Apr — crop-burning haze blankets the valley.","currency":"Thai baht (฿) · Thai"}'::jsonb,'[["⛩️","Doi Suthep temple","Golden pagodas high above the city."],["🏯","Old City temples","Wander the moat-ringed historic core."],["🍜","Nimman & night markets","Khao soi, cafés and street food."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='chiangmai';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('chiangmai','cafe','Ristr8to Coffee','World-champ baristas — the ride HQ.',4.9,false,null,null,0),
+('chiangmai','cafe','Graph Café','Tiny specialty spot in the old city.',4.6,false,null,null,1),
+('chiangmai','cafe','Nimman roasters','Cafés on every Nimman corner.',4.6,false,null,null,2),
+('chiangmai','shop','Cycling Chiang Mai','Quality hire, guided climbs and SAG support.',4.8,true,35,null,0),
+('chiangmai','shop','Velo City','Road & gravel hire and service.',4.6,true,30,null,1),
+('chiangmai','route','Doi Suthep','10.8km at 6% to the golden temple.',4.8,false,null,'road',0),
+('chiangmai','route','Doi Inthanon','The roof of Thailand — a 2,565m summit.',4.9,false,null,'climbs',1),
+('chiangmai','route','Samoeng Loop','100km of rolling jungle and rice.',4.7,false,null,'road',2),
+('chiangmai','route','Doi Inthanon Gran Fondo','150km loop to the roof of Thailand and back — the region''s ultimate climb day.',4.8,false,null,'climbs',3),
+('chiangmai','stay','Cyclist-friendly stay (per night)','',null,false,60,null,0),
+('chiangmai','thing','Doi Suthep temple','⛩️ Golden pagodas high above the city.',null,false,null,null,0),
+('chiangmai','thing','Old City temples','🏯 Wander the moat-ringed historic core.',null,false,null,null,1),
+('chiangmai','thing','Nimman & night markets','🍜 Khao soi, cafés and street food.',null,false,null,null,2);
+
+delete from races where town_id='chiangmai';
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('pokhara','Pokhara','Gandaki','Nepal','🇳🇵','$','full',4.7,'{"cafes":4.4,"routes":4.9,"safety":4,"climbs":4.9,"storage":4.2}'::jsonb,'',array[]::text[],array['MTB','Gravel','Himalaya']::text[],array['trail','gravel','climber']::text[],'Nepal’s adventure hub on Phewa Lake, at the foot of the Annapurna range — the launchpad for Himalayan gravel and the legendary Annapurna Circuit.',28.21,83.99,'{"ride":[1,1,2,2,1,0,0,0,1,2,2,1],"crowd":[1,1,2,2,1,0,0,0,1,2,2,1],"best":"Oct–Nov and Mar–Apr — clear Himalaya, dry trails, mild temps.","peak":"October–November — the big trekking-and-riding season.","quiet":"Winter (Dec–Feb) — crisp and quiet, snow only up high.","climate":"Sub-tropical valley below the Himalaya; monsoon Jun–Sep.","getting":"25-min flight or 6 hr drive from Kathmandu.","terrain":"Himalayan gravel, big climbs and lakeside spins.","tip":"Ride Oct–Nov for the clearest Annapurna views; permits needed up high.","currency":"Nepalese rupee (रू) · Nepali"}'::jsonb,'[["🏔️","Sarangkot sunrise","Annapurna glowing over Phewa Lake."],["🛶","Phewa Lake","Row to the island temple at dusk."],["🪂","Paragliding","World-class flights over the valley."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='pokhara';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('pokhara','cafe','AM/PM Organic Café','Lakeside fuel before the hills.',4.6,false,null,null,0),
+('pokhara','cafe','Himalayan Java','Nepal’s home-grown coffee chain.',4.5,false,null,null,1),
+('pokhara','cafe','Lakeside roasters','Phewa-front cafés and bakeries.',4.4,false,null,null,2),
+('pokhara','shop','Chain Heads · Nepal MTB','Quality MTB & gravel hire, guides.',4.7,true,40,null,0),
+('pokhara','shop','Pokhara Cycle Hub','Hire, permits and circuit support.',4.5,true,35,null,1),
+('pokhara','route','Annapurna Circuit (gravel)','220km Himalayan epic toward Thorong La.',5,false,null,'gravel',0),
+('pokhara','route','Sarangkot sunrise climb','Steep climb to the famous viewpoint.',4.8,false,null,'climbs',1),
+('pokhara','route','Begnas & Rupa lakes','Quiet ridgelines and lake spins.',4.6,false,null,'road',2),
+('pokhara','route','Annapurna Foothills Epic','130km Himalayan foothills loop above Pokhara — climbing that never lets up.',4.8,false,null,'climbs',3),
+('pokhara','stay','Lakeside cyclist stay (per night)','',null,false,45,null,0),
+('pokhara','thing','Sarangkot sunrise','🏔️ Annapurna glowing over Phewa Lake.',null,false,null,null,0),
+('pokhara','thing','Phewa Lake','🛶 Row to the island temple at dusk.',null,false,null,null,1),
+('pokhara','thing','Paragliding','🪂 World-class flights over the valley.',null,false,null,null,2);
+
+delete from races where town_id='pokhara';
+
+insert into races (town_id,kind,badge,name,series,km,vert,race_date,status,discipline,note,sort) values
+('pokhara','mtb','🏁','Pokhara Enduro','Pokhara Enduro',35,1400,'2026-12-10','upcoming','mtb','Three days of technical Himalayan descents and flowy corners above Pokhara — 4th edition, 10–12 December 2026.',0);
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('ubud','Ubud · Bali','Bali','Indonesia','🇮🇩','$','full',4.6,'{"cafes":4.7,"routes":4.6,"safety":4,"climbs":4.4,"storage":4.3}'::jsonb,'',array[]::text[],array['Gravel','Volcano','Rice terraces']::text[],array['gravel','trail','cruiser','family']::text[],'Bali’s green heart — gravel through rice terraces and jungle, the Mount Batur volcano descent and warm island roads, all from a wellness-and-coffee base.',-8.52,115.26,'{"ride":[1,1,1,2,2,2,2,2,2,2,1,1],"crowd":[2,1,1,1,1,1,2,2,1,1,1,2],"best":"Apr–Oct — Bali’s dry season, warm and green.","peak":"July–August and the year-end holidays.","quiet":"Shoulder Apr–May and Sept–Oct — dry but calmer.","climate":"Tropical — dry Apr–Oct, wet Nov–Mar, warm year-round.","getting":"60–90 min from Denpasar (DPS) airport to Ubud.","terrain":"Rice-terrace gravel, jungle trails and the Batur descent.","tip":"Start at dawn — beat the heat, humidity and the scooters.","currency":"Indonesian rupiah (Rp) · Indonesian"}'::jsonb,'[["🌾","Tegallalang terraces","The postcard rice-terrace staircase."],["🌋","Mount Batur","Sunrise on the active volcano rim."],["🐒","Sacred Monkey Forest","Jungle temples in the heart of Ubud."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='ubud';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('ubud','cafe','Seniman Coffee Studio','Ubud’s specialty-coffee institution.',4.8,false,null,null,0),
+('ubud','cafe','Crate Café','Big brunch, big cyclist crowd.',4.6,false,null,null,1),
+('ubud','cafe','Suka Espresso','Pre-ride fuel near the rice fields.',4.5,false,null,null,2),
+('ubud','shop','Bali Bintang Cycling','Road, gravel & volcano-descent hire.',4.6,true,35,null,0),
+('ubud','shop','Bali Eco Cycling','Guided Batur-to-Ubud rides.',4.6,true,40,null,1),
+('ubud','route','Mount Batur to Ubud','Caldera-rim views, then a long descent.',4.8,false,null,'road',0),
+('ubud','route','Tegallalang rice terraces','Gravel through the iconic terraces.',4.6,false,null,'gravel',1),
+('ubud','route','Sidemen Valley','Quiet climbs beneath Mount Agung.',4.7,false,null,'climbs',2),
+('ubud','route','Bali Volcano Century','140km loop to the Kintamani caldera and Mt Batur — a big volcanic climbing day.',4.8,false,null,'climbs',3),
+('ubud','stay','Rice-field villa stay (per night)','',null,false,70,null,0),
+('ubud','thing','Tegallalang terraces','🌾 The postcard rice-terrace staircase.',null,false,null,null,0),
+('ubud','thing','Mount Batur','🌋 Sunrise on the active volcano rim.',null,false,null,null,1),
+('ubud','thing','Sacred Monkey Forest','🐒 Jungle temples in the heart of Ubud.',null,false,null,null,2);
+
+delete from races where town_id='ubud';
+
+insert into races (town_id,kind,badge,name,series,km,vert,race_date,status,discipline,note,sort) values
+('ubud','fondo','🏆','GFNY Bali — Gran Fondo Kintamani','GFNY Bali',134,2500,null,'annual','climbs','A 20km ascent to the Kintamani crater rim above Lake Batur — 134km gran fondo / 94km medio. Dates via GFNY Bali.',0);
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('jeju','Jeju Island','Jeju','South Korea','🇰🇷','$','full',4.6,'{"cafes":4.5,"routes":4.7,"safety":4.7,"climbs":4.5,"storage":4.6}'::jsonb,'',array[]::text[],array['Coastal loop','Road','Bikeway']::text[],array['cruiser','racer','family','climber']::text[],'Korea’s volcanic island — a 234km coastal bikeway right around the island, black-basalt beaches, Hallasan climbs and a stamp-as-you-go cycling passport.',33.49,126.53,'{"ride":[0,0,1,2,2,2,1,1,2,2,1,0],"crowd":[1,1,1,1,1,2,2,2,1,2,1,1],"best":"Apr–Jun and Sep–Oct — mild, dry and the coast at its best.","peak":"Summer holidays (Jul–Aug) and the autumn colour.","quiet":"Late spring and early-autumn weekdays — quiet bikeway.","climate":"Temperate island — humid summers (typhoons in Aug), windy winters.","getting":"Quick flights from Seoul or Busan to Jeju (CJU).","terrain":"A flat-ish 234km coastal bikeway plus Hallasan climbs.","tip":"Ride clockwise for the prevailing wind, and collect the path stamps.","currency":"South Korean won (₩) · Korean"}'::jsonb,'[["🌋","Hallasan & Seongsan","Korea’s highest peak and the sunrise tuff cone."],["🏖️","Black-basalt coast","Volcanic beaches and sea-women villages."],["🍊","Citrus & cafés","Hallabong oranges and ocean-view coffee."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='jeju';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('jeju','cafe','Café Mani','Ocean-view roaster on the ring road.',4.6,false,null,null,0),
+('jeju','cafe','Bomnal Café','Seaside cult café for a stamp stop.',4.6,false,null,null,1),
+('jeju','cafe','Halla coffee stops','Coffee strung around the coast.',4.4,false,null,null,2),
+('jeju','shop','Jeju Bike Hire','Hire plus the island bikeway passport.',4.6,true,30,null,0),
+('jeju','shop','Island Cycle','Road & e-bike hire near the airport.',4.5,true,35,null,1),
+('jeju','route','Jeju Fantasy Bikeway (full)','234km loop right around the island.',4.8,false,null,'road',0),
+('jeju','route','Hallasan foothills','Climb toward Korea’s highest peak.',4.6,false,null,'climbs',1),
+('jeju','route','Seongsan sunrise coast','East-coast cliffs and the tuff cone.',4.6,false,null,'road',2),
+('jeju','route','Jeju Round-the-Island','150km coastal loop circling the island — the classic Jeju century.',4.8,false,null,'road',3),
+('jeju','stay','Coastal cyclist stay (per night)','',null,false,80,null,0),
+('jeju','thing','Hallasan & Seongsan','🌋 Korea’s highest peak and the sunrise tuff cone.',null,false,null,null,0),
+('jeju','thing','Black-basalt coast','🏖️ Volcanic beaches and sea-women villages.',null,false,null,null,1),
+('jeju','thing','Citrus & cafés','🍊 Hallabong oranges and ocean-view coffee.',null,false,null,null,2);
+
+delete from races where town_id='jeju';
+
+insert into races (town_id,kind,badge,name,series,km,vert,race_date,status,discipline,note,sort) values
+('jeju','fondo','🏆','Jeju Round-the-Island','Jeju Cycling Festival',234,1700,null,'annual','road','Circumnavigate the island on the 234km Fantasy Bikeway with the Jeju Tourism Organisation festival. Dates via the organiser.',0);
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('sunmoonlake','Sun Moon Lake','Nantou','Taiwan','🇹🇼','$','full',4.7,'{"cafes":4.5,"routes":4.8,"safety":4.8,"climbs":4.3,"storage":4.6}'::jsonb,'',array[]::text[],array['Scenic loop','Road','Family']::text[],array['cruiser','family','racer']::text[],'Taiwan’s most beautiful ride — a 29km lakeside loop of boardwalks and forest paths, ranked among the world’s top-10 bike trails, in the misty central mountains.',23.86,120.92,'{"ride":[2,2,2,2,1,1,1,1,1,2,2,2],"crowd":[1,1,1,1,1,1,1,1,2,2,1,2],"best":"Oct–Apr — mild, clear and calm on the water.","peak":"Autumn weekends and the year-round tour-group flow.","quiet":"Winter weekdays — misty, peaceful and quiet.","climate":"Mild central mountains — hot summers, typhoon risk Jul–Sep.","getting":"~1 hr from Taichung HSR by bus or transfer.","terrain":"A smooth 29km lakeside loop with optional mountain climbs.","tip":"Ride early — the over-water bikeways are magic at sunrise.","currency":"New Taiwan dollar (NT$) · Mandarin"}'::jsonb,'[["🚡","Ropeway & temples","Cable car and lakeside shrines."],["🛶","Lake boat & Lalu","Cruise to the sacred island."],["🍵","Assam tea farms","Hilltop tea and Thao culture."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='sunmoonlake';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('sunmoonlake','cafe','Hugosum lakeside café','Glass-walled coffee over the water.',4.7,false,null,null,0),
+('sunmoonlake','cafe','Ita Thao stalls','Aboriginal-village street food.',4.5,false,null,null,1),
+('sunmoonlake','cafe','Xiangshan café','Coffee at the architectural visitor centre.',4.5,false,null,null,2),
+('sunmoonlake','shop','Giant Store Sun Moon Lake','Lakeside hire from the Taiwan giant.',4.8,true,35,null,0),
+('sunmoonlake','shop','Merida hire point','Road & e-bike hire by the pier.',4.6,true,35,null,1),
+('sunmoonlake','route','Sun Moon Lake loop','29km of boardwalks and forest paths.',4.9,false,null,'road',0),
+('sunmoonlake','route','Xiangshan & Yuetan bikeways','The famous over-water cycleways.',4.8,false,null,'road',1),
+('sunmoonlake','route','Shuishe to Ita Thao','The scenic eastern shore.',4.6,false,null,'road',2),
+('sunmoonlake','route','Sun Moon Lake Grand Loop','145km lake circuit reaching toward the Wuling climb — a strong-rider epic.',4.8,false,null,'climbs',3),
+('sunmoonlake','stay','Lakeside cyclist stay (per night)','',null,false,95,null,0),
+('sunmoonlake','thing','Ropeway & temples','🚡 Cable car and lakeside shrines.',null,false,null,null,0),
+('sunmoonlake','thing','Lake boat & Lalu','🛶 Cruise to the sacred island.',null,false,null,null,1),
+('sunmoonlake','thing','Assam tea farms','🍵 Hilltop tea and Thao culture.',null,false,null,null,2);
+
+delete from races where town_id='sunmoonlake';
+
+insert into races (town_id,kind,badge,name,series,km,vert,race_date,status,discipline,note,sort) values
+('sunmoonlake','fondo','🏆','Come! BikeDay — Round-the-Lake','Taiwan Cycling Festival',30,400,'2026-11-07','upcoming','road','The Taiwan Cycling Festival''s flagship ride around Sun Moon Lake — culture, music and the classic 30km lake loop.',0);
+
+insert into towns (id,name,region,country,flag,currency,status,editorial_score,editorial_dims,photo,gallery,tags,personas,blurb,lat,lng,when_info,see_do)
+values ('medellin','Medellín','Antioquia','Colombia','🇨🇴','$','full',4.8,'{"cafes":4.7,"routes":4.9,"safety":4.1,"climbs":5,"storage":4.4}'::jsonb,'',array[]::text[],array['Climbs','Altitude','Pro culture']::text[],array['climber','racer','gravel']::text[],'Colombia’s cycling powerhouse — the City of Eternal Spring, ringed by big Andean climbs and steeped in the pro culture that produced Quintana and Bernal. Gateway to Alto de Letras.',6.24,-75.58,'{"ride":[2,2,2,1,1,2,2,2,1,1,1,2],"crowd":[2,1,1,1,1,1,2,1,1,1,1,2],"best":"Dec–Mar and Jun–Aug — the drier windows in the eternal spring.","peak":"December–January and the Jul–Aug holidays.","quiet":"The shoulder rainy months (Apr–May, Sep–Nov) — green and quiet.","climate":"Spring-like all year (~1,500m); wetter Apr–May and Sep–Nov.","getting":"Fly to Medellín (MDE/EOH); the climbs start from the city.","terrain":"Endless Andean climbs from 1,500m up past 3,000m.","tip":"Acclimatise for a day or two before tackling Alto de Letras.","currency":"Colombian peso ($) · Spanish"}'::jsonb,'[["🚡","Metrocable & Comuna 13","Cable cars and the famous street-art barrio."],["🌸","Guatapé day trip","El Peñol rock and the lakes."],["☕","Coffee region","Ride out into the Eje Cafetero."]]'::jsonb)
+on conflict (id) do update set name=excluded.name,region=excluded.region,country=excluded.country,flag=excluded.flag,currency=excluded.currency,editorial_score=excluded.editorial_score,editorial_dims=excluded.editorial_dims,photo=excluded.photo,gallery=excluded.gallery,tags=excluded.tags,personas=excluded.personas,blurb=excluded.blurb,lat=excluded.lat,lng=excluded.lng,when_info=excluded.when_info,see_do=excluded.see_do,updated_at=now();
+
+delete from places where town_id='medellin';
+
+insert into places (town_id,kind,name,note,editorial_rating,hire,price,discipline,sort) values
+('medellin','cafe','Pergamino Café','Colombia’s best beans — the riders’ stop.',4.8,false,null,null,0),
+('medellin','cafe','Café Velódromo','Cyclist café in El Poblado.',4.6,false,null,null,1),
+('medellin','cafe','Rituales Café','Specialty roaster, big breakfasts.',4.6,false,null,null,2),
+('medellin','shop','Suricato Pro Bike','High-end road hire and guided climbs.',4.7,true,50,null,0),
+('medellin','shop','Colombia Cycling Co.','Altitude camps and SAG support.',4.7,true,55,null,1),
+('medellin','route','Alto de Las Palmas','The classic ~13km city climb to the plateau.',4.8,false,null,'climbs',0),
+('medellin','route','Alto de Santa Elena','A long, steady Andean ascent from the city.',4.8,false,null,'climbs',1),
+('medellin','route','Alto de Letras (day trip)','The world’s longest paved climb — ~80km.',5,false,null,'climbs',2),
+('medellin','route','Alto de Letras Gran Fondo','150km on the legendary Alto de Letras flank — the world''s longest paved climb.',4.8,false,null,'climbs',3),
+('medellin','stay','Cyclist-friendly stay (per night)','',null,false,75,null,0),
+('medellin','thing','Metrocable & Comuna 13','🚡 Cable cars and the famous street-art barrio.',null,false,null,null,0),
+('medellin','thing','Guatapé day trip','🌸 El Peñol rock and the lakes.',null,false,null,null,1),
+('medellin','thing','Coffee region','☕ Ride out into the Eje Cafetero.',null,false,null,null,2);
+
+delete from races where town_id='medellin';
+
+insert into races (town_id,kind,badge,name,series,km,vert,race_date,status,discipline,note,sort) values
+('medellin','fondo','🏆','El Giro de Rigo — Medellín route','El Giro de Rigo',160,2600,null,'historic','climbs','Rigoberto Urán''s gran fondo as it ran from Medellín over Alto de Las Palmas to Rionegro (Reto Caimán, 160km). The 2026 edition moves to Barranquilla.',0),
+('medellin','pro','🏁','Tour Colombia — Alto de Las Palmas','Tour Colombia 2.1',130,2500,null,'historic','climbs','The WorldTour peloton raced the Antioquia climbs of Las Palmas and Santa Elena around Medellín and Rionegro in 2019–2020.',1);
+
+insert into towns (id,name,region,country,flag,status) values ('boulder','Boulder','Colorado','United States','🇺🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('nice','Nice','Côte d’Azur','France','🇫🇷','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('innsbruck','Innsbruck','Tyrol','Austria','🇦🇹','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('stellenbosch','Stellenbosch','Western Cape','South Africa','🇿🇦','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('queenstown','Queenstown','Otago','New Zealand','🇳🇿','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('lucca','Lucca','Tuscany','Italy','🇮🇹','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('andorra-la-vella','Andorra la Vella','Andorra','Andorra','🇦🇩','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('calpe','Calpe','Valencia','Spain','🇪🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('bedoin','Bédoin','Provence','France','🇫🇷','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('livigno','Livigno','Lombardy','Italy','🇮🇹','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('davos','Davos','Graubünden','Switzerland','🇨🇭','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('morzine','Morzine','Haute-Savoie','France','🇫🇷','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('finale-ligure','Finale Ligure','Liguria','Italy','🇮🇹','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('bend','Bend','Oregon','United States','🇺🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('rotorua','Rotorua','Bay of Plenty','New Zealand','🇳🇿','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('squamish','Squamish','British Columbia','Canada','🇨🇦','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('maleny','Maleny','Queensland','Australia','🇦🇺','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('bowral','Bowral','New South Wales','Australia','🇦🇺','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('jindabyne','Jindabyne','New South Wales','Australia','🇦🇺','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('tenerife','Tenerife','Canary Islands','Spain','🇪🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('sierra-nevada','Sierra Nevada','Andalusia','Spain','🇪🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('chamonix','Chamonix','Haute-Savoie','France','🇫🇷','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('asheville','Asheville','North Carolina','United States','🇺🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('moab','Moab','Utah','United States','🇺🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('bellagio','Bellagio','Lombardy','Italy','🇮🇹','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('whistler','Whistler','British Columbia','Canada','🇨🇦','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('maydena','Maydena','Tasmania','Australia','🇦🇺','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('margaret-river','Margaret River','Western Australia','Australia','🇦🇺','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('sedona','Sedona','Arizona','United States','🇺🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('park-city','Park City','Utah','United States','🇺🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('santa-cruz','Santa Cruz','California','United States','🇺🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('tucson','Tucson','Arizona','United States','🇺🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('durango','Durango','Colorado','United States','🇺🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('crested-butte','Crested Butte','Colorado','United States','🇺🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('fruita','Fruita','Colorado','United States','🇺🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('sun-valley','Sun Valley','Idaho','United States','🇺🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('brevard','Brevard','North Carolina','United States','🇺🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('banff','Banff','Alberta','Canada','🇨🇦','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('canmore','Canmore','Alberta','Canada','🇨🇦','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('mont-sainte-anne','Mont-Sainte-Anne','Quebec','Canada','🇨🇦','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('stowe','Stowe','Vermont','United States','🇺🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('bormio','Bormio','Lombardy','Italy','🇮🇹','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('bourg-d-oisans','Bourg d’Oisans','Isère','France','🇫🇷','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('annecy','Annecy','Haute-Savoie','France','🇫🇷','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('riva-del-garda','Riva del Garda','Trentino','Italy','🇮🇹','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('corvara','Corvara','South Tyrol','Italy','🇮🇹','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('bolzano','Bolzano','South Tyrol','Italy','🇮🇹','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('solden','Sölden','Tyrol','Austria','🇦🇹','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('saalbach','Saalbach','Salzburg','Austria','🇦🇹','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('leogang','Leogang','Salzburg','Austria','🇦🇹','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('les-gets','Les Gets','Haute-Savoie','France','🇫🇷','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('verbier','Verbier','Valais','Switzerland','🇨🇭','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('laax','Laax','Graubünden','Switzerland','🇨🇭','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('kranjska-gora','Kranjska Gora','Upper Carniola','Slovenia','🇸🇮','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('bled','Bled','Upper Carniola','Slovenia','🇸🇮','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('porec','Poreč','Istria','Croatia','🇭🇷','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('freiburg','Freiburg','Black Forest','Germany','🇩🇪','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('garmisch-partenkirchen','Garmisch-Partenkirchen','Bavaria','Germany','🇩🇪','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('funchal','Funchal','Madeira','Portugal','🇵🇹','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('faro','Faro','Algarve','Portugal','🇵🇹','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('gran-canaria','Gran Canaria','Canary Islands','Spain','🇪🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('lanzarote','Lanzarote','Canary Islands','Spain','🇪🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('denia','Dénia','Valencia','Spain','🇪🇸','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('catania','Catania','Sicily','Italy','🇮🇹','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('aviemore','Aviemore','Cairngorms','United Kingdom','🇬🇧','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('betws-y-coed','Betws-y-Coed','Snowdonia','United Kingdom','🇬🇧','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('hawes','Hawes','Yorkshire Dales','United Kingdom','🇬🇧','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('bakewell','Bakewell','Peak District','United Kingdom','🇬🇧','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('douglas','Douglas','Isle of Man','Isle of Man','🇮🇲','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('killarney','Killarney','Kerry','Ireland','🇮🇪','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('chiang-mai','Chiang Mai','Chiang Mai','Thailand','🇹🇭','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('niseko','Niseko','Hokkaido','Japan','🇯🇵','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('bariloche','Bariloche','Río Negro','Argentina','🇦🇷','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('cape-town','Cape Town','Western Cape','South Africa','🇿🇦','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('wanaka','Wanaka','Otago','New Zealand','🇳🇿','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('nelson','Nelson','Tasman','New Zealand','🇳🇿','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('mansfield','Mansfield','Victoria','Australia','🇦🇺','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('falls-creek','Falls Creek','Victoria','Australia','🇦🇺','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('warburton','Warburton','Victoria','Australia','🇦🇺','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('daylesford','Daylesford','Victoria','Australia','🇦🇺','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('thredbo','Thredbo','New South Wales','Australia','🇦🇺','radar') on conflict (id) do nothing;
+
+insert into towns (id,name,region,country,flag,status) values ('smithfield','Smithfield','Cairns · Queensland','Australia','🇦🇺','radar') on conflict (id) do nothing;
+
+insert into articles (slug,title,dek,body,kind,series,episode,town_id,image_kind,published,published_at)
+values ('town-in-focus-girona-the-town-that-adopted-the-pro-peloton','Town in Focus: Girona — the town that adopted the pro peloton','Our launch film. A week inside the cafés, climbs and crews that made a medieval city the unofficial capital of pro cycling.','<p>For the first episode of Town in Focus, our European correspondent Mara Velasco spent a week living like a Girona local — dawn espressos at the riders’ cafés, a lap of the Rocacorba climb, and long lunches with the mechanics, soigneurs and pros who quietly call this medieval city home.</p><p>What emerges is a portrait of a town that didn’t chase cycling — cycling came to it, drawn by quiet roads, a perfect airport-to-saddle radius and a community that adopts every rider who turns up. It’s the blueprint for what a Cycletown can be.</p>','Series','Town in Focus',1,'girona','road',true,now())
+on conflict (slug) do update set title=excluded.title,dek=excluded.dek,body=excluded.body,kind=excluded.kind,series=excluded.series,episode=excluded.episode,town_id=excluded.town_id,image_kind=excluded.image_kind;
+
+insert into articles (slug,title,dek,body,kind,series,episode,town_id,image_kind,published,published_at)
+values ('town-in-focus-bright-inside-australia-s-alpine-cycling-heart','Town in Focus: Bright — inside Australia’s alpine cycling heart','Episode 2. Mt Buffalo at sunrise, gravel in the afternoon, and the main-street café culture that fuels it all.','<p>Episode two heads to Victoria’s High Country, where Tom Hapgood rides Mt Buffalo before the valley fog lifts and chases gravel into the foothills by afternoon.</p><p>Bright punches far above its size: three of Australia’s great climbs on the doorstep, a rail trail for the family, and a main street of cafés and bike shops that turn a ride into a weekend. We meet the locals keeping it that way.</p>','Series','Town in Focus',2,'bright','alpine',true,now())
+on conflict (slug) do update set title=excluded.title,dek=excluded.dek,body=excluded.body,kind=excluded.kind,series=excluded.series,episode=excluded.episode,town_id=excluded.town_id,image_kind=excluded.image_kind;
+
+insert into articles (slug,title,dek,body,kind,series,episode,town_id,image_kind,published,published_at)
+values ('town-in-focus-medellin-climbing-at-altitude-with-the-locals','Town in Focus: Medellín — climbing at altitude with the locals','Episode 3. Dawn on Las Palmas, the city that makes Grand Tour champions, and a riding culture like nowhere else.','<p>Our Latin America correspondent Sofía Duarte joins the famous dawn bunches grinding up Alto de Las Palmas, where weekend riders share the road with future Grand Tour winners.</p><p>Medellín rides at altitude, year-round, with a passion that has to be seen. Episode three explores how a city reinvented itself — and why its climbs are becoming a bucket-list pilgrimage for travelling cyclists.</p>','Series','Town in Focus',3,'medellin','climb',true,now())
+on conflict (slug) do update set title=excluded.title,dek=excluded.dek,body=excluded.body,kind=excluded.kind,series=excluded.series,episode=excluded.episode,town_id=excluded.town_id,image_kind=excluded.image_kind;
+
+insert into articles (slug,title,dek,body,kind,series,episode,town_id,image_kind,published,published_at)
+values ('why-gravel-travel-is-the-fastest-growing-way-to-see-the-world','Why gravel travel is the fastest-growing way to see the world','A Cycletowns feature on the boom reshaping where — and how — we ride.','<p>Gravel has gone from niche to the defining story of modern cycling, and it’s changing travel with it: riders are swapping busy tourist roads for quiet backcountry, and small towns are reaping the reward.</p><p>We unpack the trend with the riders, guides and tourism boards living it — and pick the regions getting it right.</p>','Feature',null,null,null,'gravel',true,now())
+on conflict (slug) do update set title=excluded.title,dek=excluded.dek,body=excluded.body,kind=excluded.kind,series=excluded.series,episode=excluded.episode,town_id=excluded.town_id,image_kind=excluded.image_kind;
+
+insert into articles (slug,title,dek,body,kind,series,episode,town_id,image_kind,published,published_at)
+values ('seven-bridges-at-first-light-the-shimanami-kaido-in-photographs','Seven bridges at first light: the Shimanami Kaido, in photographs','A Cycletowns photo essay across Japan’s most beautiful cycle route.','<p>Our Asia correspondent Kenji Mori rode the Shimanami Kaido from Onomichi to Imabari at dawn, camera in the jersey pocket, to capture the island-hopping route that has become a symbol of Japanese cycle tourism.</p><p>Six islands, seven bridges, and a quality of morning light that explains why this ride sits on so many bucket lists.</p>','Photo essay',null,null,'onomichi','road',true,now())
+on conflict (slug) do update set title=excluded.title,dek=excluded.dek,body=excluded.body,kind=excluded.kind,series=excluded.series,episode=excluded.episode,town_id=excluded.town_id,image_kind=excluded.image_kind;
+
+commit;

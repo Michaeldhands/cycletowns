@@ -54,6 +54,7 @@ export type Race = {
   status?: string;
   disc?: string;
   note?: string;
+  illustrative?: boolean;
 };
 export type CatDef = { id: string; label: string; icon: string; tag: string; blurb: string };
 export type Persona = { id: string; e: string; n: string; t: string; d: string };
@@ -64,7 +65,11 @@ export const TOWN_GEO = geoJson as Record<string, Geo>;
 export const TOWN_EXTRA = extraJson as unknown as Record<string, TownExtra>;
 export const TOWN_SEEDO = seedoJson as unknown as Record<string, SeeDo[]>;
 export const TOWN_WHEN = whenJson as Record<string, WhenInfo>;
-export const RACES = racesJson as unknown as Record<string, Race[]>;
+const racesRaw = racesJson as unknown as Record<string, Race[]>;
+/** Real races only — entries the demo marked "illustrative" are invented and never shown. */
+export const RACES: Record<string, Race[]> = Object.fromEntries(
+  Object.entries(racesRaw).map(([k, v]) => [k, v.filter((r) => !r.illustrative)]),
+);
 export const CAT_DEFS = catDefsJson as CatDef[];
 export const CAT_HERO = catHeroJson as Record<string, string[]>;
 export const PERSONAS = personasJson as Persona[];

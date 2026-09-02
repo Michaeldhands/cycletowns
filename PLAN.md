@@ -18,6 +18,9 @@ and honest "coming soon + waitlist" pages for join / log in / plan / shop / crea
 Saved towns are kept in the browser until accounts exist.
 
 ## Phase 2 — accounts & community (Supabase)
+Status: schema + seed in `supabase/` (run `supabase/setup.sql` once in the Supabase SQL editor; regenerate the
+seed with `node scripts/build-seed-sql.js`). Auth (magic link + Google), rider profiles, saved towns synced to the
+account, reviews with the score taking over from editorial at 5 reviews, points/tiers. Groups, feed, admin next.
 Schema + seed from `src/data/*.json`; email/Google auth; onboarding; saved towns synced; rider reviews
 (the five Cyclist Score dimensions) that take over from editorial launch scores; groups; feed; profiles; points;
 admin area (towns, places, articles, users, partners) and dashboards on live data; venue geocoding for map pins.

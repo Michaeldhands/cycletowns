@@ -1,7 +1,8 @@
 "use client";
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
+import { hasSupabaseClient, supabaseBrowser } from "@/lib/supabase/client";
 
-/* Saved towns live in the browser until accounts arrive (phase 2), then sync to the rider's profile. */
+/* Saved towns: kept in the browser for guests; synced to the rider's account when signed in. */
 const KEY = "ct_saved";
 const EVT = "ct-saved-change";
 
@@ -34,7 +35,6 @@ function subscribe(cb: () => void) {
     window.removeEventListener("storage", cb);
   };
 }
-/** Current saved ids, kept in sync across components and tabs. Empty on the server. */
 export function useSaved(): string[] {
   const raw = useSyncExternalStore(subscribe, readRaw, () => "[]");
   try {
@@ -44,18 +44,42 @@ export function useSaved(): string[] {
     return [];
   }
 }
-export function toggleSaved(id: string) {
-  const cur = readSaved();
-  writeSaved(cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]);
+
+let syncedFor: string | null = null;
+/** Once per session for a signed-in rider: merge browser saves into the account and pull the account list back. */
+export function useSyncSaved(userId?: string | null) {
+  useEffect(() => {
+    if (!userId || !hasSupabaseClient() || syncedFor === userId) return;
+    syncedFor = userId;
+    (async () => {
+      const sb = supabaseBrowser();
+      const local = readSaved();
+      if (local.length) await sb.from("saved_towns").upsert(local.map((town_id) => ({ user_id: userId, town_id })), { onConflict: "user_id,town_id" });
+      const { data } = await sb.from("saved_towns").select("town_id").eq("user_id", userId);
+      if (data) writeSaved(data.map((r: { town_id: string }) => r.town_id));
+    })();
+  }, [userId]);
 }
 
-export function SaveButton({ id, light = false }: { id: string; light?: boolean }) {
+export async function toggleSaved(id: string, userId?: string | null) {
+  const cur = readSaved();
+  const on = !cur.includes(id);
+  writeSaved(on ? [...cur, id] : cur.filter((x) => x !== id));
+  if (userId && hasSupabaseClient()) {
+    const sb = supabaseBrowser();
+    if (on) await sb.from("saved_towns").upsert({ user_id: userId, town_id: id }, { onConflict: "user_id,town_id" });
+    else await sb.from("saved_towns").delete().eq("user_id", userId).eq("town_id", id);
+  }
+}
+
+export function SaveButton({ id, light = false, userId }: { id: string; light?: boolean; userId?: string | null }) {
+  useSyncSaved(userId);
   const saved = useSaved().includes(id);
   return (
     <button
       className="lk-ghost big"
       style={light ? { color: "#fff", borderColor: "rgba(255,255,255,.6)", background: "rgba(255,255,255,.1)" } : undefined}
-      onClick={() => toggleSaved(id)}
+      onClick={() => toggleSaved(id, userId)}
       aria-pressed={saved}
     >
       {saved ? "♥ Saved" : "♡ Save"}

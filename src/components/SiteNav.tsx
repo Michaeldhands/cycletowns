@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Logo } from "./Logo";
+import { AccountChip } from "./AccountChip";
 
 const LINKS: [string, string][] = [
   ["Towns", "/towns"],
@@ -32,9 +33,7 @@ export function SiteNav() {
           <Link href="/saved" className="savepill">
             <span className="hc">♡</span> Saved
           </Link>
-          <Link href="/login" className="lk-ghost navdesk" style={{ textDecoration: "none" }}>
-            Log in
-          </Link>
+          <AccountChip />
           <Link href="/plan" className="lk-coral navdesk" style={{ textDecoration: "none" }}>
             ✨ Plan my trip
           </Link>
@@ -88,7 +87,8 @@ export function TopBar({ back }: { back?: { href: string; label: string } }) {
           <Link href="/membership" className="lk-ghost navdesk" style={{ textDecoration: "none" }}>
             ★ Rewards
           </Link>
-          <Link href="/join" className="lk-coral" style={{ textDecoration: "none" }}>
+          <AccountChip compact />
+          <Link href="/join" className="lk-coral navdesk" style={{ textDecoration: "none" }}>
             Get started
           </Link>
         </div>

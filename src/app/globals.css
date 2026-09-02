@@ -1225,3 +1225,11 @@ a.lk-ghost,a.lk-coral,a.lk-teal,a.savepill{text-decoration:none;display:inline-f
 .rankrow.lk{opacity:.72}
 .rankrow.lk:hover{opacity:1}
 a.catchip,a.scopechip{text-decoration:none}
+.stars{display:inline-flex;gap:2px}
+.star{background:none;border:0;font-size:22px;line-height:1;color:var(--grey-l);cursor:pointer;padding:0 1px}
+.star.on{color:var(--coral)}
+.star:hover{transform:scale(1.15)}
+.rvsc{margin-left:auto;font-weight:800;font-size:13px;background:var(--coral-050);color:var(--coral-700);padding:3px 9px;border-radius:9px}
+.rvbody{font-size:13.5px;color:var(--ink);line-height:1.5;margin:0}
+.acchead{display:flex;align-items:center;gap:18px}
+@media(max-width:600px){.acchead{flex-wrap:wrap}}

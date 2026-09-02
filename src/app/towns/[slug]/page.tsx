@@ -8,6 +8,10 @@ import { SectionCarousel } from "@/components/Carousel";
 import { CafeCard, RideCard, ShopCard, ThingCard, TownCard } from "@/components/Cards";
 import { TownMap } from "@/components/TownMap";
 import { SaveButton } from "@/components/SaveButton";
+import { ReviewForm } from "@/components/ReviewForm";
+import { Avatar } from "@/components/Avatar";
+import { currentUser } from "@/lib/supabase/server";
+import { REVIEWS_TO_TAKE_OVER, effectiveScore, fetchTownReviews } from "@/lib/reviews";
 import { photoURL, ridePic, townHero, townImages } from "@/lib/images";
 import {
   DIM_LABELS,
@@ -31,6 +35,7 @@ import {
 } from "@/lib/towns";
 
 export const dynamicParams = false;
+export const dynamic = "force-dynamic";
 export function generateStaticParams() {
   return [...TOWNS.map((t) => ({ slug: t.id })), ...LITE_TOWNS.map((t) => ({ slug: t.slug }))];
 }
@@ -109,8 +114,12 @@ function DimBar({ label, v }: { label: string; v: number }) {
 export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
   const { slug } = await params;
   const t = getTown(slug);
-  if (!t) return <LiteTownPage slug={slug} />;
+  const me = await currentUser();
+  if (!t) return <LiteTownPage slug={slug} userId={me?.id ?? null} />;
 
+  const { reviews, score } = await fetchTownReviews(t.id);
+  const eff = effectiveScore(t, score);
+  const mine = me ? reviews.find((r) => r.user_id === me.id) : undefined;
   const imgs = townImages(t);
   const rk = rankOf(t.id);
   const geo = TOWN_GEO[t.id];
@@ -143,7 +152,7 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
             <h1>{t.name}</h1>
             <div className="meta">
               <span className="rk">#{rk} ranked</span>
-              <span className="sc">★ {t.score.toFixed(1)} Cyclist Score</span>
+              <span className="sc">★ {eff.score.toFixed(1)} Cyclist Score{eff.count ? ` · ${eff.count} review${eff.count === 1 ? "" : "s"}` : ""}</span>
               <span className="sc">
                 {t.flag} {t.region} · {t.country}
               </span>
@@ -153,7 +162,7 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
               <Link href={`/plan?town=${t.id}`} className="lk-coral big">
                 ✨ Plan my trip here
               </Link>
-              <SaveButton id={t.id} light />
+              <SaveButton id={t.id} light userId={me?.id ?? null} />
             </div>
           </div>
         </div>
@@ -186,15 +195,17 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
           <div className="wscorebox" style={{ maxWidth: "none" }}>
             <h3 style={{ fontSize: 14, fontWeight: 800 }}>Cyclist Score breakdown</h3>
             <div className="csub" style={{ color: "var(--grey-m)", fontSize: 12, margin: "2px 0 8px" }}>
-              Editorial launch score · rider reviews open soon and will take over
+              {eff.source === "riders"
+                ? `From ${eff.count} verified rider reviews`
+                : `Editorial launch score · rider reviews take over at ${REVIEWS_TO_TAKE_OVER}${eff.count ? ` (${eff.count} so far)` : ""}`}
             </div>
             {dims.map((k) => (
-              <DimBar key={k} label={DIM_LABELS[k][1]} v={t.scoreDims[k]} />
+              <DimBar key={k} label={DIM_LABELS[k][1]} v={eff.dims[k]} />
             ))}
             <div style={{ marginTop: 12 }}>
-              <Link href={`/join?review=${t.id}`} className="lk-coral" style={{ fontSize: 13 }}>
-                ⭐ Be one of the first to review {t.name}
-              </Link>
+              <a href="#review" className="lk-coral" style={{ fontSize: 13 }}>
+                ⭐ {mine ? "Update your review" : `Review ${t.name}`}
+              </a>
             </div>
           </div>
         </div>
@@ -378,29 +389,41 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
         />
       )}
 
-      {/* REVIEWS (opens with accounts) */}
-      <div className="wsec">
+      {/* REVIEWS */}
+      <div className="wsec" id="review">
         <div className="wh">
           <div>
             <h2>Rider reviews</h2>
-            <span className="wsub">honest, from riders who’ve actually ridden here</span>
+            <span className="wsub">{reviews.length ? `${eff.count} honest reviews from riders who’ve ridden here` : "honest, from riders who’ve actually ridden here"}</span>
           </div>
         </div>
-        <div className="concierge">
-          <div className="cgl">
-            <div className="cgtag">Reviews open soon</div>
-            <h2>Ridden {t.name}? Help rank it.</h2>
-            <p>
-              Rider reviews are what the Cyclist Score is built on. Join free and you’ll be first in when reviews open for{" "}
-              {t.name} — routes, café culture, road safety, climbs and bike storage, rated by you.
-            </p>
-            <Link href={`/join?review=${t.id}`} className="lk-coral big">
-              Join the bunch
-            </Link>
+        <div className="twocol">
+          <div>
+            {reviews.length === 0 && (
+              <div className="unlocknote" style={{ fontSize: 14, padding: 16, marginBottom: 14 }}>
+                No reviews yet — be the first to rate {t.name}. The first {REVIEWS_TO_TAKE_OVER} reviews switch the score from editorial to rider-built.
+              </div>
+            )}
+            <div className="wgrid g2">
+              {reviews.map((r) => {
+                const avg = (r.cafes + r.routes + r.safety + r.climbs + r.storage) / 5;
+                return (
+                  <div className="rvcard" key={r.id}>
+                    <div className="rvtop">
+                      <Avatar name={r.profiles?.display_name || "Rider"} url={r.profiles?.avatar_url} size={38} />
+                      <div>
+                        <div className="rvname">{r.profiles?.display_name || "Rider"}{r.profiles?.tier === "champion" ? " 👑" : ""}</div>
+                        <div className="rvmeta">{[r.ride_type, r.profiles?.home_town].filter(Boolean).join(" · ")} · {new Date(r.created_at).toLocaleDateString("en-AU", { month: "short", year: "numeric" })}</div>
+                      </div>
+                      <span className="rvsc">★ {avg.toFixed(1)}</span>
+                    </div>
+                    {r.body && <p className="rvbody">{r.body}</p>}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div className="cgr">
-            <Photo src={ridePic("group", "rev-" + t.id, 900)} />
-          </div>
+          <ReviewForm townId={t.id} townName={t.name} userId={me?.id ?? null} existing={mine} />
         </div>
       </div>
 
@@ -430,7 +453,7 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
 }
 
 /* ---------- towns without a full guide yet ---------- */
-function LiteTownPage({ slug }: { slug: string }) {
+function LiteTownPage({ slug, userId }: { slug: string; userId: string | null }) {
   const l = getLiteTown(slug);
   if (!l) notFound();
   const nearby = rankedTowns().filter((x) => regionOf(x.country) === regionOf(l.country)).slice(0, 4);
@@ -467,7 +490,7 @@ function LiteTownPage({ slug }: { slug: string }) {
               <Link href={`/join?town=${slug}`} className="lk-coral big">
                 Help build {l.name}
               </Link>
-              <SaveButton id={slug} light />
+              <SaveButton id={slug} light userId={userId} />
             </div>
           </div>
           <div className="cgr">
