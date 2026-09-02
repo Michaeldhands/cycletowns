@@ -40,6 +40,7 @@ export function Footer() {
             <Link href="/join">Join the bunch</Link>
             <Link href="/feed">The feed</Link>
             <Link href="/membership">Membership &amp; rewards</Link>
+            <Link href="/offers">Member offers</Link>
             <Link href="/creators">Become a creator</Link>
             <Link href="/login">Log in</Link>
           </div>

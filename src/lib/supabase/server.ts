@@ -42,7 +42,14 @@ export type Profile = {
   tier: "rider" | "insider" | "champion";
   is_admin: boolean;
   onboarded: boolean;
+  stripe_customer_id?: string | null;
+  membership?: "free" | "insider";
+  membership_interval?: string | null;
+  membership_until?: string | null;
 };
+
+/** Active Insider member? */
+export const isMember = (p: Profile | null | undefined) => !!p && p.membership === "insider" && (!p.membership_until || new Date(p.membership_until).getTime() > Date.now() - 3 * 86400000);
 
 /** Current user + profile, or null. */
 export async function currentUser(): Promise<{ id: string; email: string | null; profile: Profile | null } | null> {

@@ -28,7 +28,9 @@ admin area (towns, places, articles, users, partners) and dashboards on live dat
 ## Phase 3 — revenue & content
 Status: admin editors for towns (details, photos, places, races) and news articles are live; town guides, rankings and
 news now read from the database (the bundled JSON is only a fallback). Run `supabase/migrations/0002_storage.sql` once
-for the media bucket.
+for the media bucket, and `0003_membership.sql` for Insider membership + partner offers.
+Insider membership: A$7/month or A$80/year via Stripe Checkout (`/api/stripe/*`); the webhook mirrors subscription
+status onto `profiles`. Needs STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET and SUPABASE_SERVICE_ROLE_KEY in Netlify.
 Stripe membership; partner self-serve (claim listing, member/featured plans, offer codes, dashboards);
 news CMS; shop (Stripe or Shopify); trip planner; loop builder; social wall via Instagram/TikTok APIs.
 

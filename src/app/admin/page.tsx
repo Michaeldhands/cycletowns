@@ -48,6 +48,7 @@ export default async function Admin({ searchParams }: PageProps<"/admin">) {
 
   async function Overview() {
     const since = new Date(Date.now() - 7 * 86400000).toISOString();
+    const { count: insiders } = await sb.from("profiles").select("*", { count: "exact", head: true }).eq("membership", "insider");
     const [riders, ridersWeek, reviews, groups, posts, saved, partners] = await Promise.all([
       count("profiles"),
       count("profiles", since),
@@ -69,7 +70,7 @@ export default async function Admin({ searchParams }: PageProps<"/admin">) {
       <>
         <div className="adtop"><h1>Overview</h1><span className="live"><span className="pulse" /> Live data</span></div>
         <div className="kpis">
-          {[["Riders", riders, `+${ridersWeek} this week`], ["Reviews", reviews, ""], ["Groups", groups, ""], ["Posts", posts, ""], ["Saved towns", saved, ""], ["Partners", partners, ""]].map(([k, v, d]) => (
+          {[["Riders", riders, `+${ridersWeek} this week`], ["Insiders", insiders ?? 0, ""], ["Reviews", reviews, ""], ["Groups", groups, ""], ["Posts", posts, ""], ["Saved towns", saved, ""], ["Partners", partners, ""]].map(([k, v, d]) => (
             <div className="kpi" key={k as string}><div className="k">{k}</div><div className="v">{v}</div>{d && <div className="d up">{d}</div>}</div>
           ))}
         </div>

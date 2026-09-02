@@ -7,7 +7,9 @@ import { Avatar } from "@/components/Avatar";
 import { ProfileForm } from "@/components/ProfileForm";
 import { SignOutButton } from "@/components/SignOutButton";
 import { SavedList } from "@/components/SavedList";
-import { currentUser, supabaseServer } from "@/lib/supabase/server";
+import { currentUser, isMember, supabaseServer } from "@/lib/supabase/server";
+import { JoinInsider } from "@/components/MembershipButtons";
+import { hasStripe } from "@/lib/stripe/server";
 import { getTown } from "@/lib/towns";
 
 export const metadata: Metadata = { title: "Your account" };
@@ -52,6 +54,13 @@ export default async function Account() {
           <div className="twocol" style={{ marginTop: 22 }}>
             <ProfileForm profile={p} userId={me.id} />
             <div>
+              <div className="wscorebox" style={{ maxWidth: "none", marginBottom: 16 }}>
+                <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 4 }}>Membership</h3>
+                <p className="wsub" style={{ display: "block", marginBottom: 10 }}>
+                  {isMember(p) ? `Insider · renews ${p?.membership_until ? new Date(p.membership_until).toLocaleDateString("en-AU") : "monthly"}` : "Free rider. Insider adds double points, ad-free browsing and member offers."}
+                </p>
+                <JoinInsider userId={me.id} member={isMember(p)} enabled={hasStripe()} />
+              </div>
               <div className="wscorebox" style={{ maxWidth: "none", marginBottom: 16 }}>
                 <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 8 }}>Your reviews</h3>
                 {!reviews?.length && (
