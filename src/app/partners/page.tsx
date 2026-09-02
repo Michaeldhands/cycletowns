@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { Photo } from "@/components/Photo";
 import { ridePic } from "@/lib/images";
 import partnerTypes from "@/data/partner-types.json";
+import { NetlifyForm } from "@/components/NetlifyForm";
 
 export const metadata: Metadata = {
   title: "Partner with Cycletowns",
@@ -91,9 +92,7 @@ export default function Partners() {
 
       <div className="wsec alt2" id="enquire" style={{ paddingBottom: 40 }}>
         <div className="wh"><div><h2>Secure your spot</h2><span className="wsub">tell us about your business — we’ll send a tailored pack within one business day</span></div></div>
-        <form name="partner-enquiry" method="POST" action="/thanks" data-netlify="true" netlify-honeypot="website" className="enqform">
-          <input type="hidden" name="form-name" value="partner-enquiry" />
-          <p style={{ display: "none" }}><label>Leave this empty: <input name="website" /></label></p>
+        <NetlifyForm name="partner-enquiry" className="enqform">
           <div className="field"><label>Business name</label><input name="business" placeholder="e.g. Sixpence Coffee" required /></div>
           <div className="field"><label>Partner type</label>
             <select name="type" defaultValue="cafe">{types.map((p) => <option key={p.id} value={p.id}>{clean(p.name)}</option>)}</select>
@@ -103,7 +102,7 @@ export default function Partners() {
           <div className="field"><label>Email</label><input name="email" type="email" placeholder="you@business.com" required /></div>
           <button type="submit" className="btn btn-coral" style={{ borderRadius: 13, width: "100%" }}>Request my partner pack ›</button>
           <div className="wsub" style={{ textAlign: "center", marginTop: 10, fontSize: 12, display: "block" }}>No spam. A real human replies within one business day · partners@cycletowns.com</div>
-        </form>
+        </NetlifyForm>
       </div>
       <Footer />
     </>

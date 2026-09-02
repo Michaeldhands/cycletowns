@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ProsePage } from "@/components/Prose";
+import { NetlifyForm } from "@/components/NetlifyForm";
 
 export const metadata: Metadata = { title: "Contact" };
 
@@ -29,15 +30,13 @@ export default function Contact() {
           </div>
         ))}
       </div>
-      <form name="contact" method="POST" action="/thanks" data-netlify="true" netlify-honeypot="website" className="wprose" style={{ marginTop: 22 }}>
-        <input type="hidden" name="form-name" value="contact" />
-        <p style={{ display: "none" }}><label>Leave this empty: <input name="website" /></label></p>
+      <NetlifyForm name="contact" className="wprose" style={{ marginTop: 22 }}>
         <h3>Or send a message</h3>
         <div className="field"><label>Your name</label><input name="name" required /></div>
         <div className="field"><label>Email</label><input type="email" name="email" required /></div>
         <div className="field"><label>Message</label><textarea name="message" rows={5} required /></div>
         <button type="submit" className="lk-coral big">Send</button>
-      </form>
+      </NetlifyForm>
       <div className="wprose" style={{ marginTop: 8 }}>
         <p>
           Business enquiry? The fastest route is the <Link href="/partners">partner page ›</Link>. Follow the journey on{" "}
