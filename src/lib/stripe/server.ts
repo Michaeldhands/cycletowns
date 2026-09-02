@@ -50,7 +50,7 @@ export async function syncSubscription(sub: Stripe.Subscription) {
   const db = supabaseAdmin();
   const q = userId ? db.from("profiles").update(patch).eq("id", userId) : db.from("profiles").update(patch).eq("stripe_customer_id", customer);
   const { error } = await q;
-  if (error) console.error("syncSubscription", error.message);
+  if (error) throw new Error(`Could not sync rider subscription: ${error.message}`);
 }
 
 async function syncPartnerSubscription(sub: Stripe.Subscription) {
@@ -65,5 +65,5 @@ async function syncPartnerSubscription(sub: Stripe.Subscription) {
     stripe_customer_id: typeof sub.customer === "string" ? sub.customer : sub.customer.id,
     plan_until: item?.current_period_end ? new Date(item.current_period_end * 1000).toISOString() : null,
   }).eq("id", sub.metadata.partner_id);
-  if (error) console.error("syncPartnerSubscription", error.message);
+  if (error) throw new Error(`Could not sync partner subscription: ${error.message}`);
 }
