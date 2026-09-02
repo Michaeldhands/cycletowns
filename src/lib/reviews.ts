@@ -16,10 +16,9 @@ export type Review = {
   created_at: string;
   profiles?: { display_name: string | null; avatar_url: string | null; tier: string; home_town: string | null } | null;
 };
-export type TownScore = { review_count: number; score: number } & ScoreDims;
-
-/** Rider reviews take over from the editorial launch score once a town has this many. */
-export const REVIEWS_TO_TAKE_OVER = 5;
+export type { TownScore } from "@/lib/reviews-types";
+export { REVIEWS_TO_TAKE_OVER } from "@/lib/reviews-types";
+import { REVIEWS_TO_TAKE_OVER, type TownScore } from "@/lib/reviews-types";
 
 export async function fetchTownReviews(townId: string): Promise<{ reviews: Review[]; score: TownScore | null }> {
   if (!hasSupabase()) return { reviews: [], score: null };

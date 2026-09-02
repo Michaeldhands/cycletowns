@@ -5,7 +5,8 @@ import { TopBar } from "@/components/SiteNav";
 import { Footer } from "@/components/Footer";
 import { Photo } from "@/components/Photo";
 import { ridePic } from "@/lib/images";
-import { CAT_DEFS, CAT_HERO, LITE_TOWNS, SCOPES, catDef, categoryTowns, regionOf } from "@/lib/towns";
+import { CAT_DEFS, CAT_HERO, SCOPES, catDef, catScore, regionOf } from "@/lib/towns";
+import { loadCatalog } from "@/lib/content";
 
 export const dynamicParams = false;
 export function generateStaticParams() {
@@ -25,10 +26,11 @@ export default async function CategoryPage({ params, searchParams }: PageProps<"
   const scope = typeof sp.region === "string" ? sp.region : "all";
   const d = catDef(category);
   if (!d) notFound();
-  const full = categoryTowns(d.id).filter((t) => scope === "all" || regionOf(t.country) === scope);
+  const c = await loadCatalog();
+  const full = c.towns.slice().sort((a, b) => catScore(b, d.id) - catScore(a, d.id)).filter((t) => scope === "all" || regionOf(t.country) === scope);
   // radar towns named as heroes for this category
   const heroNames = new Set(CAT_HERO[d.id] || []);
-  const lite = LITE_TOWNS.filter((t) => heroNames.has(t.name) && (scope === "all" || regionOf(t.country) === scope));
+  const lite = c.lite.filter((t) => heroNames.has(t.name) && (scope === "all" || regionOf(t.country) === scope));
   const scopeName = SCOPES.find((s) => s.id === scope)?.label || "🌏 Worldwide";
   return (
     <>

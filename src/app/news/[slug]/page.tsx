@@ -7,31 +7,33 @@ import { Photo } from "@/components/Photo";
 import { TownCard } from "@/components/Cards";
 import { NewsGridCard } from "@/components/NewsCards";
 import { ridePic } from "@/lib/images";
-import { ARTICLES, articleSlug, getArticle } from "@/lib/news";
-import { getTown } from "@/lib/towns";
+import { ARTICLES as BUNDLED, articleSlug } from "@/lib/news";
+import { loadArticles, loadCatalog } from "@/lib/content";
 
-export const dynamicParams = false;
+export const dynamicParams = true;
+export const revalidate = 300;
 export function generateStaticParams() {
-  return ARTICLES.map((a) => ({ slug: articleSlug(a) }));
+  return BUNDLED.map((a) => ({ slug: articleSlug(a) }));
 }
 export async function generateMetadata({ params }: PageProps<"/news/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const a = getArticle(slug);
+  const a = (await loadArticles()).find((x) => articleSlug(x) === slug);
   return a ? { title: a.title, description: a.dek } : {};
 }
 
 export default async function ArticlePage({ params }: PageProps<"/news/[slug]">) {
   const { slug } = await params;
-  const a = getArticle(slug);
+  const [ARTICLES, c] = await Promise.all([loadArticles(), loadCatalog()]);
+  const a = ARTICLES.find((x) => articleSlug(x) === slug);
   if (!a) notFound();
   const idx = ARTICLES.indexOf(a);
-  const town = a.town ? getTown(a.town) : undefined;
+  const town = a.town ? c.towns.find((t) => t.id === a.town) : undefined;
   const more = ARTICLES.filter((x) => x !== a).slice(0, 3);
   return (
     <>
       <TopBar back={{ href: "/news", label: "News" }} />
       <div className="whero" style={{ height: 360 }}>
-        <Photo src={ridePic(a.img, "art-" + idx, 1400)} />
+        <Photo src={a.image_url || ridePic(a.img, "art-" + idx, 1400)} />
         <div className="wov">
           <div className="winner">
             <div className="bc"><Link href="/">Cycletowns</Link> › <Link href="/news">News</Link> › <b>{a.series || a.kind || "Feature"}</b></div>

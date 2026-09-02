@@ -3,7 +3,8 @@ import Link from "next/link";
 import { TopBar } from "@/components/SiteNav";
 import { Footer } from "@/components/Footer";
 import { TownCard } from "@/components/Cards";
-import { LITE_TOWNS, SCOPES, rankedTowns, regionOf } from "@/lib/towns";
+import { SCOPES, regionOf } from "@/lib/towns";
+import { loadCatalog, rankIn, rankTowns } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "All Cycletowns",
@@ -16,8 +17,9 @@ export default async function TownsPage({ searchParams }: PageProps<"/towns">) {
   const scope = typeof sp.region === "string" ? sp.region : "all";
   const match = (name: string, region: string, country: string) =>
     !q || `${name} ${region} ${country}`.toLowerCase().includes(q);
-  const towns = rankedTowns().filter((t) => (scope === "all" || regionOf(t.country) === scope) && match(t.name, t.region, t.country));
-  const lite = LITE_TOWNS.filter((t) => (scope === "all" || regionOf(t.country) === scope) && match(t.name, t.region, t.country));
+  const c = await loadCatalog();
+  const towns = rankTowns(c).filter((t) => (scope === "all" || regionOf(t.country) === scope) && match(t.name, t.region, t.country));
+  const lite = c.lite.filter((t) => (scope === "all" || regionOf(t.country) === scope) && match(t.name, t.region, t.country));
   return (
     <>
       <TopBar />
@@ -49,7 +51,7 @@ export default async function TownsPage({ searchParams }: PageProps<"/towns">) {
           )}
           <div className="wgrid">
             {towns.map((t) => (
-              <TownCard key={t.id} t={t} />
+              <TownCard key={t.id} t={t} rank={rankIn(c, t.id)} />
             ))}
           </div>
           {lite.length > 0 && (

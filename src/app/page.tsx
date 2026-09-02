@@ -6,14 +6,17 @@ import { TownCard } from "@/components/Cards";
 import { Photo } from "@/components/Photo";
 import { HeroSearch } from "@/components/HeroSearch";
 import { ridePic } from "@/lib/images";
-import { CAT_DEFS, rankedTowns } from "@/lib/towns";
-import originals from "@/data/originals.json";
-import { OriginalCard, type Original } from "@/components/NewsCards";
+import { CAT_DEFS } from "@/lib/towns";
+import { loadArticles, loadCatalog, rankTowns } from "@/lib/content";
+import { OriginalCard } from "@/components/NewsCards";
+
+export const revalidate = 300;
 
 const CAT_IMG: Record<string, string> = { road: "road", climb: "climb", gravel: "gravel", mtb: "mtb", ebike: "ebike", alpine: "alpine", pro: "group" };
 
-export default function Home() {
-  const feat = rankedTowns().slice(0, 8);
+export default async function Home() {
+  const [c, articles] = await Promise.all([loadCatalog(), loadArticles()]);
+  const feat = rankTowns(c).slice(0, 8);
   return (
     <>
       <SiteNav />
@@ -169,8 +172,8 @@ export default function Home() {
             No sign-up needed.
           </div>
           <LpCarousel>
-            {feat.map((t) => (
-              <TownCard key={t.id} t={t} />
+            {feat.map((t, i) => (
+              <TownCard key={t.id} t={t} rank={i + 1} />
             ))}
           </LpCarousel>
           <div style={{ textAlign: "center", marginTop: 20 }}>
@@ -191,7 +194,7 @@ export default function Home() {
             from around the world.
           </div>
           <LpCarousel>
-            {(originals as Original[]).map((a, i) => (
+            {articles.slice(0, 8).map((a, i) => (
               <OriginalCard key={i} a={a} idx={i} />
             ))}
           </LpCarousel>

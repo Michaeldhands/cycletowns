@@ -26,6 +26,9 @@ Schema + seed from `src/data/*.json`; email/Google auth; onboarding; saved towns
 admin area (towns, places, articles, users, partners) and dashboards on live data; venue geocoding for map pins.
 
 ## Phase 3 — revenue & content
+Status: admin editors for towns (details, photos, places, races) and news articles are live; town guides, rankings and
+news now read from the database (the bundled JSON is only a fallback). Run `supabase/migrations/0002_storage.sql` once
+for the media bucket.
 Stripe membership; partner self-serve (claim listing, member/featured plans, offer codes, dashboards);
 news CMS; shop (Stripe or Shopify); trip planner; loop builder; social wall via Instagram/TikTok APIs.
 

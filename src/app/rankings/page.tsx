@@ -3,15 +3,20 @@ import Link from "next/link";
 import { TopBar } from "@/components/SiteNav";
 import { Footer } from "@/components/Footer";
 import { RankTable } from "@/components/RankTable";
-import { CAT_DEFS, LITE_TOWNS, TOWNS } from "@/lib/towns";
+import { CAT_DEFS } from "@/lib/towns";
+import { loadCatalog, rankTowns } from "@/lib/content";
+import { fetchAllScores } from "@/lib/reviews";
+
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Rankings — the world’s best cycling towns",
   description: "The Cycletowns leaderboard: every cycling town ranked by the Cyclist Score.",
 };
 
-export default function RankingsPage() {
-  const total = TOWNS.length + LITE_TOWNS.length;
+export default async function RankingsPage() {
+  const [c, scores] = await Promise.all([loadCatalog(), fetchAllScores()]);
+  const total = c.towns.length + c.lite.length;
   return (
     <>
       <TopBar />
@@ -58,7 +63,7 @@ export default function RankingsPage() {
             </div>
             <div className="aw-tro">🏆</div>
           </div>
-          <RankTable />
+          <RankTable full={rankTowns(c)} lite={c.lite} scores={scores} />
           <div style={{ textAlign: "center", marginTop: 14, color: "var(--grey-m)", fontSize: 13, fontWeight: 700 }}>
             ↕ Scroll the leaderboard — every Cycletown, free to browse
           </div>

@@ -13,21 +13,14 @@ import { Avatar } from "@/components/Avatar";
 import { currentUser } from "@/lib/supabase/server";
 import { REVIEWS_TO_TAKE_OVER, effectiveScore, fetchTownReviews } from "@/lib/reviews";
 import { fetchFeed, fetchTownGroups } from "@/lib/community";
+import { loadCatalog, rankIn, rankTowns, type Catalog } from "@/lib/content";
 import { PostCard, PostComposer } from "@/components/Community";
 import { photoURL, ridePic, townHero, townImages } from "@/lib/images";
 import {
   DIM_LABELS,
   LITE_TOWNS,
-  RACES,
   TOWNS,
-  TOWN_GEO,
-  TOWN_SEEDO,
-  TOWN_WHEN,
-  categoryTowns,
-  getLiteTown,
-  getTown,
-  rankOf,
-  rankedTowns,
+  catScore,
   regionOf,
   rideDiscipline,
   type Race,
@@ -36,7 +29,7 @@ import {
   type WhenInfo,
 } from "@/lib/towns";
 
-export const dynamicParams = false;
+export const dynamicParams = true;
 export const dynamic = "force-dynamic";
 export function generateStaticParams() {
   return [...TOWNS.map((t) => ({ slug: t.id })), ...LITE_TOWNS.map((t) => ({ slug: t.slug }))];
@@ -44,7 +37,8 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/towns/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const t = getTown(slug);
+  const c = await loadCatalog();
+  const t = c.towns.find((x) => x.id === slug);
   if (t) {
     return {
       title: `${t.name} cycling guide — routes, cafés, bike shops`,
@@ -52,7 +46,7 @@ export async function generateMetadata({ params }: PageProps<"/towns/[slug]">): 
       openGraph: { images: [townHero(t, 1200)] },
     };
   }
-  const l = getLiteTown(slug);
+  const l = c.lite.find((x) => x.slug === slug);
   return l ? { title: `${l.name} — Cycletown` } : {};
 }
 
@@ -60,10 +54,10 @@ export async function generateMetadata({ params }: PageProps<"/towns/[slug]">): 
 const MON = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
 const RMON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-function whenFor(t: Town): WhenInfo & { getting?: string; terrain?: string; tip?: string; currency?: string } {
-  const w = TOWN_WHEN[t.id] as WhenInfo & { getting?: string; terrain?: string; tip?: string; currency?: string };
+function whenFor(c: Catalog, t: Town): WhenInfo & { getting?: string; terrain?: string; tip?: string; currency?: string } {
+  const w = c.when[t.id] as WhenInfo & { getting?: string; terrain?: string; tip?: string; currency?: string };
   if (w) return w;
-  const geo = TOWN_GEO[t.id];
+  const geo = c.geo[t.id];
   const south = (geo && geo.lat < 0) || regionOf(t.country) === "oceania" || t.country === "South Africa";
   return {
     ride: south ? [2, 2, 2, 1, 1, 0, 0, 1, 1, 2, 2, 2] : [0, 0, 1, 1, 2, 2, 2, 2, 2, 1, 0, 0],
@@ -115,22 +109,23 @@ function DimBar({ label, v }: { label: string; v: number }) {
 /* ---------- page ---------- */
 export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
   const { slug } = await params;
-  const t = getTown(slug);
-  const me = await currentUser();
-  if (!t) return <LiteTownPage slug={slug} userId={me?.id ?? null} />;
+  const [c, me] = await Promise.all([loadCatalog(), currentUser()]);
+  const t = c.towns.find((x) => x.id === slug);
+  if (!t) return <LiteTownPage c={c} slug={slug} userId={me?.id ?? null} />;
 
   const [{ reviews, score }, groups, posts] = await Promise.all([fetchTownReviews(t.id), fetchTownGroups(t.id), fetchFeed({ townId: t.id, limit: 6 })]);
   const eff = effectiveScore(t, score);
   const mine = me ? reviews.find((r) => r.user_id === me.id) : undefined;
   const imgs = townImages(t);
-  const rk = rankOf(t.id);
-  const geo = TOWN_GEO[t.id];
-  const w = whenFor(t);
-  const races = RACES[t.id] || [];
-  const seedo = TOWN_SEEDO[t.id] || [];
+  const rk = rankIn(c, t.id);
+  const geo = c.geo[t.id];
+  const w = whenFor(c, t);
+  const races = c.races[t.id] || [];
+  const seedo = c.seeDo[t.id] || [];
   const dims = Object.keys(DIM_LABELS) as (keyof ScoreDims)[];
-  const related = rankedTowns().filter((x) => x.id !== t.id && regionOf(x.country) === regionOf(t.country)).slice(0, 4);
-  const more = related.length >= 2 ? related : categoryTowns(t.tags[0]?.toLowerCase() || "road").filter((x) => x.id !== t.id).slice(0, 4);
+  const related = rankTowns(c).filter((x) => x.id !== t.id && regionOf(x.country) === regionOf(t.country)).slice(0, 4);
+  const cat = t.tags[0]?.toLowerCase() || "road";
+  const more = related.length >= 2 ? related : c.towns.slice().sort((a, b) => catScore(b, cat) - catScore(a, cat)).filter((x) => x.id !== t.id).slice(0, 4);
 
   return (
     <>
@@ -490,7 +485,7 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
           </div>
           <div className="wgrid">
             {more.map((x) => (
-              <TownCard key={x.id} t={x} />
+              <TownCard key={x.id} t={x} rank={rankIn(c, x.id)} />
             ))}
           </div>
           <div className="photocredit" style={{ margin: "26px 0 0" }}>
@@ -505,10 +500,10 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
 }
 
 /* ---------- towns without a full guide yet ---------- */
-function LiteTownPage({ slug, userId }: { slug: string; userId: string | null }) {
-  const l = getLiteTown(slug);
+function LiteTownPage({ c, slug, userId }: { c: Catalog; slug: string; userId: string | null }) {
+  const l = c.lite.find((x) => x.slug === slug);
   if (!l) notFound();
-  const nearby = rankedTowns().filter((x) => regionOf(x.country) === regionOf(l.country)).slice(0, 4);
+  const nearby = rankTowns(c).filter((x) => regionOf(x.country) === regionOf(l.country)).slice(0, 4);
   return (
     <>
       <TopBar back={{ href: "/rankings", label: "Rankings" }} />
@@ -559,7 +554,7 @@ function LiteTownPage({ slug, userId }: { slug: string; userId: string | null })
           </div>
           <div className="wgrid">
             {nearby.map((x) => (
-              <TownCard key={x.id} t={x} />
+              <TownCard key={x.id} t={x} rank={rankIn(c, x.id)} />
             ))}
           </div>
         </div>

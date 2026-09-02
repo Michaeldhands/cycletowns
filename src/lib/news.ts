@@ -13,6 +13,8 @@ export type Article = {
   dek: string;
   body: string; // simple HTML paragraphs
   cat?: string;
+  image_url?: string | null;
+  id?: string;
 };
 export const ARTICLES = originals as Article[];
 export const articleSlug = (a: Article) => slugify(a.title);

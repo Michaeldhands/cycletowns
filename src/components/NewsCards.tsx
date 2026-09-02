@@ -16,6 +16,7 @@ export type Original = {
   dek: string;
   body: string;
   cat?: string;
+  image_url?: string | null;
 };
 
 export function articleSlug(a: Original): string {
@@ -27,7 +28,7 @@ export function OriginalCard({ a, idx }: { a: Original; idx: number }) {
   return (
     <Link href={`/news/${articleSlug(a)}`} className="norig" style={{ textDecoration: "none" }}>
       <div className="norigimg">
-        <Photo src={ridePic(a.img, "orig-" + idx, 520)} />
+        <Photo src={a.image_url || ridePic(a.img, "orig-" + idx, 520)} />
         <span className="nbadge">{a.series ? `▶ ${a.series} · Ep ${a.ep}` : a.kind}</span>
       </div>
       <div className="norigb">
@@ -46,7 +47,7 @@ export function NewsGridCard({ a, idx }: { a: Original; idx: number }) {
   return (
     <Link href={`/news/${articleSlug(a)}`} className={`ngcard cat-${(a.cat || "original").toLowerCase()}`} style={{ textDecoration: "none" }}>
       <div className="ngimg">
-        <Photo src={ridePic(a.img, "news-" + idx, 520)} />
+        <Photo src={a.image_url || ridePic(a.img, "news-" + idx, 520)} />
       </div>
       <div className="ngb">
         <div className="ntag">{a.series ? `${a.series} · Ep ${a.ep}` : a.kind || a.cat || "Original"}</div>

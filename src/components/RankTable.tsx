@@ -1,13 +1,18 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { LITE_TOWNS, SCOPES, knownFor, rankedTowns, regionOf, type Region } from "@/lib/towns";
+import { SCOPES, knownFor, regionOf, type LiteTown, type Region, type Town } from "@/lib/towns";
+import { REVIEWS_TO_TAKE_OVER, type TownScore } from "@/lib/reviews-types";
 
 /** Leaderboard with a region filter. Full-guide towns are ranked; radar towns are listed unscored. */
-export function RankTable({ initialScope = "all" }: { initialScope?: "all" | Region }) {
+export function RankTable({ full: allFull, lite: allLite, scores = {}, initialScope = "all" }: { full: Town[]; lite: LiteTown[]; scores?: Record<string, TownScore>; initialScope?: "all" | Region }) {
   const [scope, setScope] = useState<"all" | Region>(initialScope);
-  const full = rankedTowns().filter((t) => scope === "all" || regionOf(t.country) === scope);
-  const lite = LITE_TOWNS.filter((t) => scope === "all" || regionOf(t.country) === scope);
+  const eff = (t: Town) => {
+    const s = scores[t.id];
+    return s && s.review_count >= REVIEWS_TO_TAKE_OVER ? Number(s.score) : t.score;
+  };
+  const full = allFull.filter((t) => scope === "all" || regionOf(t.country) === scope).sort((a, b) => eff(b) - eff(a));
+  const lite = allLite.filter((t) => scope === "all" || regionOf(t.country) === scope);
   return (
     <>
       <div className="scopebar" id="rankScopeBar">
@@ -42,9 +47,9 @@ export function RankTable({ initialScope = "all" }: { initialScope?: "all" | Reg
             <span className="rstrength">{knownFor(t)}</span>
             <span className="rrev">Full guide</span>
             <span className="rmv flat">
-              —<small>opening soon</small>
+              {scores[t.id]?.review_count || 0}<small>{scores[t.id]?.review_count === 1 ? "review" : "reviews"}</small>
             </span>
-            <span className="rsc">★ {t.score.toFixed(1)}</span>
+            <span className="rsc">★ {eff(t).toFixed(1)}</span>
             <span className="rgo">View ›</span>
           </Link>
         ))}

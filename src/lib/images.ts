@@ -14,7 +14,9 @@ const VPIX = vpix as Record<string, number[]>;
 export function pexURL(id: number, w = 800): string {
   return `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=${w}`;
 }
+/** Town photo: either a full URL (uploaded to our media bucket) or a Wikimedia Commons file name. */
 export function photoURL(file: string, w = 1000): string {
+  if (/^https?:\/\//.test(file)) return file;
   return `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=${w}`;
 }
 

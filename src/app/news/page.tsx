@@ -5,11 +5,15 @@ import { Footer } from "@/components/Footer";
 import { Photo } from "@/components/Photo";
 import { NewsGridCard } from "@/components/NewsCards";
 import { ridePic } from "@/lib/images";
-import { ARTICLES, articleSlug } from "@/lib/news";
+import { articleSlug } from "@/lib/news";
+import { loadArticles } from "@/lib/content";
+
+export const revalidate = 300;
 
 export const metadata: Metadata = { title: "News", description: "Cycletowns Originals — Town in Focus and features from the world of cycle tourism." };
 
-export default function News() {
+export default async function News() {
+  const ARTICLES = await loadArticles();
   const [feat, ...rest] = ARTICLES;
   return (
     <>

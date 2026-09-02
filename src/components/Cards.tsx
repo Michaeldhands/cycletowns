@@ -4,12 +4,12 @@ import { townHero, ridePic, venuePic } from "@/lib/images";
 import { gmaps, rankOf, type Place, type SeeDo, type Town, rideDiscipline } from "@/lib/towns";
 
 /** Landing / listing town card. */
-export function TownCard({ t }: { t: Town }) {
+export function TownCard({ t, rank }: { t: Town; rank?: number }) {
   return (
     <Link href={`/towns/${t.id}`} className="tcard" style={{ textDecoration: "none", color: "inherit" }}>
       <div className="hero">
         <Photo src={townHero(t, 900)} alt={t.name} />
-        <div className="rankbadge">#{rankOf(t.id)}</div>
+        <div className="rankbadge">#{rank ?? rankOf(t.id)}</div>
         <div className="flag">{t.flag}</div>
         <div className="badge">
           <span className="s">★</span> {t.score.toFixed(1)}

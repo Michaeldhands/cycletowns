@@ -1,23 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Logo } from "@/components/Logo";
+import { AdminShell } from "@/components/admin/AdminShell";
 import { Avatar } from "@/components/Avatar";
 import { AdminAction } from "@/components/AdminAction";
 import { currentUser, supabaseServer } from "@/lib/supabase/server";
-import { TOWNS, getTown } from "@/lib/towns";
+import { getTown } from "@/lib/towns";
 
 export const metadata: Metadata = { title: "Admin", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
-const SECTIONS: [string, string][] = [
-  ["overview", "Overview"],
-  ["riders", "Riders"],
-  ["reviews", "Reviews"],
-  ["groups", "Groups"],
-  ["posts", "Posts"],
-  ["towns", "Towns"],
-];
+const LABEL: Record<string, string> = { overview: "Overview", riders: "Riders", reviews: "Reviews", groups: "Groups", posts: "Posts" };
 
 export default async function Admin({ searchParams }: PageProps<"/admin">) {
   const me = await currentUser();
@@ -38,26 +31,13 @@ export default async function Admin({ searchParams }: PageProps<"/admin">) {
   const sb = await supabaseServer();
 
   return (
-    <div className="admin-wrap">
-      <aside className="adsidebar">
-        <div className="brand"><Link href="/"><Logo h={26} /></Link></div>
-        {SECTIONS.map(([id, label]) => (
-          <Link key={id} href={`/admin?s=${id}`} className={"navi" + (s === id ? " on" : "")} style={{ textDecoration: "none" }}>
-            <span>{label}</span>
-          </Link>
-        ))}
-        <Link href="/account" className="navi" style={{ textDecoration: "none" }}><span>← Site</span></Link>
-        <div className="role">Signed in as<br /><b style={{ color: "#fff" }}>{me.profile?.display_name || me.email}</b></div>
-      </aside>
-      <main className="admain">
-        {s === "overview" && <Overview />}
-        {s === "riders" && <Riders q={q} />}
-        {s === "reviews" && <Reviews />}
-        {s === "groups" && <Groups />}
-        {s === "posts" && <Posts />}
-        {s === "towns" && <Towns />}
-      </main>
-    </div>
+    <AdminShell active={LABEL[s] || "Overview"}>
+      {s === "overview" && <Overview />}
+      {s === "riders" && <Riders q={q} />}
+      {s === "reviews" && <Reviews />}
+      {s === "groups" && <Groups />}
+      {s === "posts" && <Posts />}
+    </AdminShell>
   );
 
   async function count(table: string, sinceIso?: string) {
@@ -197,24 +177,6 @@ export default async function Admin({ searchParams }: PageProps<"/admin">) {
                 <td style={{ maxWidth: 480 }}>{p.body}</td><td>{p.status}</td>
                 <td><AdminAction table="posts" id={p.id} patch={{ status: p.status === "hidden" ? "published" : "hidden" }} label={p.status === "hidden" ? "Unhide" : "Hide"} /></td>
               </tr>
-            ))}
-          </tbody></table>
-        </div>
-      </>
-    );
-  }
-
-  async function Towns() {
-    const { data: scores } = await sb.from("town_scores").select("*");
-    const sc: Record<string, { review_count: number; score: number }> = {};
-    (scores || []).forEach((r: { town_id: string; review_count: number; score: number }) => (sc[r.town_id] = r));
-    return (
-      <>
-        <div className="adtop"><h1>Towns</h1><span className="wsub">Editing town content moves into this screen next — for now guides come from the launch data.</span></div>
-        <div className="acard">
-          <table className="tbl"><thead><tr><th>Town</th><th>Editorial</th><th>Rider score</th><th>Reviews</th><th></th></tr></thead><tbody>
-            {TOWNS.slice().sort((a, b) => b.score - a.score).map((t) => (
-              <tr key={t.id}><td>{t.flag} {t.name}<small style={{ color: "var(--grey-m)" }}> · {t.region}</small></td><td>★ {t.score.toFixed(1)}</td><td>{sc[t.id] ? `★ ${Number(sc[t.id].score).toFixed(1)}` : "—"}</td><td>{sc[t.id]?.review_count ?? 0}</td><td><Link href={`/towns/${t.id}`}>View ›</Link></td></tr>
             ))}
           </tbody></table>
         </div>
