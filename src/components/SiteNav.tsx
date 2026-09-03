@@ -7,6 +7,7 @@ import { AccountChip } from "./AccountChip";
 const LINKS: [string, string][] = [
   ["Towns", "/towns"],
   ["Rankings", "/rankings"],
+  ["Routes", "/loop"],
   ["News", "/news"],
   ["Feed", "/feed"],
   ["Shop", "/shop"],

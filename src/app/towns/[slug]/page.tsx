@@ -159,6 +159,9 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
               <Link href={`/plan?town=${t.id}`} className="lk-coral big">
                 ✨ Plan my trip here
               </Link>
+              <Link href={`/loop?town=${t.id}`} className="lk-ghost big">
+                🔁 Build a loop
+              </Link>
               <SaveButton id={t.id} light userId={me?.id ?? null} />
             </div>
           </div>
