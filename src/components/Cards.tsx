@@ -61,6 +61,7 @@ export function CafeCard({ t, p }: { t: Town; p: Place }) {
       <div className="wph">
         <Photo src={venuePic("cafe", t.id + p.n, 520)} />
         <span className="wsc">★ {p.s.toFixed(1)}</span>
+        {p.verified && <span className="wpill vpill">✓ Verified bike-friendly</span>}
       </div>
       <div className="wcb">
         <div className="wcn">{p.n}</div>
@@ -78,7 +79,7 @@ export function ShopCard({ t, p }: { t: Town; p: Place }) {
       <div className="wph">
         <Photo src={venuePic("shop", t.id + p.n, 520)} />
         <span className="wsc">★ {p.s.toFixed(1)}</span>
-        {p.hire && <span className="wpill">{ebike ? "⚡ E-bike hire" : "🔧 Hire"}</span>}
+        {p.verified ? <span className="wpill vpill">✓ Verified bike-friendly</span> : p.hire ? <span className="wpill">{ebike ? "⚡ E-bike hire" : "🔧 Hire"}</span> : null}
       </div>
       <div className="wcb">
         <div className="wcn">{p.n}</div>

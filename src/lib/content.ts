@@ -16,18 +16,22 @@ export type PlaceRow = {
 export type RaceRow = { id: string; town_id: string; kind: Race["kind"]; badge: string; name: string; series: string | null; km: number | null; vert: number | null; race_date: string | null; status: string | null; discipline: string | null; note: string | null; sort: number };
 export type ArticleRow = { id: string; slug: string; title: string; dek: string; body: string; kind: string | null; series: string | null; episode: number | null; town_id: string | null; image_kind: string; image_url: string | null; published: boolean; published_at: string | null; created_at: string };
 
-const toPlace = (p: PlaceRow) => ({ n: p.name, s: Number(p.editorial_rating ?? 0), note: p.note, hire: p.hire, price: p.price ?? undefined, km: p.km ?? undefined, vert: p.vert ?? undefined });
+const toPlace = (p: PlaceRow, verified?: Set<string>) => ({
+  n: p.name, s: Number(p.editorial_rating ?? 0), note: p.note, hire: p.hire,
+  price: p.price ?? undefined, km: p.km ?? undefined, vert: p.vert ?? undefined,
+  verified: verified?.has(p.id) || undefined,
+});
 
 /** Convert a DB town + its places into the Town shape the components use. */
-export function rowToTown(t: TownRow, places: PlaceRow[]): Town {
+export function rowToTown(t: TownRow, places: PlaceRow[], verified?: Set<string>): Town {
   const mine = places.filter((p) => p.town_id === t.id).sort((a, b) => a.sort - b.sort);
   return {
     id: t.id, name: t.name, region: t.region, country: t.country, flag: t.flag, cur: t.currency || "$",
     score: Number(t.editorial_score ?? 4), photo: t.photo ?? undefined, gallery: t.gallery || [], tags: t.tags || [], personas: t.personas || [],
     blurb: t.blurb || "", scoreDims: t.editorial_dims || { cafes: 4, routes: 4, safety: 4, climbs: 4, storage: 4 },
-    cafes: mine.filter((p) => p.kind === "cafe").map(toPlace),
-    shops: mine.filter((p) => p.kind === "shop").map(toPlace),
-    routes: mine.filter((p) => p.kind === "route").map(toPlace),
+    cafes: mine.filter((p) => p.kind === "cafe").map((p) => toPlace(p, verified)),
+    shops: mine.filter((p) => p.kind === "shop").map((p) => toPlace(p, verified)),
+    routes: mine.filter((p) => p.kind === "route").map((p) => toPlace(p, verified)),
     book: mine.filter((p) => p.kind === "stay").map((p) => ({ type: "Stay", name: p.name, price: Number(p.price ?? 0) })),
   };
 }
@@ -48,11 +52,13 @@ const bundled = (): Catalog => ({ towns: TOWNS, lite: LITE_TOWNS, geo: TOWN_GEO,
 export async function loadCatalog(): Promise<Catalog> {
   if (!hasSupabase()) return bundled();
   const sb = supabasePublic();
-  const [{ data: towns }, { data: places }, { data: races }] = await Promise.all([
+  const [{ data: towns }, { data: places }, { data: races }, { data: verifiedRows }] = await Promise.all([
     sb.from("towns").select("*").neq("status", "hidden").order("editorial_score", { ascending: false }),
     sb.from("places").select("*"),
     sb.from("races").select("*").order("sort"),
+    sb.from("verified_places").select("place_id"),
   ]);
+  const verified = new Set(((verifiedRows as { place_id: string }[]) || []).map((v) => v.place_id));
   if (!towns || !towns.length) return bundled();
   const rows = towns as TownRow[];
   const full = rows.filter((t) => t.status === "full");
@@ -66,7 +72,7 @@ export async function loadCatalog(): Promise<Catalog> {
     (rc[r.town_id] ||= []).push({ kind: r.kind, badge: r.badge, name: r.name, series: r.series ?? undefined, km: Number(r.km ?? 0), vert: Number(r.vert ?? 0), date: r.race_date ?? undefined, status: r.status ?? undefined, disc: r.discipline ?? undefined, note: r.note ?? undefined });
   });
   return {
-    towns: full.map((t) => rowToTown(t, (places as PlaceRow[]) || [])),
+    towns: full.map((t) => rowToTown(t, (places as PlaceRow[]) || [], verified)),
     lite: rows.filter((t) => t.status === "radar").map((t) => ({ slug: t.id, name: t.name, region: t.region, country: t.country, flag: t.flag })),
     geo, when, seeDo, races: rc, source: "db",
   };
