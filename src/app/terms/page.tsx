@@ -11,7 +11,8 @@ export default function Page() {
 
         <p>
           By using cycletowns.com you agree to these terms. If you do not agree with them, please do not use the site.
-          Cycletowns is operated from Australia and these terms are governed by the law of Victoria, Australia.
+          Cycletowns is operated by <b>Sport2040</b> (ABN 73 680 648 855), based in Australia. These terms are governed
+          by the law of Victoria, Australia.
         </p>
 
         <h3>Your account</h3>

@@ -12,7 +12,7 @@ export default function Page() {
         <p><b>Last updated:</b> 3 September 2026</p>
 
         <p>
-          Cycletowns is operated from Australia. This policy explains what personal information the site collects,
+          Cycletowns is operated by <b>Sport2040</b> (ABN 73 680 648 855), based in Australia. This policy explains what personal information the site collects,
           what we do with it, who else can see it, and how you can get a copy of it or have it deleted. If anything
           here is unclear, email <a href="mailto:hello@cycletowns.com">hello@cycletowns.com</a> and we will answer you.
         </p>

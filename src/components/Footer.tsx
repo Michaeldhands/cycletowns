@@ -62,7 +62,7 @@ export function Footer() {
           </div>
         </div>
         <div className="ftbar">
-          <div className="ftcopy">© {year} Cycletowns™ · Made by cyclists, for cyclists</div>
+          <div className="ftcopy">© {year} Cycletowns™ · A Sport2040 project · ABN 73 680 648 855</div>
           <div className="ftlegal">
             <Link href="/about">About</Link>
             <Link href="/contact">Contact</Link>
