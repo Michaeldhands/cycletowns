@@ -131,6 +131,12 @@ export default function Page() {
         <p>
           Privacy questions, access requests and complaints: <a href="mailto:hello@cycletowns.com">hello@cycletowns.com</a>.
         </p>
+        <p>
+          Sport2040 (ABN 73 680 648 855)<br />
+          Level 15, 461 Bourke Street<br />
+          Melbourne VIC 3000<br />
+          Australia
+        </p>
       </div>
     </ProsePage>
   );

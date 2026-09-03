@@ -44,6 +44,10 @@ export default function Contact() {
           <a href="https://www.youtube.com/@cycletownshq" target="_blank" rel="noopener">YouTube</a> and{" "}
           <a href="https://www.linkedin.com/company/cycletowns/" target="_blank" rel="noopener">LinkedIn</a>.
         </p>
+        <p>
+          <b>Cycletowns</b> is a Sport2040 project (ABN 73 680 648 855).<br />
+          Level 15, 461 Bourke Street, Melbourne VIC 3000, Australia.
+        </p>
       </div>
     </ProsePage>
   );
