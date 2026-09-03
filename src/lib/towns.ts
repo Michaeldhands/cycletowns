@@ -10,7 +10,7 @@ import catHeroJson from "@/data/cat-hero.json";
 import personasJson from "@/data/personas.json";
 
 /* ---------- types ---------- */
-export type Place = { n: string; s: number; note: string; hire?: boolean; price?: number };
+export type Place = { n: string; s: number; note: string; hire?: boolean; price?: number; km?: number; vert?: number };
 export type Bookable = { type: string; name: string; price: number };
 export type ScoreDims = { cafes: number; routes: number; safety: number; climbs: number; storage: number };
 export type Town = {

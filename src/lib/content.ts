@@ -16,7 +16,7 @@ export type PlaceRow = {
 export type RaceRow = { id: string; town_id: string; kind: Race["kind"]; badge: string; name: string; series: string | null; km: number | null; vert: number | null; race_date: string | null; status: string | null; discipline: string | null; note: string | null; sort: number };
 export type ArticleRow = { id: string; slug: string; title: string; dek: string; body: string; kind: string | null; series: string | null; episode: number | null; town_id: string | null; image_kind: string; image_url: string | null; published: boolean; published_at: string | null; created_at: string };
 
-const toPlace = (p: PlaceRow) => ({ n: p.name, s: Number(p.editorial_rating ?? 0), note: p.note, hire: p.hire, price: p.price ?? undefined });
+const toPlace = (p: PlaceRow) => ({ n: p.name, s: Number(p.editorial_rating ?? 0), note: p.note, hire: p.hire, price: p.price ?? undefined, km: p.km ?? undefined, vert: p.vert ?? undefined });
 
 /** Convert a DB town + its places into the Town shape the components use. */
 export function rowToTown(t: TownRow, places: PlaceRow[]): Town {

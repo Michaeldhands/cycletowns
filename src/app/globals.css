@@ -1233,3 +1233,24 @@ a.catchip,a.scopechip{text-decoration:none}
 .rvbody{font-size:13.5px;color:var(--ink);line-height:1.5;margin:0}
 .acchead{display:flex;align-items:center;gap:18px}
 @media(max-width:600px){.acchead{flex-wrap:wrap}}
+
+/* ---- trip planner ---- */
+.planhead{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:14px}
+.plandays{display:flex;flex-direction:column;gap:12px}
+.planday{display:grid;grid-template-columns:104px 1fr;gap:16px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow-sm)}
+.planday.rest{background:var(--paper)}
+.planday.race{border-color:var(--coral);border-width:2px}
+.planday .pdnum{border-right:1px solid var(--line);padding-right:14px}
+.planday .pdnum b{font-family:var(--disp);text-transform:uppercase;font-size:22px;letter-spacing:.4px;display:block;line-height:1;color:var(--teal)}
+.planday .pdnum small{display:block;font-size:11.5px;color:var(--grey-m);font-weight:700;margin-top:4px}
+.planday .pdtitle{font-weight:800;font-size:16px;line-height:1.25}
+.planday .pdsub{font-size:12px;font-weight:800;color:var(--coral-700);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
+.planday .pdnote{font-size:13.5px;color:var(--grey-d);line-height:1.5;margin:7px 0 0}
+.planday .pdline{font-size:13px;color:var(--ink);margin-top:7px}
+@media(max-width:600px){.planday{grid-template-columns:1fr;gap:8px}.planday .pdnum{border-right:none;border-bottom:1px solid var(--line);padding:0 0 8px;display:flex;gap:10px;align-items:baseline}}
+@media print{
+  .noprint,.lpnav,.wtop,.ctfooter,.savepill{display:none!important}
+  body{background:#fff}
+  .sec2{padding:0}
+  .planday{break-inside:avoid;box-shadow:none}
+}

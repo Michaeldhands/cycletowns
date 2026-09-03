@@ -32,7 +32,12 @@ for the media bucket, and `0003_membership.sql` for Insider membership + partner
 Insider membership: A$7/month or A$80/year via Stripe Checkout (`/api/stripe/*`); the webhook mirrors subscription
 status onto `profiles`. Needs STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET and SUPABASE_SERVICE_ROLE_KEY in Netlify.
 Stripe membership; partner self-serve (claim listing, member/featured plans, offer codes, dashboards);
-news CMS; shop (Stripe or Shopify); trip planner; loop builder; social wall via Instagram/TikTok APIs.
+news editor (done); shop stays a waitlist until there's demand; trip planner (done — `/plan`, run
+`0005_trips.sql`); loop builder needs a real cycling routing service (BRouter/OpenRouteService) — not started;
+Google sign-in needs a Google OAuth client; social wall via Instagram/TikTok APIs.
+
+The planner is deliberately honest: it orders a town's real routes into a day-by-day trip (one peak day, rest days
+by ability, a race in the window becomes the peak), and never invents bookings, prices or availability.
 
 ## Working notes
 - `node scripts/extract-demo-data.js` regenerates `src/data/*.json` from the demo file.
