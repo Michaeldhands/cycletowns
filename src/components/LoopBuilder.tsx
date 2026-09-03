@@ -146,7 +146,12 @@ export function LoopBuilder({ towns, initialTown, userId, routerOn }: { towns: L
           <div className="wh">
             <div>
               <h2 style={{ fontFamily: "var(--disp)", textTransform: "uppercase", fontSize: 31 }}>{fmtKm(result.distance_m)} from {startName}</h2>
-              <span className="wsub">On real roads and paths. Check it against local conditions before you ride it.</span>
+              <span className="wsub">
+                On real roads and paths. Check it against local conditions before you ride it.
+                {result.requested_m != null && Math.abs(result.distance_m - result.requested_m) / result.requested_m > 0.15 && (
+                  <> This is the closest loop the roads around here allow to your {Math.round(result.requested_m / 1000)} km — try rolling for another.</>
+                )}
+              </span>
             </div>
             <div className="wbar">
               <button className="lk-ghost" onClick={download}>⬇ GPX</button>

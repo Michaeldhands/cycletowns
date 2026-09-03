@@ -7,6 +7,8 @@ export type LoopResult = {
   distance_m: number;
   ascent_m: number;
   descent_m: number;
+  /** What the rider asked for, when the router couldn't land on it. */
+  requested_m?: number;
 };
 
 export const LOOP_DISCIPLINES = [
