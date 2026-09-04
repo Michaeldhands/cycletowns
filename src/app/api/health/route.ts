@@ -53,6 +53,17 @@ export async function GET() {
       if (!process.env.ORS_API_KEY) return { ok: false, note: "not configured" };
       return ping("https://api.openrouteservice.org/v2/health");
     }),
+
+    // Email: sign-in links and newsletter confirmations both depend on it.
+    timed("email", async () => {
+      if (!process.env.RESEND_API_KEY) return { ok: false, note: "not configured" };
+      const res = await fetch("https://api.resend.com/domains", {
+        headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}` },
+        signal: AbortSignal.timeout(6000),
+        cache: "no-store",
+      });
+      return { ok: res.ok, note: res.ok ? undefined : `status ${res.status}` };
+    }),
   ]);
 
   // Config that must simply be present for the site to behave correctly.

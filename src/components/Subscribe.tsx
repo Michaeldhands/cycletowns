@@ -8,7 +8,7 @@ const CONSENT = "Send me the Cycletowns newsletter — new town guides, routes a
 export function Subscribe({ source = "news", compact = false }: { source?: string; compact?: boolean }) {
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState(""); // honeypot
-  const [state, setState] = useState<"idle" | "busy" | "done" | "error">("idle");
+  const [state, setState] = useState<"idle" | "busy" | "done" | "saved" | "error">("idle");
   const [msg, setMsg] = useState("");
 
   const submit = async (e: React.FormEvent) => {
@@ -21,8 +21,8 @@ export function Subscribe({ source = "news", compact = false }: { source?: strin
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, source, website }),
       });
-      const j = await r.json().catch(() => ({}));
-      if (r.ok) setState("done");
+      const j = (await r.json().catch(() => ({}))) as { error?: string; state?: string };
+      if (r.ok) setState(j.state === "pending_no_email" ? "saved" : "done");
       else {
         setMsg(j.error || "Couldn’t sign you up just now.");
         setState("error");
@@ -36,8 +36,15 @@ export function Subscribe({ source = "news", compact = false }: { source?: strin
   if (state === "done")
     return (
       <div className="unlocknote" style={{ fontSize: 14, padding: 14, margin: 0 }}>
-        ✉️ You&rsquo;re on the list. We&rsquo;ll email you when there&rsquo;s something worth reading — and there&rsquo;s an
-        unsubscribe link in every one.
+        ✉️ <b>Check your inbox.</b> We&rsquo;ve sent a confirmation link to <b>{email}</b> — click it and you&rsquo;re on the
+        list. We ask because it means nobody can sign you up but you. Nothing in your inbox? Have a look in spam.
+      </div>
+    );
+  if (state === "saved")
+    return (
+      <div className="unlocknote" style={{ fontSize: 14, padding: 14, margin: 0 }}>
+        ✅ Got your address. Confirmation emails aren&rsquo;t switched on yet, so we&rsquo;ll be in touch when the first
+        newsletter goes out — and there&rsquo;ll be an unsubscribe link in it.
       </div>
     );
 
