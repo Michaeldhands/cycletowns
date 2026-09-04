@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SiteNav } from "@/components/SiteNav";
 import { Footer } from "@/components/Footer";
+import { Subscribe } from "@/components/Subscribe";
 import { LpCarousel } from "@/components/Carousel";
 import { TownCard } from "@/components/Cards";
 import { Photo } from "@/components/Photo";
@@ -190,8 +191,8 @@ export default async function Home() {
           <div className="kick">The hub · Originals · Socials · World</div>
           <div className="h2">Cycletowns News</div>
           <div className="lead">
-            Original features from our correspondents — including the <b>Town in Focus</b> series — plus the best stories
-            from around the world.
+            Original features from the Cycletowns team — including the <b>Town in Focus</b> series — plus the stories that
+            matter in cycle tourism.
           </div>
           <LpCarousel>
             {articles.slice(0, 8).map((a, i) => (
@@ -202,6 +203,13 @@ export default async function Home() {
             <Link href="/news" className="lk-coral big">
               Open the News hub ›
             </Link>
+          </div>
+          <div className="wscorebox" style={{ maxWidth: 640, margin: "26px auto 0" }}>
+            <h3 style={{ fontFamily: "var(--disp)", textTransform: "uppercase", fontSize: 24, marginBottom: 4 }}>Get it in your inbox.</h3>
+            <p className="wsub" style={{ display: "block", marginBottom: 14 }}>
+              New town guides, routes worth travelling for, and the odd long read. Sent when there&rsquo;s something worth your time.
+            </p>
+            <Subscribe source="home" compact />
           </div>
         </div>
       </div>

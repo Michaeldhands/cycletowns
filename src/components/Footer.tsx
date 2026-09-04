@@ -1,11 +1,19 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
+import { Subscribe } from "./Subscribe";
 
 export function Footer() {
   const year = new Date().getFullYear();
   return (
     <div className="ctfooter">
       <div className="in">
+        <div className="ftsub">
+          <div>
+            <div className="ftsubh">The Cycletowns newsletter</div>
+            <div className="ftsubd">New town guides, routes and features. No schedule, no spam, unsubscribe any time.</div>
+          </div>
+          <Subscribe source="footer" compact />
+        </div>
         <div className="ftcols">
           <div className="ftbrand">
             <div className="ftlogo">
