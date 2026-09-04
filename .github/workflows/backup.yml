@@ -1,0 +1,42 @@
+name: Weekly database backup
+
+# An off-site copy of the database, held somewhere other than the vendor being backed up.
+# Runs Sundays 15:00 UTC (Monday 1am–2am Melbourne, depending on daylight saving).
+on:
+  schedule:
+    - cron: "0 15 * * 0"
+  workflow_dispatch: {} # lets you take a backup on demand before a risky migration
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Install PostgreSQL 17 client
+        run: |
+          sudo sh -c 'echo "deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/pgdg.gpg
+          sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client-17
+
+      - name: Dump the database
+        env:
+          DATABASE_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          test -n "$DATABASE_URL" || { echo "SUPABASE_DB_URL secret is not set"; exit 1; }
+          STAMP=$(date -u +%Y-%m-%d)
+          pg_dump "$DATABASE_URL" \
+            --format=custom --no-owner --no-privileges \
+            --schema=public --schema=storage \
+            --file="cycletowns-$STAMP.dump"
+          ls -lh "cycletowns-$STAMP.dump"
+          # A dump that restores is the only kind worth keeping — prove it lists.
+          pg_restore --list "cycletowns-$STAMP.dump" > /dev/null
+          echo "STAMP=$STAMP" >> "$GITHUB_ENV"
+
+      - name: Keep it
+        uses: actions/upload-artifact@v4
+        with:
+          name: cycletowns-db-${{ env.STAMP }}
+          path: cycletowns-*.dump
+          retention-days: 90
+          if-no-files-found: error

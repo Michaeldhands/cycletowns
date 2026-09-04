@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ServiceWorker } from "@/components/ServiceWorker";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://cycletowns.com"),
   title: { default: "Cycletowns — Find your next great ride", template: "%s · Cycletowns" },
   description: "The world’s best cycling towns, ranked by the riders who rode them. Routes, café stops, bike shops, groups and trip planning.",
   openGraph: { siteName: "Cycletowns", type: "website" },
+  appleWebApp: { capable: true, title: "Cycletowns", statusBarStyle: "default" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -20,7 +22,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           rel="stylesheet"
         />
       </head>
-      <body className="lp">{children}</body>
+      <body className="lp">
+        {children}
+        <ServiceWorker />
+      </body>
     </html>
   );
 }

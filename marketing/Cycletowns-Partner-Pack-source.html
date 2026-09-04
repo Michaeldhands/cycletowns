@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cycletowns Partner Pack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=League+Gothic&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal:#01536C; --teal-700:#013E52; --teal-050:#E6EFF2;
+    --coral:#FD3D35; --coral-700:#E22A22; --coral-050:#FFEBEA;
+    --ink:#191919; --grey-d:#5B5B5B; --grey-m:#8A8A8A; --line:#E7EAEC; --paper:#F3F5F6;
+    --disp:'League Gothic','Oswald','Arial Narrow',sans-serif;
+    --ui:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  @page{ size:A4; margin:0 }
+  *{box-sizing:border-box; margin:0; padding:0}
+  body{font-family:var(--ui); color:var(--ink); font-size:10.2pt; line-height:1.5; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  .page{width:210mm; height:297mm; padding:16mm 16mm 14mm; position:relative; page-break-after:always; overflow:hidden; display:flex; flex-direction:column}
+  .page:last-child{page-break-after:auto}
+
+  h1,h2,h3{font-family:var(--disp); text-transform:uppercase; font-weight:400; letter-spacing:.6px; line-height:.92}
+  h1{font-size:52pt}
+  h2{font-size:27pt; margin-bottom:3mm}
+  h3{font-size:15pt; letter-spacing:.4px}
+  p{margin-bottom:2.6mm}
+  b,strong{font-weight:800}
+  .kick{font-size:8.2pt; font-weight:800; letter-spacing:1.6px; text-transform:uppercase; color:var(--coral); margin-bottom:2mm}
+  .kick.t{color:var(--teal)}
+  .sub{color:var(--grey-d); font-size:10.5pt; margin-bottom:6mm; max-width:150mm}
+  .rule{height:3px; background:var(--coral); width:22mm; margin:0 0 5mm}
+
+  /* cover */
+  .cover{background:linear-gradient(150deg,#012a38 0%,#01536C 62%,#016b8a 100%); color:#fff; justify-content:space-between}
+  .cover h1{font-size:62pt; color:#fff}
+  .cover .logo{width:62mm}
+  .cover .logo svg{width:100%; height:auto}
+  .badge{display:inline-block; background:var(--coral); color:#fff; font-size:8.4pt; font-weight:800; letter-spacing:1.4px; text-transform:uppercase; padding:2.4mm 4.5mm; border-radius:99px}
+  .coverfoot{display:flex; justify-content:space-between; align-items:flex-end; font-size:9pt; color:rgba(255,255,255,.75)}
+  .coverlede{font-size:13pt; color:rgba(255,255,255,.92); max-width:135mm; line-height:1.45}
+
+  /* generic blocks */
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:6mm}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:5mm}
+  .card{border:1.4px solid var(--line); border-radius:5mm; padding:6mm; background:#fff}
+  .card .t{font-weight:800; font-size:11pt; margin-bottom:1.6mm}
+  .card .d{color:var(--grey-d); font-size:9.4pt; line-height:1.45}
+  .em{font-size:19pt; line-height:1; margin-bottom:2.5mm; display:block}
+
+  .tealbox{background:var(--teal); color:#fff; border-radius:5mm; padding:7mm}
+  .tealbox h3{color:#fff}
+  .tealbox p{color:rgba(255,255,255,.85)}
+  .sandbox{background:var(--paper); border-radius:5mm; padding:6mm}
+  .coralbox{background:var(--coral-050); border:1.4px solid #ffd9d6; border-radius:5mm; padding:6mm}
+
+  ul{list-style:none}
+  li{position:relative; padding-left:5.2mm; margin-bottom:1.6mm; font-size:9.6pt; line-height:1.42}
+  li:before{content:''; position:absolute; left:0; top:1.7mm; width:2.2mm; height:2.2mm; border-radius:50%; background:var(--coral)}
+  .tealbox li:before{background:#fff}
+
+  /* rate card */
+  table{width:100%; border-collapse:collapse; font-size:9.3pt}
+  th,td{text-align:left; padding:3.2mm 3mm; border-bottom:1px solid var(--line); vertical-align:top}
+  thead th{background:var(--teal); color:#fff; font-weight:800; font-size:8.6pt; letter-spacing:.6px; text-transform:uppercase; border:none}
+  thead th:first-child{border-radius:3mm 0 0 0}
+  thead th:last-child{border-radius:0 3mm 0 0}
+  td.price{font-family:var(--disp); font-size:16pt; color:var(--teal); white-space:nowrap}
+  tbody tr:nth-child(even){background:#FAFBFC}
+  .tick{color:#177245; font-weight:800}
+  .dash{color:var(--grey-m)}
+
+  .foot{margin-top:auto; padding-top:5mm; border-top:1px solid var(--line); display:flex; justify-content:space-between; font-size:7.8pt; color:var(--grey-m); letter-spacing:.3px}
+  .pill{display:inline-block; background:var(--teal-050); color:var(--teal); font-size:8pt; font-weight:800; padding:1.4mm 3mm; border-radius:99px; margin:0 1.5mm 1.5mm 0}
+  .fill{background:#FFF8E1; border:1.4px dashed #E2A72A; border-radius:3mm; padding:4mm; font-size:9pt; color:#7a5a10}
+  .fill b{color:#5c440c}
+  .note{font-size:8.6pt; color:var(--grey-m); line-height:1.4}
+  .big{font-family:var(--disp); font-size:34pt; color:var(--coral); line-height:.9}
+  .statrow{display:grid; grid-template-columns:repeat(4,1fr); gap:4mm; margin-bottom:6mm}
+  .stat{border:1.4px solid var(--line); border-radius:4mm; padding:4.5mm}
+  .stat .n{font-family:var(--disp); font-size:24pt; color:var(--teal); line-height:1}
+  .stat .l{font-size:8.2pt; color:var(--grey-d); margin-top:1mm; line-height:1.3}
+</style>
+</head>
+<body>
+
+<!-- ══════════ 1. COVER ══════════ -->
+<section class="page cover">
+  <div>
+    <div class="logo">LOGO_SVG</div>
+  </div>
+  <div>
+    <span class="badge">Founding partners · 2026</span>
+    <h1 style="margin:6mm 0 5mm">Partner<br>pack.</h1>
+    <div class="coverlede">
+      Cycletowns is the discovery hub for cycle tourism — every town ranked by the riders who actually rode it.
+      This pack explains what a partnership gets you, what it costs, and exactly where we are today.
+    </div>
+  </div>
+  <div class="coverfoot">
+    <div>cycletowns.com<br>partners@cycletowns.com</div>
+    <div style="text-align:right">Sport2040 · ABN 73 680 648 855<br>Level 15, 461 Bourke Street, Melbourne VIC 3000</div>
+  </div>
+</section>
+
+<!-- ══════════ 2. THE MARKET ══════════ -->
+<section class="page">
+  <div class="kick">The market</div>
+  <h2>Cycle tourism is big,<br>and growing fast.</h2>
+  <div class="rule"></div>
+  <p class="sub">
+    Cycling holidays stopped being a niche a decade ago. Riders travel further, stay longer and spend more than the
+    average visitor — and they choose where to go based on the riding, not the marketing.
+  </p>
+
+  <div class="statrow" style="grid-template-columns:repeat(3,1fr); margin-bottom:5mm">
+    <div class="stat" style="border-color:#ffd9d6; background:var(--coral-050)">
+      <div class="n" style="color:var(--coral); font-size:30pt">$135B</div>
+      <div class="l">Global cycle tourism market, 2024</div>
+    </div>
+    <div class="stat" style="border-color:#ffd9d6; background:var(--coral-050)">
+      <div class="n" style="color:var(--coral); font-size:30pt">9.9%</div>
+      <div class="l">Compound annual growth — on track for $234B by 2030</div>
+    </div>
+    <div class="stat" style="border-color:#ffd9d6; background:var(--coral-050)">
+      <div class="n" style="color:var(--coral); font-size:30pt">A$6B</div>
+      <div class="l">Australian cycling trips, 2024</div>
+    </div>
+  </div>
+  <p class="note" style="margin-bottom:6mm">
+    Figures from Cycletowns' market analysis, consistent with published industry research valuing the global market at
+    US$146–153bn in 2025 and forecasting 9–11% annual growth to 2033.
+  </p>
+
+  <div class="grid2" style="margin-bottom:6mm">
+    <div class="card">
+      <span class="em">💰</span>
+      <div class="t">High-yield visitors</div>
+      <div class="d">International cycling trips average around <b>A$9,000</b>. For a Member partner, one extra booking
+        a month typically covers the tier several times over. Cyclists also travel mid-week and in the shoulder
+        season — exactly when a regional business needs the trade.</div>
+    </div>
+    <div class="card">
+      <span class="em">📅</span>
+      <div class="t">They plan, and they plan early</div>
+      <div class="d">A cycling trip is researched over weeks: which region, which roads, which stays, which café at
+        the 60km mark. That long planning window is a long window to be found in — if there's somewhere to be found.</div>
+    </div>
+  </div>
+
+  <div class="tealbox">
+    <h3>The gap we're filling</h3>
+    <p style="margin-top:2mm">
+      Strava, Komoot and AllTrails map <i>rides</i>. TripAdvisor reviews <i>everything</i>, for everyone. None of them
+      is built for the businesses that want cyclists — there is no dedicated place for a bike-friendly town, stay,
+      shop or operator to be discovered by the riders planning to travel. Cyclists currently plan across a dozen
+      fragmented sources: forums, heatmaps, blogs, word of mouth.
+    </p>
+    <p style="margin-bottom:0">
+      <b style="color:#fff">Cycletowns is the supply-side platform for cycle tourism.</b> We exist to make the places
+      and operators findable — and we monetise that side, not the rider's attention.
+    </p>
+  </div>
+
+  <div class="foot"><span>Cycletowns Partner Pack</span><span>2</span></div>
+</section>
+
+<!-- ══════════ 3. POSITIONING ══════════ -->
+<section class="page">
+  <div class="kick">Why us</div>
+  <h2>Nobody else is<br>building this side.</h2>
+  <div class="rule"></div>
+  <p class="sub">
+    The ride-mapping apps are consumer products built for athletes tracking their own rides. Supplier onboarding,
+    destination content and cyclist-scored rankings are a different business — and that's the one we're in.
+  </p>
+
+  <table style="margin-bottom:6mm">
+    <thead>
+      <tr><th style="width:29%"></th><th>Strava</th><th>Komoot / AllTrails</th><th>TripAdvisor</th><th style="background:var(--coral)">Cycletowns</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>Built for</b></td><td>Tracking &amp; sharing rides</td><td>Route planning</td><td>General travel reviews</td><td><b>Discovering cycle destinations</b></td></tr>
+      <tr><td><b>Cycling-native</b></td><td>Yes — athletes</td><td>Partly</td><td class="dash">No</td><td class="tick">Yes — 100%</td></tr>
+      <tr><td><b>Plans a whole trip</b></td><td class="dash">No</td><td>Partly — routes only</td><td>Generic</td><td class="tick">Yes — the cycling trip</td></tr>
+      <tr><td><b>Tools for businesses</b></td><td class="dash">No</td><td class="dash">No</td><td>Generic ads &amp; listings</td><td class="tick">Yes — the core of it</td></tr>
+      <tr><td><b>Destination rankings</b></td><td class="dash">No</td><td class="dash">No</td><td>Generic</td><td class="tick">Cyclist-scored</td></tr>
+    </tbody>
+  </table>
+
+  <div class="grid2" style="margin-bottom:6mm">
+    <div class="sandbox">
+      <h3 style="color:var(--teal)">Where we're starting</h3>
+      <p style="margin-top:3mm; font-size:9.6pt">
+        We're building region by region rather than thinly everywhere. The beachhead is <b>Bright and Victoria's
+        High Country</b> — owned properly, with real depth, then replicated. Founding partners in a beachhead region
+        get built into the guide first and shape how their region is presented.
+      </p>
+      <p style="font-size:9.6pt; margin-bottom:0">
+        Cycletowns is a Sport2040 project, drawing on 30+ years of relationships across events, content and
+        audience in Australian sport.
+      </p>
+    </div>
+    <div class="sandbox">
+      <h3 style="color:var(--teal)">Straight talk on the flywheel</h3>
+      <p style="margin-top:3mm; font-size:9.6pt">
+        This is a two-sided market, and we're honest about which side comes first. <b>Partners come before the
+        audience.</b> Your listings, routes and local knowledge are what makes a town guide worth reading — and
+        a guide worth reading is what brings the riders.
+      </p>
+      <p style="font-size:9.6pt; margin-bottom:0">
+        That's why founding pricing exists. You're taking on some of the early risk with us, and the rate you join
+        at reflects that, permanently.
+      </p>
+    </div>
+  </div>
+
+  <div class="coralbox">
+    <h3 style="color:var(--coral-700)">"Why not wait until you're bigger?"</h3>
+    <p style="margin:2mm 0 0">
+      Fair question, and one we get asked. Three answers: founding partners get the lowest rate, held for as long as
+      they stay; they get top placement in a region while there's room at the top; and the guide for their town gets
+      built with them rather than around them. First movers own the region.
+    </p>
+  </div>
+
+  <div class="foot"><span>Cycletowns Partner Pack</span><span>3</span></div>
+</section>
+
+<!-- ══════════ 4. THE PROPOSITION ══════════ -->
+<section class="page">
+  <div class="kick">What we are</div>
+  <h2>A guide riders trust,<br>because riders wrote it.</h2>
+  <div class="rule"></div>
+  <p class="sub">
+    Most cycling travel content is written by people who haven't ridden the roads. Cycletowns is built the other way
+    round: real routes, real cafés, real bike shops, ranked by riders who have been there. We publish nothing we
+    can't stand behind — no invented reviews, no paid rankings, no filler.
+  </p>
+
+  <div class="statrow">
+    <div class="stat"><div class="n">18</div><div class="l">Town guides live at launch, across 10 countries</div></div>
+    <div class="stat"><div class="n">4</div><div class="l">Continents covered — Australia, Asia, Europe, the Americas</div></div>
+    <div class="stat"><div class="n">2</div><div class="l">Planning tools: multi-day itineraries and a real route builder</div></div>
+    <div class="stat"><div class="n">A$7</div><div class="l">Rider membership per month — an audience that pays to be here</div></div>
+  </div>
+
+  <div class="grid2" style="margin-bottom:6mm">
+    <div class="card">
+      <span class="em">🚴</span>
+      <div class="t">Riders arrive with intent</div>
+      <div class="d">People don't browse Cycletowns idly. They come to choose where to ride next, then plan the trip —
+        which town, which routes, which days. Your business appears at the moment that decision is being made.</div>
+    </div>
+    <div class="card">
+      <span class="em">🗺️</span>
+      <div class="t">Planning happens on-site</div>
+      <div class="d">The trip planner builds a day-by-day itinerary from a town's real routes and rest days. The loop
+        builder generates rideable loops on real roads and hands over a GPX file. Both put local businesses in the plan.</div>
+    </div>
+    <div class="card">
+      <span class="em">🏅</span>
+      <div class="t">Verification means something</div>
+      <div class="d">Every claimed listing is checked by hand before the verified bike-friendly badge goes live.
+        That badge is worth something precisely because we don't hand it out automatically.</div>
+    </div>
+    <div class="card">
+      <span class="em">📈</span>
+      <div class="t">Rankings can't be bought</div>
+      <div class="d">Paid placement is always labelled as paid. Paying us does not move you up a ranking or change
+        your rider rating — and we tell riders that on the site.</div>
+    </div>
+  </div>
+
+  <div class="tealbox">
+    <h3>Where we are, honestly</h3>
+    <p style="margin-top:2mm">
+      Cycletowns launched in 2026 and is early. We are not going to quote you an audience figure we can't back up —
+      when we have traffic worth reporting, we will report it, and you'll see your own numbers in your dashboard either
+      way. What we're offering founding partners is a place in the guide before the audience arrives, at pricing that
+      won't be available later.
+    </p>
+  </div>
+
+  <div class="foot"><span>Cycletowns Partner Pack</span><span>4</span></div>
+</section>
+
+<!-- ══════════ 3. TIERS ══════════ -->
+<section class="page">
+  <div class="kick">What you get</div>
+  <h2>Four ways to work<br>with us.</h2>
+  <div class="rule"></div>
+
+  <table style="margin-bottom:6mm">
+    <thead>
+      <tr><th style="width:26%">Tier</th><th style="width:17%">Price</th><th>What it includes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Claim</b><div class="note">Every business</div></td>
+        <td class="price">Free</td>
+        <td>Claim your business on its town guide, get the verified bike-friendly badge after we check it,
+          keep your details correct, and collect honest rider reviews.</td>
+      </tr>
+      <tr>
+        <td><b>Member</b><div class="note">Cafés, bike shops, stays, guides</div></td>
+        <td class="price">A$49<span style="font-size:9pt;font-family:var(--ui)">/mo</span></td>
+        <td>Everything in Claim, plus your live dashboard, town demand signals, and the ability to publish a
+          members-only offer to riders who've paid to be here.</td>
+      </tr>
+      <tr>
+        <td><b>Featured</b><div class="note">Businesses wanting reach</div></td>
+        <td class="price">A$290<span style="font-size:9pt;font-family:var(--ui)">/mo</span></td>
+        <td>Everything in Member, plus priority placement on your town and category pages, and a richer,
+          photo-led profile. Always labelled as paid placement.</td>
+      </tr>
+      <tr>
+        <td><b>Brand &amp; Tourism</b><div class="note">Brands, boards, travel partners</div></td>
+        <td class="price">Custom</td>
+        <td>Multi-town and regional campaigns, promo codes, co-op work with local operators, and reporting
+          built around what you need to prove to your funders.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="coralbox" style="margin-bottom:6mm">
+    <h3 style="color:var(--coral-700)">Founding-partner pricing</h3>
+    <p style="margin:2mm 0 0">
+      These rates are locked in for partners who join before public launch, for as long as you stay a partner.
+      When we raise prices — and we will, once the audience justifies it — you keep the rate you joined at.
+      No lock-in contract: monthly billing, cancel from your dashboard whenever you like.
+    </p>
+  </div>
+
+  <div class="grid2">
+    <div class="sandbox">
+      <h3 style="color:var(--teal)">Live today</h3>
+      <ul style="margin-top:3mm">
+        <li>Your listing on the town guide, with the verified badge</li>
+        <li>Rider reviews and ratings on your town</li>
+        <li>Partner dashboard showing demand signals for your town: riders who saved it, reviews written, groups riding there</li>
+        <li>Members-only offers published to paying riders</li>
+        <li>Appearing in trip plans and loop routes built around your town</li>
+      </ul>
+    </div>
+    <div class="sandbox">
+      <h3 style="color:var(--teal)">On the roadmap</h3>
+      <ul style="margin-top:3mm">
+        <li>Per-listing views, saves and enquiry counts</li>
+        <li>Promo-code redemption tracking</li>
+        <li>Bookings taken directly through the site</li>
+        <li>Origin-market and travel-intent reporting for tourism partners</li>
+      </ul>
+      <p class="note" style="margin-top:3mm">Listed so you know what you're <b>not</b> buying yet. We'd rather you
+        joined for what exists than for what we hope to build.</p>
+    </div>
+  </div>
+
+  <div class="foot"><span>Cycletowns Partner Pack</span><span>5</span></div>
+</section>
+
+<!-- ══════════ 4. BY PARTNER TYPE ══════════ -->
+<section class="page">
+  <div class="kick">Pick your lane</div>
+  <h2>Built for every<br>kind of partner.</h2>
+  <div class="rule"></div>
+  <p class="sub">The tiers are the same for everyone. What changes is what you get out of them.</p>
+
+  <div class="grid2" style="gap:5mm">
+    <div class="card">
+      <span class="em">🏪</span>
+      <div class="t">Cafés, bike shops &amp; local services</div>
+      <div class="d">Get in front of riders rolling through your town and turn them into regulars. The verified
+        badge on a town guide is the single strongest signal to a rider deciding where to stop.</div>
+    </div>
+    <div class="card">
+      <span class="em">🏡</span>
+      <div class="t">Stays &amp; accommodation</div>
+      <div class="d">Cyclists stay longer and spend more than the average visitor, and they book around the riding.
+        Appear where the itinerary is being built, with a member rate riders can see.</div>
+    </div>
+    <div class="card">
+      <span class="em">🧭</span>
+      <div class="t">Tourism boards &amp; destinations</div>
+      <div class="d">Put your region in riders' plans, and spread them across the whole region rather than the
+        one road everyone already knows. Reporting shaped for the case you have to make to funders.</div>
+    </div>
+    <div class="card">
+      <span class="em">🚲</span>
+      <div class="t">Brands</div>
+      <div class="d">Bikes, gear and apparel, placed beside real rider reviews rather than pasted over them.
+        Promo codes and campaign reporting for brands who want the funnel, not just the impression.</div>
+    </div>
+    <div class="card">
+      <span class="em">🧑‍🦱</span>
+      <div class="t">Guides, tours &amp; experiences</div>
+      <div class="d">Be visible on every town page you operate in, keep your own pricing, and pick up riders
+        who are already planning days in your patch.</div>
+    </div>
+    <div class="card">
+      <span class="em">🏁</span>
+      <div class="t">Events &amp; training camps</div>
+      <div class="d">Fill your start list. Promote by discipline and region, and drive demand into the
+        shoulder season when your town needs it most.</div>
+    </div>
+  </div>
+
+  <div class="tealbox" style="margin-top:6mm">
+    <h3>The 18 towns live today</h3>
+    <div style="margin-top:3mm">
+      <span class="pill">Bright</span><span class="pill">Beechworth</span><span class="pill">Adelaide Hills</span><span class="pill">Noosa</span><span class="pill">Derby</span><span class="pill">Girona</span><span class="pill">Mallorca</span><span class="pill">Bentonville</span><span class="pill">Medellín</span><span class="pill">Onomichi · Shimanami Kaido</span><span class="pill">Hualien · Taroko</span><span class="pill">Sun Moon Lake</span><span class="pill">Chiang Mai</span><span class="pill">Da Lat</span><span class="pill">Ha Giang</span><span class="pill">Pokhara</span><span class="pill">Ubud · Bali</span><span class="pill">Jeju Island</span>
+    </div>
+    <p style="margin-top:3.5mm">Not on the list? Tell us — new towns are added where there are partners and riders to justify them.</p>
+  </div>
+
+  <div class="foot"><span>Cycletowns Partner Pack</span><span>6</span></div>
+</section>
+
+<!-- ══════════ 5. HOW IT WORKS / NEXT ══════════ -->
+<section class="page">
+  <div class="kick">Getting started</div>
+  <h2>Four steps,<br>about ten minutes.</h2>
+  <div class="rule"></div>
+
+  <div class="grid2" style="margin-bottom:6mm">
+    <div class="card"><div class="big">01</div><div class="t" style="margin-top:2mm">Claim your listing</div>
+      <div class="d">Go to cycletowns.com/partners/claim and tell us which business is yours. Free, no card.</div></div>
+    <div class="card"><div class="big">02</div><div class="t" style="margin-top:2mm">We verify by hand</div>
+      <div class="d">A real person checks it, usually within one business day. Then your verified badge goes live.</div></div>
+    <div class="card"><div class="big">03</div><div class="t" style="margin-top:2mm">Choose a tier</div>
+      <div class="d">Upgrade from your dashboard when you want the growth tools. Monthly, cancel any time.</div></div>
+    <div class="card"><div class="big">04</div><div class="t" style="margin-top:2mm">Put it to work</div>
+      <div class="d">Publish an offer, keep your details current, and reply to the riders who review you.</div></div>
+  </div>
+
+  <div class="fill" style="margin-bottom:6mm">
+    <b>Before you send this pack:</b> replace this box with anything specific to the partner — the town they're in,
+    the routes that pass their door, what you've agreed. A pack that names their town reads very differently to a generic one.
+    Delete this box if there's nothing to add.
+  </div>
+
+  <div class="grid2">
+    <div class="sandbox">
+      <h3 style="color:var(--teal)">Straight answers</h3>
+      <p style="margin-top:3mm; font-size:9.5pt"><b>Does paying improve my ranking?</b><br>No. Paid placement is
+        labelled as paid. Rankings come from rider ratings and our editorial scoring, and money doesn't touch either.</p>
+      <p style="font-size:9.5pt"><b>Can I remove a bad review?</b><br>No. We remove reviews that break the rules —
+        fake, abusive, or written by a competitor — but not ones that are simply unflattering. You can reply to any of them.</p>
+      <p style="font-size:9.5pt; margin-bottom:0"><b>What if it doesn't work?</b><br>Cancel from your dashboard.
+        You keep the rest of the month you've paid for, and your free listing stays.</p>
+    </div>
+    <div class="tealbox">
+      <h3>Talk to a person</h3>
+      <p style="margin-top:3mm">Questions, a town we should cover, or a campaign that doesn't fit the tiers —
+        email us and a human replies within one business day.</p>
+      <p style="font-family:var(--disp); font-size:17pt; color:#fff; margin:4mm 0 1mm">partners@cycletowns.com</p>
+      <p style="font-size:9.5pt">cycletowns.com/partners</p>
+      <p class="note" style="color:rgba(255,255,255,.6); margin-top:5mm; margin-bottom:0">
+        Sport2040 · ABN 73 680 648 855<br>Level 15, 461 Bourke Street, Melbourne VIC 3000, Australia<br>
+        Prices in Australian dollars. GST to be confirmed on invoice.
+      </p>
+    </div>
+  </div>
+
+  <div class="foot"><span>Cycletowns Partner Pack · prepared PACK_DATE</span><span>7</span></div>
+</section>
+
+</body>
+</html>

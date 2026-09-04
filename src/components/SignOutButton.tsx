@@ -10,6 +10,8 @@ export function SignOutButton() {
       onClick={async () => {
         await supabaseBrowser().auth.signOut();
         try { localStorage.removeItem("ct_saved"); } catch {}
+        // Drop anything the service worker kept, so a shared device shows nothing of this session.
+        try { navigator.serviceWorker?.controller?.postMessage("ct-clear-cache"); } catch {}
         router.push("/");
         router.refresh();
       }}
