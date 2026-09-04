@@ -20,11 +20,6 @@ const timed = async (name: string, fn: () => Promise<{ ok: boolean; note?: strin
   }
 };
 
-const ping = async (url: string, init?: RequestInit) => {
-  const res = await fetch(url, { ...init, signal: AbortSignal.timeout(6000), cache: "no-store" });
-  return { ok: res.ok || res.status === 401 || res.status === 403, note: res.ok ? undefined : `status ${res.status}` };
-};
-
 export async function GET() {
   const checks: Check[] = await Promise.all([
     // The database: a cheap authenticated read against a table that always exists.
@@ -48,13 +43,26 @@ export async function GET() {
       });
       return { ok: res.ok, note: res.ok ? undefined : `status ${res.status}` };
     }),
-    // Routing: the loop builder's dependency. 401/403 still means the service is up.
+    // Routing: the loop builder's dependency. Ask for a trivially short route rather than
+    // a status page — it proves the key works and the service answers, which is what breaks.
     timed("routing", async () => {
-      if (!process.env.ORS_API_KEY) return { ok: false, note: "not configured" };
-      return ping("https://api.openrouteservice.org/v2/health");
+      const key = process.env.ORS_API_KEY;
+      if (!key) return { ok: false, note: "not configured" };
+      const res = await fetch("https://api.openrouteservice.org/v2/directions/cycling-road", {
+        method: "POST",
+        headers: { Authorization: key, "Content-Type": "application/json" },
+        body: JSON.stringify({ coordinates: [[146.9608, -36.7295], [146.9658, -36.7255]] }), // two points in Bright
+        signal: AbortSignal.timeout(8000),
+        cache: "no-store",
+      });
+      if (res.status === 401 || res.status === 403) return { ok: false, note: "key rejected" };
+      if (res.status === 429) return { ok: false, note: "quota reached" };
+      return { ok: res.ok, note: res.ok ? undefined : `status ${res.status}` };
     }),
 
     // Email: sign-in links and newsletter confirmations both depend on it.
+    // A sending-only Resend key (the safer kind) cannot list domains and answers 401 there,
+    // so a 401 means "reachable, key not authorised for this read" — not that email is broken.
     timed("email", async () => {
       if (!process.env.RESEND_API_KEY) return { ok: false, note: "not configured" };
       const res = await fetch("https://api.resend.com/domains", {
@@ -62,6 +70,7 @@ export async function GET() {
         signal: AbortSignal.timeout(6000),
         cache: "no-store",
       });
+      if (res.status === 401 || res.status === 403) return { ok: true, note: "sending-only key — not verified here" };
       return { ok: res.ok, note: res.ok ? undefined : `status ${res.status}` };
     }),
   ]);
