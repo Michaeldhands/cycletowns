@@ -5,6 +5,7 @@ import { TopBar } from "@/components/SiteNav";
 import { Footer } from "@/components/Footer";
 import { Photo } from "@/components/Photo";
 import { TownCard } from "@/components/Cards";
+import { Subscribe } from "@/components/Subscribe";
 import { NewsGridCard } from "@/components/NewsCards";
 import { ridePic } from "@/lib/images";
 import { ARTICLES as BUNDLED, articleSlug } from "@/lib/news";
@@ -53,6 +54,13 @@ export default async function ArticlePage({ params }: PageProps<"/news/[slug]">)
             <TownCard t={town} />
           </div>
         )}
+      </div>
+      <div className="wsec">
+        <div className="wscorebox" style={{ maxWidth: 760 }}>
+          <h3 style={{ fontFamily: "var(--disp)", textTransform: "uppercase", fontSize: 24, marginBottom: 4 }}>Liked this one?</h3>
+          <p className="wsub" style={{ display: "block", marginBottom: 14 }}>Get the next Cycletowns Original in your inbox.</p>
+          <Subscribe source="article" compact />
+        </div>
       </div>
       <div className="wsec" style={{ paddingBottom: 40 }}>
         <div className="wh"><div><h2>More from Cycletowns</h2></div></div>

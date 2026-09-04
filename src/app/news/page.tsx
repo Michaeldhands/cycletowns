@@ -7,6 +7,7 @@ import { NewsGridCard } from "@/components/NewsCards";
 import { ridePic } from "@/lib/images";
 import { articleSlug } from "@/lib/news";
 import { loadArticles } from "@/lib/content";
+import { Subscribe } from "@/components/Subscribe";
 
 export const revalidate = 300;
 
@@ -49,6 +50,14 @@ export default async function News() {
           <div className="nbandhd"><h3>🎬 Cycletowns Originals</h3><span className="wsub">Feature stories &amp; films by our team — including the <b>Town in Focus</b> series</span></div>
           <div className="newsgrid">
             {ARTICLES.map((a, i) => <NewsGridCard key={i} a={a} idx={i} />)}
+          </div>
+          <div className="wscorebox" style={{ maxWidth: "none", marginTop: 34 }}>
+            <h3 style={{ fontFamily: "var(--disp)", textTransform: "uppercase", fontSize: 26, marginBottom: 4 }}>Get it in your inbox.</h3>
+            <p className="wsub" style={{ display: "block", marginBottom: 14 }}>
+              New town guides, routes worth travelling for, and the odd long read. No fixed schedule — we send it when
+              there&rsquo;s something worth your time.
+            </p>
+            <Subscribe source="news" />
           </div>
           <div className="nbandhd" style={{ marginTop: 34 }}><h3>📣 From @cycletowns</h3><span className="wsub">Follow the journey on Instagram, TikTok &amp; YouTube</span></div>
           <div className="wbar" style={{ marginTop: 8 }}>
