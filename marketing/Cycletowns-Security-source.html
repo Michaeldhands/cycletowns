@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cycletowns — Security &amp; Data Handling</title>
+<style>
+  :root{
+    --teal:#01536C; --teal-050:#E6EFF2; --coral:#FD3D35; --coral-700:#E22A22; --coral-050:#FFEBEA;
+    --ink:#191919; --grey-d:#5B5B5B; --grey-m:#8A8A8A; --line:#E7EAEC; --paper:#F3F5F6;
+    --disp:'League Gothic','Oswald','Arial Narrow',sans-serif;
+    --ui:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  @page{ size:A4; margin:0 }
+  *{box-sizing:border-box; margin:0; padding:0}
+  body{font-family:var(--ui); color:var(--ink); font-size:8.9pt; line-height:1.38; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  .page{width:210mm; height:297mm; padding:11mm 12mm 9mm; display:flex; flex-direction:column; page-break-after:always; overflow:hidden}
+  .page:last-child{page-break-after:auto}
+  h1,h2,h3{font-family:var(--disp); text-transform:uppercase; font-weight:400; letter-spacing:.5px; line-height:.92}
+  h1{font-size:26pt}
+  h3{font-size:12.5pt; color:var(--teal); margin-bottom:2mm}
+  p{margin-bottom:2mm}
+  b{font-weight:800}
+  .head{display:flex; justify-content:space-between; align-items:flex-start; border-bottom:3px solid var(--coral); padding-bottom:3mm; margin-bottom:4mm}
+  .logo{width:44mm}
+  .logo svg{width:100%; height:auto}
+  .kick{font-size:7.6pt; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--coral)}
+  .lede{color:var(--grey-d); font-size:9.4pt; margin-bottom:4mm; max-width:160mm}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:5mm}
+  .card{border:1.3px solid var(--line); border-radius:4mm; padding:4.2mm}
+  .sand{background:var(--paper); border-radius:4mm; padding:4.2mm}
+  .teal{background:var(--teal); color:#fff; border-radius:4mm; padding:4.6mm}
+  .teal h3{color:#fff} .teal p{color:rgba(255,255,255,.87)}
+  ul{list-style:none}
+  li{position:relative; padding-left:4.4mm; margin-bottom:1.1mm; font-size:8.5pt; line-height:1.34}
+  li:before{content:''; position:absolute; left:0; top:1.5mm; width:1.9mm; height:1.9mm; border-radius:50%; background:var(--coral)}
+  .teal li:before{background:#fff}
+  table{width:100%; border-collapse:collapse; font-size:8.3pt}
+  th,td{text-align:left; padding:2mm 2.4mm; border-bottom:1px solid var(--line); vertical-align:top}
+  thead th{background:var(--teal); color:#fff; font-weight:800; font-size:8pt; letter-spacing:.5px; text-transform:uppercase; border:none}
+  thead th:first-child{border-radius:2.5mm 0 0 0} thead th:last-child{border-radius:0 2.5mm 0 0}
+  tbody tr:nth-child(even){background:#FAFBFC}
+  .q{font-weight:800; color:var(--ink)}
+  .foot{margin-top:auto; padding-top:4mm; border-top:1px solid var(--line); display:flex; justify-content:space-between; font-size:7.4pt; color:var(--grey-m)}
+  .note{font-size:8pt; color:var(--grey-m); line-height:1.35}
+</style>
+</head>
+<body>
+
+<section class="page">
+  <div class="head">
+    <div>
+      <div class="kick">Security &amp; data handling</div>
+      <h1 style="margin-top:1.5mm">How we look<br>after your data.</h1>
+    </div>
+    <div class="logo">LOGO_SVG</div>
+  </div>
+
+  <p class="lede">
+    A summary of how Cycletowns is built, hosted and secured, and how personal information is handled —
+    written to answer the questions procurement teams ask, without the boilerplate.
+  </p>
+
+  <div class="grid2" style="margin-bottom:4mm">
+    <div class="card">
+      <h3>The organisation</h3>
+      <p><b>Sport2040</b> · ABN 73 680 648 855<br>
+      Level 15, 461 Bourke Street, Melbourne VIC 3000, Australia</p>
+      <p>Operating <b>cycletowns.com</b>, a cycle-tourism discovery platform.<br>
+      Contact for privacy and security: <b>hello@cycletowns.com</b></p>
+      <p class="note" style="margin-top:2.5mm">We are a small Australian company and we say so plainly rather than
+      implying a larger security function than we have. What follows is what is actually in place today.</p>
+    </div>
+    <div class="card">
+      <h3>How it's built</h3>
+      <table style="font-size:8.4pt">
+        <tbody>
+          <tr><td style="width:34%"><b>Hosting</b></td><td>Netlify (global CDN, TLS everywhere)</td></tr>
+          <tr><td><b>Database &amp; auth</b></td><td>Supabase (managed PostgreSQL)</td></tr>
+          <tr><td><b>Payments</b></td><td>Stripe</td></tr>
+          <tr><td><b>Email</b></td><td>Resend</td></tr>
+          <tr><td><b>Mapping</b></td><td>OpenStreetMap · OpenRouteService</td></tr>
+        </tbody>
+      </table>
+      <p class="note" style="margin-top:2.5mm">Established providers running their own certified infrastructure. We operate no servers ourselves.</p>
+    </div>
+  </div>
+
+  <h3>Access &amp; authentication</h3>
+  <div class="grid2" style="margin-bottom:4mm">
+    <div class="sand">
+      <ul>
+        <li><b>No passwords are stored.</b> Sign-in is by one-time email link or Google OAuth, so there is no password database to breach.</li>
+        <li><b>Row-level security</b> is enforced in the database on every table holding personal data — a rider can only read and write their own records, enforced by the database itself rather than by application code.</li>
+        <li><b>Administrative rights</b> are held in a protected field that users cannot alter, guarded by a database trigger.</li>
+      </ul>
+    </div>
+    <div class="sand">
+      <ul>
+        <li><b>Secrets</b> are held in the hosting platform's encrypted environment store, scoped to server-side execution only, and never committed to source control.</li>
+        <li><b>TLS</b> on every connection, with HSTS enabled.</li>
+        <li><b>Least privilege:</b> the key that can bypass access rules is used by exactly one server-side function (the payment webhook) and is never available to the browser.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Payment data</h3>
+  <div class="teal" style="margin-bottom:4mm">
+    <p style="margin-bottom:0">
+      <b style="color:#fff">Card details never reach our systems.</b> Payments are processed entirely by Stripe, a
+      PCI-DSS Level 1 certified provider. We hold only a Stripe customer reference and the status of a subscription.
+      We cannot see, store or export a card number — and neither can anyone who compromised us.
+    </p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>Data we hold</h3>
+      <ul>
+        <li>Email address (required — it is how people sign in)</li>
+        <li>Optional profile: display name, home town, country, riding type, ability, short bio, photo</li>
+        <li>Contributions: reviews, ratings, posts, saved towns, trip plans, routes</li>
+        <li>Membership status and a Stripe customer reference</li>
+      </ul>
+      <p class="note" style="margin-top:2.5mm">No tracking or advertising cookies. No analytics profiling.
+      No sale of personal information, ever.</p>
+    </div>
+    <div class="card">
+      <h3>Where it lives</h3>
+      <p>Data is held with our providers, which operate infrastructure in Australia, the United States and the
+      European Union. This is disclosed in our privacy policy, as Australian Privacy Principle 8 requires.</p>
+      <p style="margin-bottom:0">Partner data — your listing, your contact details, your published offers — is
+      yours. It is exportable on request and deleted on request.</p>
+    </div>
+  </div>
+
+  <div class="foot"><span>Cycletowns · Security &amp; Data Handling</span><span>September 2026 · Page 1 of 2</span></div>
+</section>
+
+<section class="page">
+  <div class="head" style="border-bottom-width:2px">
+    <div><div class="kick">Security &amp; data handling</div><h1 style="font-size:23pt; margin-top:1.5mm">Continuity, privacy<br>and the honest gaps.</h1></div>
+    <div class="logo" style="width:34mm">LOGO_SVG</div>
+  </div>
+
+  <div class="grid2" style="margin-bottom:4mm">
+    <div class="card">
+      <h3>Backups &amp; recovery</h3>
+      <ul>
+        <li><b>Daily</b> automated database backups, retained 7 days, held by our database provider</li>
+        <li><b>Weekly</b> independent backup to storage we control, retained 90 days — so a failure of the provider is not a failure of the backups</li>
+        <li>Every backup is <b>verified as restorable</b> at the point it is taken</li>
+        <li>Deployments are versioned; any previous version of the site can be republished in under a minute</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Monitoring &amp; response</h3>
+      <ul>
+        <li>Automated availability checks every five minutes against a health endpoint that verifies the database, payments and mapping services independently</li>
+        <li>Application error tracking with alerting</li>
+        <li>Faults alert a named person by email and SMS</li>
+        <li>A documented operations runbook covers restore, rollback and incident response</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Privacy compliance</h3>
+  <table style="margin-bottom:4mm">
+    <thead><tr><th style="width:31%">Obligation</th><th>How we meet it</th></tr></thead>
+    <tbody>
+      <tr><td><b>Published privacy policy</b></td><td>cycletowns.com/privacy — names every provider that touches personal data, what is public and what is not, and retention</td></tr>
+      <tr><td><b>Access &amp; correction</b></td><td>Most data is editable by the person directly; any request actioned within 30 days</td></tr>
+      <tr><td><b>Deletion</b></td><td>Account deletion removes profile, saved towns, trip plans and routes; full removal of contributions on request</td></tr>
+      <tr><td><b>Overseas disclosure</b></td><td>Disclosed in the privacy policy (APP 8)</td></tr>
+      <tr><td><b>Marketing consent</b></td><td>Separate opt-in; every marketing email carries working unsubscribe and sender identification (Spam Act 2003)</td></tr>
+      <tr><td><b>Breach notification</b></td><td>Affected individuals and the OAIC notified as the Notifiable Data Breaches scheme requires</td></tr>
+      <tr><td><b>Children</b></td><td>Not intended for under-16s; accounts removed if identified</td></tr>
+    </tbody>
+  </table>
+
+  <div class="grid2" style="margin-bottom:4mm">
+    <div class="sand">
+      <h3>Editorial integrity</h3>
+      <p>Relevant to any publicly funded partner: <b>paid placement is always labelled as paid</b>, and payment does
+      not affect a ranking or a rider rating. Rankings come from rider ratings and published editorial criteria.
+      We do not publish invented reviews, invented statistics or fabricated bylines.</p>
+      <p style="margin-bottom:0">We remove fake, abusive or competitor-written reviews — not merely unflattering ones.</p>
+    </div>
+    <div class="teal">
+      <h3>What we don't have yet</h3>
+      <p>Stated plainly, because you will ask and we would rather you heard it from us:</p>
+      <ul style="margin-top:2mm">
+        <li>No third-party penetration test has been commissioned. We use automated dependency and configuration scanning.</li>
+        <li>No ISO 27001 or SOC 2 certification.</li>
+        <li>No 24/7 staffed operations desk — monitoring is automated and alerts a person.</li>
+        <li>We are a small team. Continuity depends on documentation and shared credential custody, both of which are in place.</li>
+      </ul>
+      <p style="margin-bottom:0; margin-top:2mm">Where a contract requires an independent test or a specific
+      certification, tell us early and we will scope it.</p>
+    </div>
+  </div>
+
+  <div class="card" style="border-color:#ffd9d6; background:var(--coral-050)">
+    <h3 style="color:var(--coral-700)">Contact</h3>
+    <p style="margin-bottom:0">
+      Privacy requests, security questions and disclosure of a suspected vulnerability:
+      <b>hello@cycletowns.com</b>. We respond to security reports within two business days and will not pursue anyone reporting a genuine issue in good faith.
+    </p>
+  </div>
+
+  <div class="foot"><span>Sport2040 · ABN 73 680 648 855 · Level 15, 461 Bourke Street, Melbourne VIC 3000</span><span>September 2026 · Page 2 of 2</span></div>
+</section>
+
+</body>
+</html>
