@@ -46,6 +46,8 @@ export type Profile = {
   membership?: "free" | "insider";
   membership_interval?: string | null;
   membership_until?: string | null;
+  marketing_opt_in?: boolean;
+  marketing_opt_in_at?: string | null;
 };
 
 /** Active Insider member? */
