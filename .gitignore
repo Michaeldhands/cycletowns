@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .sentryclirc
+
+# transfer archives are never part of the repo
+*.tgz

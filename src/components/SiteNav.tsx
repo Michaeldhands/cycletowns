@@ -8,6 +8,7 @@ const LINKS: [string, string][] = [
   ["Towns", "/towns"],
   ["Rankings", "/rankings"],
   ["Routes", "/loop"],
+  ["Events", "/events"],
   ["News", "/news"],
   ["Feed", "/feed"],
   ["Shop", "/shop"],

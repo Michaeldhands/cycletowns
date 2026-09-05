@@ -43,6 +43,7 @@ export function Footer() {
             <Link href="/shop">Shop</Link>
             <Link href="/plan">Plan a trip</Link>
             <Link href="/loop">Build a loop</Link>
+            <Link href="/events">Events</Link>
           </div>
           <div className="ftcol">
             <h4>Riders</h4>

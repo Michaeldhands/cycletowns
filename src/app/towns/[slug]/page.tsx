@@ -11,6 +11,9 @@ import { SaveButton } from "@/components/SaveButton";
 import { ReviewForm } from "@/components/ReviewForm";
 import { Avatar } from "@/components/Avatar";
 import { currentUser } from "@/lib/supabase/server";
+import { eventsForTown } from "@/lib/events";
+import { loadEvents } from "@/lib/events-data";
+import { EventCard } from "@/components/EventCards";
 import { REVIEWS_TO_TAKE_OVER, effectiveScore, fetchTownReviews } from "@/lib/reviews";
 import { fetchFeed, fetchTownGroups } from "@/lib/community";
 import { loadCatalog, rankIn, rankTowns, type Catalog } from "@/lib/content";
@@ -23,7 +26,6 @@ import {
   catScore,
   regionOf,
   rideDiscipline,
-  type Race,
   type ScoreDims,
   type Town,
   type WhenInfo,
@@ -52,7 +54,6 @@ export async function generateMetadata({ params }: PageProps<"/towns/[slug]">): 
 
 /* ---------- helpers ---------- */
 const MON = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
-const RMON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 function whenFor(c: Catalog, t: Town): WhenInfo & { getting?: string; terrain?: string; tip?: string; currency?: string } {
   const w = c.when[t.id] as WhenInfo & { getting?: string; terrain?: string; tip?: string; currency?: string };
@@ -71,28 +72,6 @@ function whenFor(c: Catalog, t: Town): WhenInfo & { getting?: string; terrain?: 
   };
 }
 
-function raceWhen(r: Race): { text: string; upcoming: boolean } {
-  if (!r.date) {
-    return {
-      text: r.status === "historic" ? "Historic route" : r.status === "epic" ? "Bucket-list epic" : "Annual event · dates via organiser",
-      upcoming: false,
-    };
-  }
-  const d = new Date(r.date + "T00:00:00");
-  const ds = `${d.getDate()} ${RMON[d.getMonth()]} ${d.getFullYear()}`;
-  const days = Math.round((d.getTime() - Date.now()) / 86400000);
-  if (days < 0) return { text: `Most recent: ${ds}`, upcoming: false };
-  if (days === 0) return { text: `Today · ${ds}`, upcoming: true };
-  return { text: `In ${days} days · ${ds}`, upcoming: true };
-}
-function raceLevel(km: number, vert: number) {
-  const d = vert + km * 5;
-  if (d < 400) return { level: "Easy", ability: "Chill", color: "#177245" };
-  if (d < 1000) return { level: "Moderate", ability: "Regular", color: "#0a6a86" };
-  if (d < 2200) return { level: "Hard", ability: "Strong", color: "#E2872A" };
-  return { level: "Epic", ability: "Racer", color: "#FD3D35" };
-}
-const KIND_LABEL: Record<string, string> = { pro: "Pro stage", mtb: "MTB race", fondo: "Gran fondo" };
 
 function DimBar({ label, v }: { label: string; v: number }) {
   return (
@@ -120,7 +99,7 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
   const rk = rankIn(c, t.id);
   const geo = c.geo[t.id];
   const w = whenFor(c, t);
-  const races = c.races[t.id] || [];
+  const events = eventsForTown(await loadEvents(), t.id);
   const seedo = c.seeDo[t.id] || [];
   const dims = Object.keys(DIM_LABELS) as (keyof ScoreDims)[];
   const related = rankTowns(c).filter((x) => x.id !== t.id && regionOf(x.country) === regionOf(t.country)).slice(0, 4);
@@ -327,48 +306,24 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
         items={t.routes.map((p) => ({ key: p.n, filter: rideDiscipline(p), node: <RideCard t={t} p={p} /> }))}
       />
 
-      {/* RACES */}
-      {races.length > 0 && (
+      {/* EVENTS — the real, verified ones, with a link to the organiser */}
+      {events.length > 0 && (
         <div className="wsec">
           <div className="wh">
-            <h2>🏁 Ride the races</h2>
-            <span className="wsub">Pro stages &amp; gran fondos here — ride the route yourself</span>
+            <div>
+              <h2>🏁 Events here</h2>
+              <span className="wsub">Mass-participation rides you can actually enter — checked against the organiser&rsquo;s own site</span>
+            </div>
+            <Link href="/events" className="lk-ghost" style={{ textDecoration: "none", padding: "7px 13px", fontSize: 12.5 }}>
+              All events ›
+            </Link>
           </div>
-          <div className="racegrid">
-            {races.map((r, i) => {
-              const rw = raceWhen(r);
-              const lv = raceLevel(r.km, r.vert);
-              return (
-                <div className="racecard" key={i}>
-                  <div className="rctop">
-                    <span className={`rcbadge ${r.kind}`}>
-                      {r.badge} {KIND_LABEL[r.kind] || r.kind}
-                    </span>
-                    {rw.upcoming && <span className="rcup">Upcoming</span>}
-                  </div>
-                  <div className="rcname">{r.name}</div>
-                  {r.series && <div className="rcseries">{r.series}</div>}
-                  <div className="rcstats">
-                    <span>📏 {r.km} km</span>
-                    <span>⛰️ {r.vert.toLocaleString()} m</span>
-                    <span className="rclvl" style={{ color: lv.color }}>
-                      ● {lv.level} · {lv.ability}
-                    </span>
-                  </div>
-                  <div className={"rcwhen" + (rw.upcoming ? " up" : "")}>
-                    {rw.upcoming ? "⏳ " : ""}
-                    {rw.text}
-                  </div>
-                  {r.note && <div className="rcnote">{r.note}</div>}
-                </div>
-              );
-            })}
-          </div>
-          <div className="wsub" style={{ marginTop: 10, fontSize: 12.5, display: "block" }}>
-            Dates &amp; distances are indicative — always confirm on the organiser’s site.
+          <div className="evgrid">
+            {events.map((e) => <EventCard key={e.slug} e={e} />)}
           </div>
         </div>
       )}
+
 
       {/* GROUPS */}
       <div className="wsec">

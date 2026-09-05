@@ -7,6 +7,7 @@ const SECTIONS: [string, string][] = [
   ["/admin", "Overview"],
   ["/admin/towns", "Towns"],
   ["/admin/articles", "News"],
+  ["/admin/events", "Events"],
   ["/admin/offers", "Offers"],
   ["/admin/partners", "Partners"],
   ["/admin?s=riders", "Riders"],
