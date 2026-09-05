@@ -34,7 +34,7 @@ export function LoopStats({ result, discipline }: { result: LoopResult; discipli
 export function LoopBuilder({ towns, initialTown, userId, routerOn }: { towns: LoopTown[]; initialTown?: string; userId: string | null; routerOn: boolean }) {
   const [townId, setTownId] = useState(initialTown && towns.some((t) => t.id === initialTown) ? initialTown : "");
   const [start, setStart] = useState<{ lat: number; lng: number } | null>(null);
-  const [distance, setDistance] = useState(50);
+  const [distance, setDistance] = useState(50); // the router won't plan a loop beyond 100 km
   const [discipline, setDiscipline] = useState("road");
   const [seed, setSeed] = useState(1);
   const [result, setResult] = useState<LoopResult | null>(null);
@@ -116,7 +116,7 @@ export function LoopBuilder({ towns, initialTown, userId, routerOn }: { towns: L
         )}
         <div className="field">
           <label>How far? <b style={{ color: "var(--coral)" }}>{distance} km</b></label>
-          <input type="range" min={15} max={160} step={5} value={distance} onChange={(e) => setDistance(Number(e.target.value))} style={{ width: "100%" }} />
+          <input type="range" min={15} max={100} step={5} value={distance} onChange={(e) => setDistance(Number(e.target.value))} style={{ width: "100%" }} />
         </div>
         <div className="field">
           <label>What are you riding?</label>

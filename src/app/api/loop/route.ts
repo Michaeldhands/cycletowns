@@ -5,6 +5,8 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const ORS = "https://api.openrouteservice.org/v2/directions";
+/** The routing service refuses round trips longer than this. */
+export const MAX_LOOP_KM = 100;
 export const hasRouter = () => Boolean(process.env.ORS_API_KEY);
 
 type Body = { lat?: number; lng?: number; km?: number; discipline?: string; seed?: number };
@@ -23,7 +25,9 @@ export async function POST(req: NextRequest) {
   if (typeof lat !== "number" || typeof lng !== "number" || Math.abs(lat) > 90 || Math.abs(lng) > 180) {
     return NextResponse.json({ error: "That start point doesn’t look right." }, { status: 400 });
   }
-  const wanted = Math.round(Math.max(10, Math.min(200, km)) * 1000);
+  // OpenRouteService caps round-trip queries at 100 km. Asking for more is refused, so
+  // clamp here rather than letting the rider hit an error they can't act on.
+  const wanted = Math.round(Math.max(10, Math.min(MAX_LOOP_KM, km)) * 1000);
   const profile = profileFor(discipline);
 
   /** One call to the router. Returns the loop, or an error message to show the rider. */
@@ -47,15 +51,23 @@ export async function POST(req: NextRequest) {
     }
     if (!res.ok) {
       const detail = await res.text().catch(() => "");
-      let message = "The route service couldn’t build a loop from there.";
-      if (res.status === 403 || res.status === 401) message = "Route building is misconfigured — the API key was rejected.";
-      else if (res.status === 429) message = "Too many routes being built right now. Give it a minute.";
-      else if (/2010|Could not find routable point|point.*not found/i.test(detail)) {
-        message = "No rideable roads found near that start point. Try dropping the pin closer to town, or a different discipline.";
-      } else if (/2004|distance|length/i.test(detail)) {
-        message = "That distance is too far for this start point. Try something shorter.";
-      }
       console.error("ORS", res.status, detail.slice(0, 400));
+
+      // Read what the service actually said before falling back to the status code — it
+      // answers 403 both for a bad key and for a request beyond its limits, and telling a
+      // rider their key is wrong when the loop was simply too long helps nobody.
+      let message = "The route service couldn’t build a loop from there.";
+      if (/2010|Could not find routable point|point.*not found|unable to find/i.test(detail)) {
+        message = "No rideable roads found near that start point. Try dropping the pin closer to town, or a different discipline.";
+      } else if (/2004|exceed|too (long|large)|maximum|limit/i.test(detail)) {
+        message = `That's beyond what the route service will plan in one loop — ${MAX_LOOP_KM} km is the ceiling. Try shorter.`;
+      } else if (/quota|rate limit|too many/i.test(detail) || res.status === 429) {
+        message = "The route service is rate-limiting us right now. Give it a minute and try again.";
+      } else if (res.status === 401 || /api\s*key|unauthori[sz]ed|invalid.*key/i.test(detail)) {
+        message = "Route building is misconfigured — the API key was rejected.";
+      } else if (res.status === 403) {
+        message = "The route service refused that request. It may be past its daily limit — try again later.";
+      }
       return { err: message };
     }
     const data = (await res.json().catch(() => null)) as OrsResponse | null;
@@ -88,7 +100,7 @@ export async function POST(req: NextRequest) {
     const ratio = got.distance_m / wanted;
     if (Math.abs(ratio - 1) <= tolerance) break;
     // Scale the ask by how far off we were, clamped so one wild result can't send the next attempt somewhere silly.
-    request = Math.max(5000, Math.min(200000, request / Math.max(0.4, Math.min(2.5, ratio))));
+    request = Math.max(5000, Math.min(MAX_LOOP_KM * 1000, request / Math.max(0.4, Math.min(2.5, ratio))));
   }
 
   if (!best) return NextResponse.json({ error: "The route service couldn’t build a loop from there." }, { status: 502 });
