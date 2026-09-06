@@ -1,5 +1,6 @@
 import eventsJson from "@/data/events.json";
-import { hashStr, photoURL, ridePic } from "@/lib/images";
+import { photoURL } from "@/lib/images";
+import { getTown } from "@/lib/towns";
 
 /* Cycling events riders travel for. Every entry here was checked against the organiser's own
    site on the date in `verified` — nothing is inferred, and where an organiser hasn't published
@@ -77,12 +78,13 @@ export function sortEvents(list: CtEvent[]): CtEvent[] {
   });
 }
 
-/** A photo for an event: the uploaded one if there is one, otherwise a rider shot chosen
-    deterministically from the discipline, so the page never flickers or looks empty. */
-const KIND: Record<string, string> = { road: "road", gravel: "gravel", mtb: "mtb", mixed: "group" };
-export function eventPhoto(e: CtEvent, w = 900): string {
+/** A photo for an event. In order: one uploaded for the event itself, then the real photo of
+    the town it is held in — which at least genuinely depicts where you would be riding. We do
+    not fall back to a stock rider shot: a photo of somewhere else is worse than none. */
+export function eventPhoto(e: CtEvent, w = 900): string | null {
   if (e.img) return photoURL(e.img, w);
-  return ridePic(KIND[e.discipline] || "road", `event-${e.slug}-${hashStr(e.slug) % 7}`, w);
+  const town = e.town_id ? getTown(e.town_id) : null;
+  return town?.photo ? photoURL(town.photo, w) : null;
 }
 
 export const eventsForTown = (list: CtEvent[], townId: string) => sortEvents(list.filter((e) => e.town_id === townId));

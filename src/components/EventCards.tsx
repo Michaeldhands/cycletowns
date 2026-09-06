@@ -9,7 +9,11 @@ export function EventCard({ e, townName }: { e: CtEvent; townName?: string }) {
   const soon = countdown(e);
   return (
     <Link href={`/events/${e.slug}`} className="evcard" style={{ textDecoration: "none", color: "inherit" }}>
-      <div className="evimg"><Photo src={eventPhoto(e, 560)} alt="" /></div>
+      {eventPhoto(e, 560) ? (
+        <div className="evimg"><Photo src={eventPhoto(e, 560)!} alt="" /></div>
+      ) : (
+        <div className={`evimg noimg d-${e.discipline}`}><span>{disciplineEmoji(e.discipline)}</span></div>
+      )}
       <div className="evbody">
       <div className="evtop">
         <span className="evdisc">{disciplineEmoji(e.discipline)} {e.discipline === "mtb" ? "MTB" : e.discipline[0].toUpperCase() + e.discipline.slice(1)}</span>

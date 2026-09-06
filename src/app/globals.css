@@ -1292,3 +1292,25 @@ a.catchip,a.scopechip{text-decoration:none}
 .evmeta{font-size:12.5px;color:var(--grey-d);margin-bottom:9px}
 .evcard p{font-size:13px;line-height:1.5;color:var(--grey-d);margin-bottom:10px}
 .evfoot{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--grey-m);border-top:1px solid var(--line);padding-top:9px}
+
+/* Card headers where we have no genuine photo of the place — a designed band, not stock imagery */
+.wcard .wcap{position:relative;height:78px;display:flex;align-items:center;gap:8px;padding:0 14px;
+  background:linear-gradient(135deg,var(--teal) 0%,#0a6a86 100%);color:#fff}
+.wcard .wcap.cafe{background:linear-gradient(135deg,#7a4a24 0%,#a9713d 100%)}
+.wcard .wcap.shop{background:linear-gradient(135deg,#013E52 0%,#0a6a86 100%)}
+.wcard .wcap.thing{background:linear-gradient(135deg,#177245 0%,#2a9c66 100%)}
+.wcard .wcap.d-gravel{background:linear-gradient(135deg,#8a5a1e 0%,#c08a3e 100%)}
+.wcard .wcap.d-mtb{background:linear-gradient(135deg,#3d5c2a 0%,#5f8a45 100%)}
+.wcard .wcap.d-climbs{background:linear-gradient(135deg,#8a2d28 0%,#c4463f 100%)}
+.wcard .wcapem{font-size:26px;line-height:1}
+.wcard .wcap .wpill{position:static;background:rgba(255,255,255,.2);color:#fff;border:none;backdrop-filter:blur(2px)}
+.wcard .wcap .wpill.vpill{background:#fff;color:#177245}
+.wcard .wcap .wsc{position:static;margin-left:auto;background:rgba(0,0,0,.28);color:#fff}
+.wcard .wcapkm{position:absolute;left:14px;bottom:8px;font-size:11.5px;font-weight:800;color:rgba(255,255,255,.8)}
+.evimg.noimg{display:flex;align-items:center;justify-content:center;font-size:38px;
+  background:linear-gradient(135deg,var(--teal) 0%,#0a6a86 100%)}
+.evimg.noimg.d-gravel{background:linear-gradient(135deg,#8a5a1e 0%,#c08a3e 100%)}
+.evimg.noimg.d-mtb{background:linear-gradient(135deg,#3d5c2a 0%,#5f8a45 100%)}
+.evimg.noimg.d-mixed{background:linear-gradient(135deg,#5a3a70 0%,#8a5fa8 100%)}
+.evheronote{position:absolute;right:10px;bottom:8px;background:rgba(0,0,0,.55);color:#fff;
+  font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px}

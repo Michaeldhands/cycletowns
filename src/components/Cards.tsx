@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Photo } from "./Photo";
-import { townHero, ridePic, venuePic } from "@/lib/images";
+import { townHero } from "@/lib/images";
 import { gmaps, rankOf, type Place, type SeeDo, type Town, rideDiscipline } from "@/lib/towns";
 
 /** Landing / listing town card. */
@@ -41,10 +41,10 @@ export function RideCard({ t, p }: { t: Town; p: Place }) {
   const d = rideDiscipline(p);
   return (
     <a className={`wcard d-${d}`} href={gmaps(`${p.n} ${t.name} ${t.country}`)} target="_blank" rel="noopener">
-      <div className="wph">
-        <Photo src={ridePic(d === "climbs" ? "climb" : d, t.id + p.n, 520)} />
+      <div className={`wcap d-${d}`}>
         <span className="wpill">{DISC_LABEL[d]}</span>
         <span className="wsc">★ {p.s.toFixed(1)}</span>
+        {p.km != null && <span className="wcapkm">{p.km} km{p.vert != null ? ` · ${p.vert.toLocaleString()} m` : ""}</span>}
       </div>
       <div className="wcb">
         <div className="wcn">{p.n}</div>
@@ -58,8 +58,8 @@ export function RideCard({ t, p }: { t: Town; p: Place }) {
 export function CafeCard({ t, p }: { t: Town; p: Place }) {
   return (
     <a className="wcard" href={gmaps(`${p.n} ${t.name}`)} target="_blank" rel="noopener">
-      <div className="wph">
-        <Photo src={venuePic("cafe", t.id + p.n, 520)} />
+      <div className="wcap cafe">
+        <span className="wcapem">☕</span>
         <span className="wsc">★ {p.s.toFixed(1)}</span>
         {p.verified && <span className="wpill vpill">✓ Verified bike-friendly</span>}
       </div>
@@ -76,8 +76,8 @@ export function ShopCard({ t, p }: { t: Town; p: Place }) {
   const ebike = /e-?bike|e-?mtb/i.test((p.note || "") + p.n);
   return (
     <a className="wcard" href={gmaps(`${p.n} ${t.name}`)} target="_blank" rel="noopener">
-      <div className="wph">
-        <Photo src={venuePic("shop", t.id + p.n, 520)} />
+      <div className="wcap shop">
+        <span className="wcapem">🔧</span>
         <span className="wsc">★ {p.s.toFixed(1)}</span>
         {p.verified ? <span className="wpill vpill">✓ Verified bike-friendly</span> : p.hire ? <span className="wpill">{ebike ? "⚡ E-bike hire" : "🔧 Hire"}</span> : null}
       </div>
@@ -93,8 +93,8 @@ export function ShopCard({ t, p }: { t: Town; p: Place }) {
 export function ThingCard({ t, s }: { t: Town; s: SeeDo }) {
   return (
     <a className="wcard" href={gmaps(`${s[1]} ${t.name}`)} target="_blank" rel="noopener">
-      <div className="wph">
-        <Photo src={venuePic("thing", t.id + s[1], 520)} />
+      <div className="wcap thing">
+        <span className="wcapem">📍</span>
         <span className="wpill">{s[0]}</span>
       </div>
       <div className="wcb">

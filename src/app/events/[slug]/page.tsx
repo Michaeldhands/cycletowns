@@ -28,9 +28,12 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
   return (
     <>
       <TopBar back={{ href: "/events", label: "All events" }} />
-      <div className="evhero">
-        <Photo src={eventPhoto(e, 1400)} alt={e.name} />
-      </div>
+      {eventPhoto(e, 1400) && (
+        <div className="evhero">
+          <Photo src={eventPhoto(e, 1400)!} alt={town ? `${town.name}, where ${e.name} is held` : e.name} />
+          {!e.img && town && <div className="evheronote">Photo: {town.name} — not the event itself</div>}
+        </div>
+      )}
       <div className="sec2" style={{ paddingTop: 22 }}>
         <div className="in" style={{ maxWidth: 880 }}>
           <div className="bc">
