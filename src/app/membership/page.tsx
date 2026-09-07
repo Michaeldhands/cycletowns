@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { TopBar } from "@/components/SiteNav";
 import { Footer } from "@/components/Footer";
+import { bannerAlt, bannerSrc } from "@/lib/banners";
+import { loadBanners } from "@/lib/banners-data";
 import { Photo } from "@/components/Photo";
 import { JoinInsider } from "@/components/MembershipButtons";
 import { ridePic } from "@/lib/images";
@@ -12,13 +14,14 @@ export const metadata: Metadata = { title: "Membership & rewards" };
 export const dynamic = "force-dynamic";
 
 export default async function Membership() {
+  const banners = await loadBanners();
   const me = await currentUser();
   const member = isMember(me?.profile);
   return (
     <>
       <TopBar />
       <div className="whero" style={{ height: 300 }}>
-        <Photo src={ridePic("alpine", "membership-hero", 1400)} />
+        <Photo src={bannerSrc(banners, "membership-hero", 1400)} alt={bannerAlt(banners, "membership-hero")} />
         <div className="wov">
           <div className="winner">
             <div className="awards"><span className="award alt">Cycletowns Club</span></div>
@@ -59,7 +62,7 @@ export default async function Membership() {
             <JoinInsider userId={me?.id ?? null} member={member} enabled={hasStripe()} />
             <p style={{ fontSize: 12, opacity: 0.8, marginTop: 12 }}>Prices in Australian dollars, GST inclusive. Cancel anytime from your account — you keep Insider until the end of the period you’ve paid for.</p>
           </div>
-          <div className="cgr"><Photo src={ridePic("group", "insider", 900)} /></div>
+          <div className="cgr"><Photo src={bannerSrc(banners, "membership-insider", 900)} alt={bannerAlt(banners, "membership-insider")} /></div>
         </div>
       </div>
 

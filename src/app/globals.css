@@ -1314,3 +1314,17 @@ a.catchip,a.scopechip{text-decoration:none}
 .evimg.noimg.d-mixed{background:linear-gradient(135deg,#5a3a70 0%,#8a5fa8 100%)}
 .evheronote{position:absolute;right:10px;bottom:8px;background:rgba(0,0,0,.55);color:#fff;
   font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px}
+
+/* Admin: banner slots */
+.bngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:14px}
+.bncard{border:1.4px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.bnimg{position:relative;background:var(--paper)}
+.bnimg.wide{height:110px}
+.bnimg.square{height:150px}
+.bnimg img{width:100%;height:100%;object-fit:cover;display:block}
+.bnbadge{position:absolute;top:7px;right:7px;background:rgba(0,0,0,.55);color:#fff;font-size:10.5px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.6px;padding:3px 8px;border-radius:99px}
+.bnbadge.on{background:#177245}
+.bnb{padding:11px 12px 13px}
+.bnl{font-weight:800;font-size:13.5px}
+.bnw{font-size:11.5px;color:var(--grey-m);line-height:1.4;margin-top:2px}

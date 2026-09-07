@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { SiteNav } from "@/components/SiteNav";
 import { Footer } from "@/components/Footer";
+import { bannerAlt, bannerSrc } from "@/lib/banners";
+import { loadBanners } from "@/lib/banners-data";
 import { Subscribe } from "@/components/Subscribe";
 import { LpCarousel } from "@/components/Carousel";
 import { TownCard } from "@/components/Cards";
@@ -16,7 +18,7 @@ export const revalidate = 300;
 const CAT_IMG: Record<string, string> = { road: "road", climb: "climb", gravel: "gravel", mtb: "mtb", ebike: "ebike", alpine: "alpine", pro: "group" };
 
 export default async function Home() {
-  const [c, articles] = await Promise.all([loadCatalog(), loadArticles()]);
+  const [c, articles, banners] = await Promise.all([loadCatalog(), loadArticles(), loadBanners()]);
   const feat = rankTowns(c).slice(0, 8);
   return (
     <>
@@ -24,7 +26,7 @@ export default async function Home() {
 
       {/* HERO */}
       <div className="hero">
-        <Photo src={ridePic("road", "hero", 1600)} className="heroimg" />
+        <Photo src={bannerSrc(banners, "home-hero", 1600)} alt={bannerAlt(banners, "home-hero")} className="heroimg" />
         <div className="in" style={{ position: "relative", zIndex: 1 }}>
           <div className="hero-l">
             <h1>
@@ -57,7 +59,7 @@ export default async function Home() {
           <LpCarousel>
             {CAT_DEFS.map((c) => (
               <Link key={c.id} href={`/rankings/${c.id}`} className="cat">
-                <Photo src={ridePic(CAT_IMG[c.id] || "road", "cat-" + c.id, 440)} />
+                <Photo src={bannerSrc(banners, `cat-${c.id}`, 440)} alt={bannerAlt(banners, `cat-${c.id}`)} />
                 <span className="cl">{c.label}</span>
               </Link>
             ))}
@@ -70,7 +72,7 @@ export default async function Home() {
         <div className="in">
           <div className="adbanner hc">
             <div className="adimg">
-              <Photo src={ridePic("road", "ad-1", 760)} />
+              <Photo src={bannerSrc(banners, "home-partner", 760)} alt={bannerAlt(banners, "home-partner")} />
               <span className="adlabel">Partner offer</span>
             </div>
             <div className="adbody">
@@ -102,7 +104,7 @@ export default async function Home() {
           <div className="lanes">
             <div className="lane wave">
               <div className="laneimg">
-                <Photo src={ridePic("group", "lane-1", 520)} />
+                <Photo src={bannerSrc(banners, "home-lane-1", 520)} alt={bannerAlt(banners, "home-lane-1")} />
                 <span className="lanetag">🌊 Just here to ride</span>
               </div>
               <div className="laneb">
@@ -131,7 +133,7 @@ export default async function Home() {
             </div>
             <div className="lane build">
               <div className="laneimg">
-                <Photo src={ridePic("group", "lane-2", 520)} />
+                <Photo src={bannerSrc(banners, "home-lane-2", 520)} alt={bannerAlt(banners, "home-lane-2")} />
                 <span className="lanetag alt">🤝 Here to build it</span>
               </div>
               <div className="laneb">
@@ -236,7 +238,7 @@ export default async function Home() {
               </Link>
             </div>
             <div className="cgr">
-              <Photo src={ridePic("group", "club", 900)} />
+              <Photo src={bannerSrc(banners, "home-club", 900)} alt={bannerAlt(banners, "home-club")} />
             </div>
           </div>
         </div>

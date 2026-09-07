@@ -616,5 +616,41 @@
   "month": "December",
   "note": "Six timed gravity stages over two race days in the Arba Hills above Pokhara, with a shuttle-assisted practice day first. The trails mix technical forest singletrack with flowing corners, and the Annapurna range sits in the background the whole way. It is one of the few organised enduro events in Nepal and draws an international field.",
   "verified": "2026-09-06"
+ },
+ {
+  "slug": "sunny-coast-century",
+  "name": "Sunny Coast Century",
+  "organiser": "Cycle Sunshine Coast",
+  "url": "https://www.cyclesunshinecoast.com.au/events/sunny-coast-century",
+  "country": "Australia",
+  "region": "Sunshine Coast hinterland, Queensland",
+  "town_id": "noosa",
+  "next_date": null,
+  "window": "Annually — next date not yet published",
+  "km": [
+   97
+  ],
+  "vert": null,
+  "discipline": "road",
+  "month": null,
+  "note": "A timed gran fondo from Eudlo in the Sunshine Coast hinterland, about 45 km south of Noosa, on a course laid out by former professional Henk Vogels that takes in the Montville and Postmans Track climbs. Open entry, with part of the fee going to its charity partner.",
+  "verified": "2026-09-07"
+ },
+ {
+  "slug": "tour-down-under-group-rides",
+  "name": "Santos Tour Down Under Group Rides",
+  "organiser": "Santos Tour Down Under and AusCycling",
+  "url": "https://tourdownunder.com.au/ride/group-rides",
+  "country": "Australia",
+  "region": "Adelaide and the Adelaide Hills",
+  "town_id": "adelaide-hills",
+  "next_date": null,
+  "window": "Tour week, 16–24 January 2027",
+  "km": [],
+  "vert": null,
+  "discipline": "road",
+  "month": "January",
+  "note": "The public riding programme that runs alongside the professional Tour Down Under — guided social rides out of the Tour Village in Victoria Square, a carpark climb and a family ride, on the Adelaide Hills roads the race uses. Successor to the old Bupa Challenge Tour. Routes and distances for 2027 have not been published yet.",
+  "verified": "2026-09-07"
  }
 ]

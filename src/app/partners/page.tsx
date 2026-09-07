@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { TopBar } from "@/components/SiteNav";
 import { Footer } from "@/components/Footer";
+import { bannerAlt, bannerSrc } from "@/lib/banners";
+import { loadBanners } from "@/lib/banners-data";
 import { Photo } from "@/components/Photo";
 import { ridePic } from "@/lib/images";
 import partnerTypes from "@/data/partner-types.json";
-import { NetlifyForm } from "@/components/NetlifyForm";
+import { EnquiryForm } from "@/components/EnquiryForm";
+import { TOWNS } from "@/lib/towns";
 
 export const metadata: Metadata = {
   title: "Partner with Cycletowns",
@@ -15,13 +18,14 @@ export const metadata: Metadata = {
 type PType = { id: string; e: string; name: string; pitch: string; bullets: string[] };
 const clean = (s: string) => s.replace(/&amp;/g, "&");
 
-export default function Partners() {
+export default async function Partners() {
+  const banners = await loadBanners();
   const types = partnerTypes as PType[];
   return (
     <>
       <TopBar />
       <div className="whero" style={{ height: 330 }}>
-        <Photo src={ridePic("group", "partners-hero", 1400)} />
+        <Photo src={bannerSrc(banners, "partners-hero", 1400)} alt={bannerAlt(banners, "partners-hero")} />
         <div className="wov">
           <div className="winner">
             <div className="bc"><Link href="/">Cycletowns</Link> › <b>Partner with us</b></div>
@@ -93,17 +97,7 @@ export default function Partners() {
 
       <div className="wsec alt2" id="enquire" style={{ paddingBottom: 40 }}>
         <div className="wh"><div><h2>Secure your spot</h2><span className="wsub">tell us about your business — we’ll send a tailored pack within one business day</span></div></div>
-        <NetlifyForm name="partner-enquiry" className="enqform">
-          <div className="field"><label>Business name</label><input name="business" placeholder="e.g. Sixpence Coffee" required /></div>
-          <div className="field"><label>Partner type</label>
-            <select name="type" defaultValue="cafe">{types.map((p) => <option key={p.id} value={p.id}>{clean(p.name)}</option>)}</select>
-          </div>
-          <div className="field"><label>Town</label><input name="town" placeholder="e.g. Bright, Victoria" /></div>
-          <div className="field"><label>Your name</label><input name="name" placeholder="Full name" required /></div>
-          <div className="field"><label>Email</label><input name="email" type="email" placeholder="you@business.com" required /></div>
-          <button type="submit" className="btn btn-coral" style={{ borderRadius: 13, width: "100%" }}>Request my partner pack ›</button>
-          <div className="wsub" style={{ textAlign: "center", marginTop: 10, fontSize: 12, display: "block" }}>No spam. A real human replies within one business day · partners@cycletowns.com</div>
-        </NetlifyForm>
+        <EnquiryForm types={types.map((p) => ({ id: p.id, name: clean(p.name) }))} towns={TOWNS.map((t) => ({ id: t.id, name: t.name }))} />
       </div>
       <Footer />
     </>
