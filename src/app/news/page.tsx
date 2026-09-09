@@ -11,7 +11,7 @@ import { Subscribe } from "@/components/Subscribe";
 
 export const revalidate = 300;
 
-export const metadata: Metadata = { title: "News", description: "Cycletowns Originals — Town in Focus and features from the world of cycle tourism." };
+export const metadata: Metadata = { title: "News", description: "Town guides, route guides and features from the Cycletowns team." };
 
 export default async function News() {
   const ARTICLES = await loadArticles();
@@ -23,7 +23,7 @@ export default async function News() {
         <div className="in">
           <div className="kick">The hub · Originals</div>
           <div className="h2">Cycletowns News</div>
-          <div className="lead">Original features from the Cycletowns team — including the <b>Town in Focus</b> series — plus the stories that matter in cycle tourism.</div>
+          <div className="lead">Town guides, route guides and features, written by the Cycletowns team.</div>
           <div className="newshero">
             <Link href={`/news/${articleSlug(feat)}`} className="nfeat" style={{ textDecoration: "none", color: "#fff" }}>
               <Photo src={articleImage(feat, 900, "feat-0")} alt={feat.title} />
@@ -47,7 +47,7 @@ export default async function News() {
               ))}
             </div>
           </div>
-          <div className="nbandhd"><h3>🎬 Cycletowns Originals</h3><span className="wsub">Feature stories &amp; films by our team — including the <b>Town in Focus</b> series</span></div>
+          <div className="nbandhd"><h3>✎ Cycletowns Originals</h3><span className="wsub">Written by our team, from the towns we rank</span></div>
           <div className="newsgrid">
             {ARTICLES.map((a, i) => <NewsGridCard key={i} a={a} idx={i} />)}
           </div>
@@ -59,7 +59,7 @@ export default async function News() {
             </p>
             <Subscribe source="news" />
           </div>
-          <div className="nbandhd" style={{ marginTop: 34 }}><h3>📣 From @cycletowns</h3><span className="wsub">Follow the journey on Instagram, TikTok &amp; YouTube</span></div>
+          <div className="nbandhd" style={{ marginTop: 34 }}><h3>📣 From @cycletowns</h3><span className="wsub">Follow the journey on Instagram, YouTube &amp; LinkedIn</span></div>
           <div className="wbar" style={{ marginTop: 8 }}>
             <a className="lk-ghost" href="https://www.instagram.com/cycletowns" target="_blank" rel="noopener">📷 Instagram</a>
             <a className="lk-ghost" href="https://www.youtube.com/@cycletownshq" target="_blank" rel="noopener">▶ YouTube</a>

@@ -53,7 +53,7 @@ export function ArticleEditor({ article, towns, isNew }: { article: ArticleRow; 
       <div className="field"><label>Standfirst (dek)</label><input value={a.dek} onChange={(e) => set("dek", e.target.value)} maxLength={220} /></div>
       <div className="cardgrid" style={{ gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 14 }}>
         <div className="field"><label>Kind</label><select value={a.kind || ""} onChange={(e) => set("kind", e.target.value)}><option value="">—</option><option>Series</option><option>Feature</option><option>Guide</option><option>News</option></select></div>
-        <div className="field"><label>Series</label><input value={a.series || ""} onChange={(e) => set("series", e.target.value)} placeholder="Town in Focus" /></div>
+        <div className="field"><label>Series</label><input value={a.series || ""} onChange={(e) => set("series", e.target.value)} placeholder="Only if it belongs to a real series" /></div>
         <div className="field"><label>Episode</label><input type="number" value={a.episode ?? ""} onChange={(e) => set("episode", e.target.value === "" ? null : Number(e.target.value))} /></div>
         <div className="field"><label>Town</label><select value={a.town_id || ""} onChange={(e) => set("town_id", e.target.value || null)}><option value="">—</option>{towns.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}</select></div>
       </div>

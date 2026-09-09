@@ -191,11 +191,10 @@ export default async function Home() {
       {/* NEWS TEASER */}
       <div className="sec2 alt" id="news" style={{ paddingTop: 0 }}>
         <div className="in">
-          <div className="kick">The hub · Originals · Socials · World</div>
+          <div className="kick">The hub · Originals</div>
           <div className="h2">Cycletowns News</div>
           <div className="lead">
-            Original features from the Cycletowns team — including the <b>Town in Focus</b> series — plus the stories that
-            matter in cycle tourism.
+            Town guides, route guides and features, written by the Cycletowns team.
           </div>
           <LpCarousel>
             {articles.slice(0, 8).map((a, i) => (
