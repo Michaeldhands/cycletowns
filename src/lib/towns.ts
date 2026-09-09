@@ -111,6 +111,8 @@ export function catDef(id: string): CatDef | undefined {
 export function rankedTowns(): Town[] {
   return TOWNS.slice().sort((a, b) => b.score - a.score);
 }
+/** Bundled-data fallback only. Returns 0 when the town is not in the bundle — callers must
+    treat 0 as unknown and show nothing, never "#0". Prefer rankIn() with live scores. */
 export function rankOf(id: string): number {
   return rankedTowns().findIndex((t) => t.id === id) + 1;
 }

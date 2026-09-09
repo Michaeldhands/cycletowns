@@ -5,6 +5,7 @@ import { TopBar } from "@/components/SiteNav";
 import { Footer } from "@/components/Footer";
 import { Photo } from "@/components/Photo";
 import { Avatar } from "@/components/Avatar";
+import { plural } from "@/lib/towns";
 import { ApproveMember, GroupJoin, PostCard, PostComposer } from "@/components/Community";
 import { fetchGroup } from "@/lib/community";
 import { currentUser } from "@/lib/supabase/server";
@@ -53,7 +54,7 @@ export default async function GroupPage({ params }: PageProps<"/groups/[id]">) {
         <div className="twocol">
           <div>
             {g.description && <p style={{ fontSize: 15.5, color: "var(--grey-d)", lineHeight: 1.55, marginBottom: 18 }}>{g.description}</p>}
-            <div className="wh"><div><h2>Group feed</h2><span className="wsub">{posts.length} posts</span></div></div>
+            <div className="wh"><div><h2>Group feed</h2><span className="wsub">{plural(posts.length, "post")}</span></div></div>
             {canPost ? <PostComposer userId={me!.id} townId={g.town_id} groupId={g.id} /> : me ? <div className="unlocknote" style={{ fontSize: 14, padding: 14, marginBottom: 14 }}>Join the group to post.</div> : <PostComposer userId={null} />}
             {posts.length === 0 && <p className="wsub" style={{ display: "block" }}>Nothing posted yet — first ride report wins.</p>}
             {posts.map((p) => <PostCard key={p.id} p={p} />)}

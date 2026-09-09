@@ -313,7 +313,7 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
       {/* RIDES */}
       <SectionCarousel
         title={`Top rides in ${t.name}`}
-        sub={`${t.routes.length} routes & climbs`}
+        sub={`${plural(t.routes.length, "route")} & climbs`}
         filters={[
           { id: "road", label: "Road" },
           { id: "gravel", label: "Gravel" },
@@ -347,7 +347,7 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
         <div className="wh">
           <div>
             <h2>Groups in {t.name}</h2>
-            <span className="wsub">{groups.length ? `${groups.length} club${groups.length === 1 ? "" : "s"} & crews to join` : "clubs & crews to join"}</span>
+            <span className="wsub">{groups.length ? groups.length === 1 ? "1 club to join" : `${groups.length} clubs & crews to join` : "clubs & crews to join"}</span>
           </div>
           <Link href={`/groups/new?town=${t.id}`} className="lk-ghost" style={{ padding: "7px 13px", fontSize: 12.5 }}>+ Start a group</Link>
         </div>
@@ -495,7 +495,8 @@ async function LiteTownPage({ c, slug, userId }: { c: Catalog; slug: string; use
     <>
       <TopBar back={{ href: "/rankings", label: "Rankings" }} />
       <div className="whero" style={{ height: 320 }}>
-        <Photo src={ridePic(null, "lite-" + slug, 1400)} />
+        <Photo src={ridePic(null, "lite-" + slug, 1400)} alt="Riding, not this town" />
+        <div className="evheronote">Stock riding photo — not {l.name}. A real one comes with the guide.</div>
         <div className="wov">
           <div className="winner">
             <div className="bc">

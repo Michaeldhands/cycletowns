@@ -14,7 +14,11 @@ export async function GET(req: NextRequest) {
   // domain registered with Strava, and every connection attempt is rejected as an invalid
   // redirect_uri. The canonical site URL is the only thing safe to hand a third party.
   const origin = siteUrl();
-  if (!hasStrava()) return NextResponse.redirect(new URL(`${back}?strava=off`, origin));
+  // Split the fragment off first: `/towns/x#review` + `?strava=off` would put the query
+  // inside the fragment, where nothing can read it.
+  const [path, hash] = back.split("#");
+  const withFlag = (v: string) => `${path}${path.includes("?") ? "&" : "?"}strava=${v}${hash ? `#${hash}` : ""}`;
+  if (!hasStrava()) return NextResponse.redirect(new URL(withFlag("off"), origin));
 
   const me = await currentUser();
   if (!me) return NextResponse.redirect(new URL(`/join?next=${encodeURIComponent(back)}`, origin));

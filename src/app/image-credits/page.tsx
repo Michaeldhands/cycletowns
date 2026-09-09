@@ -13,7 +13,7 @@ const commons = (file: string) => `https://commons.wikimedia.org/wiki/File:${enc
 export default function Credits() {
   const rows = TOWNS.map((t) => ({ town: t.name, id: t.id, c: CREDITS[t.id] })).filter((r) => r.c);
   return (
-    <ProsePage kick="Credits" title="Image credits." lead="Every photograph of a place on this site actually shows that place.">
+    <ProsePage kick="Credits" title="Image credits." lead="Every photograph presented as a place on this site really is that place. Where we use a generic riding photo — a town still awaiting its guide, an event we haven’t shot — we say so on the picture.">
       <div className="wprose">
         <p>
           Town photographs come from Wikimedia Commons under Creative Commons licences that permit commercial reuse

@@ -5,6 +5,7 @@ import { AdminShell } from "@/components/admin/AdminShell";
 import { Avatar } from "@/components/Avatar";
 import { AdminAction } from "@/components/AdminAction";
 import { currentUser, supabaseServer } from "@/lib/supabase/server";
+import { savedCounts } from "@/lib/demand";
 import { getTown } from "@/lib/towns";
 
 export const metadata: Metadata = { title: "Admin", robots: { index: false } };
@@ -49,23 +50,23 @@ export default async function Admin({ searchParams }: PageProps<"/admin">) {
   async function Overview() {
     const since = new Date(Date.now() - 7 * 86400000).toISOString();
     const { count: insiders } = await sb.from("profiles").select("*", { count: "exact", head: true }).eq("membership", "insider");
-    const [riders, ridersWeek, reviews, groups, posts, saved, partners] = await Promise.all([
+    const [riders, ridersWeek, reviews, groups, posts, partners] = await Promise.all([
       count("profiles"),
       count("profiles", since),
       count("reviews"),
       count("groups"),
       count("posts"),
-      count("saved_towns"),
       count("partners"),
     ]);
     type Recent = { town_id: string; created_at: string; cafes: number; routes: number; safety: number; climbs: number; storage: number; profiles: { display_name: string | null } | null };
     const { data: recentRaw } = await sb.from("reviews").select("town_id, created_at, cafes, routes, safety, climbs, storage, profiles(display_name)").order("created_at", { ascending: false }).limit(8);
     const recent = (recentRaw as unknown as Recent[]) || [];
     const { data: scores } = await sb.from("town_scores").select("*").order("review_count", { ascending: false }).limit(10);
-    const { data: topSaved } = await sb.from("saved_towns").select("town_id").limit(2000);
-    const savedCounts: Record<string, number> = {};
-    (topSaved || []).forEach((r: { town_id: string }) => (savedCounts[r.town_id] = (savedCounts[r.town_id] || 0) + 1));
-    const topSavedList = Object.entries(savedCounts).sort((a, b) => b[1] - a[1]).slice(0, 8);
+    // saved_towns is readable only by its owner, so this has to use the service key or it
+    // silently reports the admin’s own saves as the whole site’s.
+    const counts = await savedCounts();
+    const saved = Object.values(counts).reduce((a, b) => a + b, 0);
+    const topSavedList = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 8);
     return (
       <>
         <div className="adtop"><h1>Overview</h1><span className="live"><span className="pulse" /> Live data</span></div>

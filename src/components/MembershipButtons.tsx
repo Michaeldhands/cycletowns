@@ -6,8 +6,8 @@ import { useState } from "react";
 export function JoinInsider({ userId, member, enabled }: { userId: string | null; member: boolean; enabled: boolean }) {
   const [busy, setBusy] = useState<string | null>(null);
   const [err, setErr] = useState("");
-  const go = async (path: string, body?: unknown) => {
-    setBusy(path);
+  const go = async (path: string, plan: string, body?: unknown) => {
+    setBusy(plan);
     setErr("");
     const r = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: body ? JSON.stringify(body) : undefined });
     const j = await r.json().catch(() => ({}));
@@ -28,7 +28,7 @@ export function JoinInsider({ userId, member, enabled }: { userId: string | null
     return (
       <div className="wbar" style={{ alignItems: "center" }}>
         <span className="award alt" style={{ background: "var(--coral)" }}>★ You’re an Insider</span>
-        <button className="lk-ghost" onClick={() => go("/api/stripe/portal")} disabled={!!busy}>{busy ? "Opening…" : "Manage membership"}</button>
+        <button className="lk-ghost" onClick={() => go("/api/stripe/portal", "portal")} disabled={!!busy}>{busy ? "Opening…" : "Manage membership"}</button>
         {err && <span style={{ color: "var(--coral-700)", fontSize: 13, fontWeight: 700 }}>{err}</span>}
       </div>
     );
@@ -36,8 +36,8 @@ export function JoinInsider({ userId, member, enabled }: { userId: string | null
     return <div className="unlocknote" style={{ fontSize: 14, padding: 14 }}>Insider membership opens shortly — you’ll be able to join right here.</div>;
   return (
     <div className="wbar" style={{ alignItems: "center" }}>
-      <button className="lk-coral big" onClick={() => go("/api/stripe/checkout", { plan: "year" })} disabled={!!busy}>{busy === "year" ? "Opening…" : "Go Insider — A$80 / year"}</button>
-      <button className="lk-ghost big" onClick={() => go("/api/stripe/checkout", { plan: "month" })} disabled={!!busy}>{busy === "month" ? "Opening…" : "A$7 / month"}</button>
+      <button className="lk-coral big" onClick={() => go("/api/stripe/checkout", "year", { plan: "year" })} disabled={!!busy}>{busy === "year" ? "Opening…" : "Go Insider — A$80 / year"}</button>
+      <button className="lk-ghost big" onClick={() => go("/api/stripe/checkout", "month", { plan: "month" })} disabled={!!busy}>{busy === "month" ? "Opening…" : "A$7 / month"}</button>
       {err && <span style={{ color: "var(--coral-700)", fontSize: 13, fontWeight: 700 }}>{err}</span>}
     </div>
   );

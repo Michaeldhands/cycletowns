@@ -7,7 +7,7 @@ import { Photo } from "@/components/Photo";
 import { TownCard } from "@/components/Cards";
 import { Subscribe } from "@/components/Subscribe";
 import { NewsGridCard } from "@/components/NewsCards";
-import { ridePic } from "@/lib/images";
+import { articleImage } from "@/components/NewsCards";
 import { ARTICLES as BUNDLED, articleSlug } from "@/lib/news";
 import { loadArticles, loadCatalog } from "@/lib/content";
 
@@ -34,7 +34,7 @@ export default async function ArticlePage({ params }: PageProps<"/news/[slug]">)
     <>
       <TopBar back={{ href: "/news", label: "News" }} />
       <div className="whero" style={{ height: 360 }}>
-        <Photo src={a.image_url || ridePic(a.img, "art-" + idx, 1400)} />
+        <Photo src={articleImage(a, 1400, "art-" + idx)} alt={a.title} />
         <div className="wov">
           <div className="winner">
             <div className="bc"><Link href="/">Cycletowns</Link> › <Link href="/news">News</Link> › <b>{a.series || a.kind || "Feature"}</b></div>

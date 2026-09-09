@@ -33,10 +33,13 @@ export async function fetchGroup(id: string): Promise<{ group: Group; members: M
 
 export async function fetchFeed(opts: { townId?: string; limit?: number } = {}): Promise<Post[]> {
   if (!hasSupabase()) return [];
+  // Group posts belong to their group and nowhere else. RLS now enforces this too, but
+  // filtering here means the public feed can never depend on getting that right.
   let q = supabasePublic()
     .from("posts")
     .select("*, profiles(display_name, avatar_url, tier, home_town), groups(name)")
     .eq("status", "published")
+    .is("group_id", null)
     .order("created_at", { ascending: false })
     .limit(opts.limit || 40);
   if (opts.townId) q = q.eq("town_id", opts.townId);

@@ -9,10 +9,10 @@ export function TownCard({ t, rank }: { t: Town; rank?: number }) {
     <Link href={`/towns/${t.id}`} className="tcard" style={{ textDecoration: "none", color: "inherit" }}>
       <div className="hero">
         <Photo src={townHero(t, 900)} alt={t.name} />
-        <div className="rankbadge">#{rank ?? rankOf(t.id)}</div>
+        {(rank ?? rankOf(t.id)) > 0 && <div className="rankbadge">#{rank ?? rankOf(t.id)}</div>}
         <div className="flag">{t.flag}</div>
         <div className="badge">
-          <span className="s">★</span> {t.score.toFixed(1)}
+          <span className="s">✎</span> {t.score.toFixed(1)}
         </div>
       </div>
       <div className="meta">
@@ -43,7 +43,7 @@ export function RideCard({ t, p }: { t: Town; p: Place }) {
     <a className={`wcard d-${d}`} href={gmaps(`${p.n} ${t.name} ${t.country}`)} target="_blank" rel="noopener">
       <div className={`wcap d-${d}`}>
         <span className="wpill">{DISC_LABEL[d]}</span>
-        <span className="wsc">★ {p.s.toFixed(1)}</span>
+        {p.s > 0 && <span className="wsc">✎ {p.s.toFixed(1)}</span>}
         {p.km != null && <span className="wcapkm">{p.km} km{p.vert != null ? ` · ${p.vert.toLocaleString()} m` : ""}</span>}
       </div>
       <div className="wcb">
@@ -60,7 +60,7 @@ export function CafeCard({ t, p }: { t: Town; p: Place }) {
     <a className="wcard" href={gmaps(`${p.n} ${t.name}`)} target="_blank" rel="noopener">
       <div className="wcap cafe">
         <span className="wcapem">☕</span>
-        <span className="wsc">★ {p.s.toFixed(1)}</span>
+        {p.s > 0 && <span className="wsc">✎ {p.s.toFixed(1)}</span>}
         {p.verified && <span className="wpill vpill">✓ Verified bike-friendly</span>}
       </div>
       <div className="wcb">
@@ -78,7 +78,7 @@ export function ShopCard({ t, p }: { t: Town; p: Place }) {
     <a className="wcard" href={gmaps(`${p.n} ${t.name}`)} target="_blank" rel="noopener">
       <div className="wcap shop">
         <span className="wcapem">🔧</span>
-        <span className="wsc">★ {p.s.toFixed(1)}</span>
+        {p.s > 0 && <span className="wsc">✎ {p.s.toFixed(1)}</span>}
         {p.verified ? <span className="wpill vpill">✓ Verified bike-friendly</span> : p.hire ? <span className="wpill">{ebike ? "⚡ E-bike hire" : "🔧 Hire"}</span> : null}
       </div>
       <div className="wcb">

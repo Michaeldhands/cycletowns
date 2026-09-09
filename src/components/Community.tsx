@@ -101,10 +101,25 @@ export function GroupJoin({ groupId, privacy, userId, role }: { groupId: string;
 /** Approve a pending member (group admins). */
 export function ApproveMember({ groupId, memberId }: { groupId: string; memberId: string }) {
   const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+  const approve = async () => {
+    setBusy(true);
+    setErr("");
+    // Say so when it fails. This silently did nothing for every group admin until the
+    // gm_manage policy existed, because the result was thrown away.
+    const { error } = await supabaseBrowser().from("group_members").update({ role: "member" }).eq("group_id", groupId).eq("user_id", memberId);
+    setBusy(false);
+    if (error) return setErr("Couldn’t approve them just now.");
+    router.refresh();
+  };
   return (
-    <button className="lk-coral" style={{ padding: "5px 10px", fontSize: 12 }} onClick={async () => { await supabaseBrowser().from("group_members").update({ role: "member" }).eq("group_id", groupId).eq("user_id", memberId); router.refresh(); }}>
-      Approve
-    </button>
+    <>
+      <button className="lk-coral" style={{ padding: "5px 10px", fontSize: 12 }} disabled={busy} onClick={approve}>
+        {busy ? "…" : "Approve"}
+      </button>
+      {err && <span style={{ color: "var(--coral-700)", fontSize: 11.5, marginLeft: 6 }}>{err}</span>}
+    </>
   );
 }
 
@@ -126,7 +141,8 @@ export function CreateGroupForm({ userId, townId }: { userId: string; townId?: s
       setBusy(false);
       return setMsg(error?.message || "Something went wrong");
     }
-    await sb.from("group_members").insert({ group_id: data.id, user_id: userId, role: "admin" });
+    // The groups_owner trigger makes the creator an admin. Inserting that row here would be
+    // refused now, and rightly: nobody gets to hand themselves a role from the browser.
     router.push(`/groups/${data.id}`);
   };
   return (

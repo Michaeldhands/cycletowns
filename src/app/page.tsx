@@ -36,7 +36,7 @@ export default async function Home() {
               next great ride.
             </h1>
             <div className="lede">
-              The world’s best <b>Cycletowns</b> — ranked by the riders who rode them.
+              The world’s best <b>Cycletowns</b> — researched by us, then ranked by the riders who’ve been there.
             </div>
             <HeroSearch />
             <div className="btns">

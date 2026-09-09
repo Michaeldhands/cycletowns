@@ -4,7 +4,7 @@ import { TopBar } from "@/components/SiteNav";
 import { Footer } from "@/components/Footer";
 import { Photo } from "@/components/Photo";
 import { NewsGridCard } from "@/components/NewsCards";
-import { ridePic } from "@/lib/images";
+import { articleImage } from "@/components/NewsCards";
 import { articleSlug } from "@/lib/news";
 import { loadArticles } from "@/lib/content";
 import { Subscribe } from "@/components/Subscribe";
@@ -26,7 +26,7 @@ export default async function News() {
           <div className="lead">Original features from the Cycletowns team — including the <b>Town in Focus</b> series — plus the stories that matter in cycle tourism.</div>
           <div className="newshero">
             <Link href={`/news/${articleSlug(feat)}`} className="nfeat" style={{ textDecoration: "none", color: "#fff" }}>
-              <Photo src={ridePic(feat.img, "feat-0", 900)} />
+              <Photo src={articleImage(feat, 900, "feat-0")} alt={feat.title} />
               <div className="nov">
                 <span className="ntag">★ Cycletowns Original{feat.series ? ` · ${feat.series}` : ""}</span>
                 <h3>{feat.title}</h3>
@@ -37,7 +37,7 @@ export default async function News() {
             <div className="nsmall">
               {rest.slice(0, 3).map((a, i) => (
                 <Link href={`/news/${articleSlug(a)}`} className="ncard" key={i} style={{ textDecoration: "none", color: "inherit" }}>
-                  <div className="nimg"><Photo src={ridePic(a.img, "small-" + i, 300)} /></div>
+                  <div className="nimg"><Photo src={articleImage(a, 300, "small-" + i)} alt={a.title} /></div>
                   <div className="nb">
                     <div className="ntag">★ Original</div>
                     <h4>{a.title}</h4>

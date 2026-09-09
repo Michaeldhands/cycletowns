@@ -24,7 +24,7 @@ export default async function RankingsPage() {
       <div className="sec2" id="rankings">
         <div className="in">
           <div className="kick">Global rankings</div>
-          <div className="h2">{total} Cycletowns ranked</div>
+          <div className="h2">{total} Cycletowns · {c.towns.length} ranked</div>
           <div className="lead">
             A living leaderboard of the world’s cycling towns — every one free to browse. Going global, or just want what’s
             close to home? Filter by region. Towns with a full guide are scored; the rest are on our radar and open a preview.

@@ -12,12 +12,15 @@ export default async function Join({ searchParams }: PageProps<"/join">) {
   if (me) redirect("/account");
   const review = typeof sp.review === "string" ? sp.review : undefined;
   const town = typeof sp.town === "string" ? sp.town : undefined;
-  const next = review ? `/towns/${review}#review` : town ? `/towns/${town}` : "/account";
+  // ?next was being ignored, so five flows (membership, partner claim, a built plan, a built
+  // loop, Strava connect) dropped the rider on /account instead of back where they were.
+  const raw = typeof sp.next === "string" && sp.next.startsWith("/") ? sp.next : undefined;
+  const next = review ? `/towns/${review}#review` : town ? `/towns/${town}` : raw || "/account";
   return (
     <ProsePage
       kick="Join the bunch"
       title="Free, obviously."
-      lead="Save towns, rate what you ride, join groups and unlock member offers. Founding riders get Insider status from day one."
+      lead="Save towns, rate what you ride, join groups and unlock member offers. Free, and it stays free — Insider is optional."
     >
       <AuthForm mode="join" next={next} />
     </ProsePage>

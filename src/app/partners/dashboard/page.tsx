@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { savedCounts } from "@/lib/demand";
 import { TopBar } from "@/components/SiteNav";
 import { Footer } from "@/components/Footer";
 import { PartnerDashboardForm, type Partner } from "@/components/PartnerClaim";
@@ -20,14 +21,16 @@ export default async function PartnerDashboard({ searchParams }: PageProps<"/par
   const listings = (data as Partner[]) || [];
   // demand signals for the partner's towns
   const townIds = [...new Set(listings.map((l) => l.town_id).filter(Boolean))] as string[];
+  const saves = await savedCounts();
   const stats: Record<string, { saved: number; reviews: number; groups: number }> = {};
   for (const id of townIds) {
-    const [{ count: saved }, { count: reviews }, { count: groups }] = await Promise.all([
-      sb.from("saved_towns").select("*", { count: "exact", head: true }).eq("town_id", id),
+    const [{ count: reviews }, { count: groups }] = await Promise.all([
       sb.from("reviews").select("*", { count: "exact", head: true }).eq("town_id", id),
       sb.from("groups").select("*", { count: "exact", head: true }).eq("town_id", id),
     ]);
-    stats[id] = { saved: saved ?? 0, reviews: reviews ?? 0, groups: groups ?? 0 };
+    // Counted with the service key: saved_towns is owner-read-only, so counting it as the
+    // partner returned their own saves — i.e. 0 — for the headline number we sell them.
+    stats[id] = { saved: saves[id] ?? 0, reviews: reviews ?? 0, groups: groups ?? 0 };
   }
   return (
     <>
