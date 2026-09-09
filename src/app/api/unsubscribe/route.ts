@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/stripe/server";
+import { siteUrl } from "@/lib/site";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -8,7 +9,7 @@ export const dynamic = "force-dynamic";
     has to work without signing in — someone leaving a list should never have to log in first. */
 export async function GET(req: NextRequest) {
   const token = new URL(req.url).searchParams.get("t") || "";
-  const origin = new URL(req.url).origin;
+  const origin = siteUrl(); // not req.url — see @/lib/site
   if (!/^[0-9a-f-]{36}$/i.test(token) || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
     return NextResponse.redirect(`${origin}/unsubscribed?ok=0`);
   }

@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { currentUser } from "@/lib/supabase/server";
 import { StravaCapError, exchangeCode } from "@/lib/strava";
-import { siteUrl } from "@/lib/stripe/server";
+import { siteUrl } from "@/lib/site";
 import { saveTokens } from "@/lib/strava-server";
 
 export const runtime = "nodejs";

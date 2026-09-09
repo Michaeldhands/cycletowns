@@ -1,12 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/stripe/server";
+import { siteUrl } from "@/lib/site";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /** The click in the confirmation email. Proves the address belongs to whoever asked. */
 export async function GET(req: NextRequest) {
-  const { searchParams, origin } = new URL(req.url);
+  const { searchParams } = new URL(req.url);
+  const origin = siteUrl(); // not req.url — see @/lib/site
   const token = searchParams.get("t") || "";
   if (!/^[0-9a-f-]{36}$/i.test(token) || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
     return NextResponse.redirect(`${origin}/subscribed?ok=0`);

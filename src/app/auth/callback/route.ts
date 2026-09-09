@@ -1,10 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { supabaseServer } from "@/lib/supabase/server";
+import { siteUrl } from "@/lib/site";
 
 /** OAuth / magic-link landing: exchanges the code for a session, then sends the rider on.
     On failure we pass the real reason through so it can be shown rather than guessed at. */
 export async function GET(request: NextRequest) {
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams } = new URL(request.url);
+  // Never request.url — see @/lib/site. Redirecting to the deploy host after a successful
+  // exchange lands the rider on a domain the session cookies do not cover, i.e. signed out.
+  const origin = siteUrl();
   const code = searchParams.get("code");
   const next = searchParams.get("next") || "/account";
 

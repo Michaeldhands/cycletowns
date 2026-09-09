@@ -13,7 +13,8 @@ export const hasStripe = () => Boolean(process.env.STRIPE_SECRET_KEY);
 export function stripe() {
   return new Stripe(process.env.STRIPE_SECRET_KEY || "");
 }
-export const siteUrl = () => process.env.NEXT_PUBLIC_SITE_URL || "https://cycletowns.com";
+// Canonical URL now lives in @/lib/site — re-exported here so existing callers keep working.
+export { siteUrl } from "@/lib/site";
 
 /** Find-or-create the Insider product and its two prices, keyed by lookup key so we never duplicate them. */
 export async function ensurePrice(plan: PlanKey): Promise<string> {

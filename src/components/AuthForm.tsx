@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { hasSupabaseClient, supabaseBrowser } from "@/lib/supabase/client";
 import { WaitlistForm } from "./Prose";
+import { siteUrl } from "@/lib/site";
 
 /** Email magic-link + Google sign-in. Falls back to the waitlist when Supabase isn't configured. */
 export function AuthForm({ mode, next = "/account" }: { mode: "join" | "login"; next?: string }) {
@@ -10,7 +11,9 @@ export function AuthForm({ mode, next = "/account" }: { mode: "join" | "login"; 
   const [msg, setMsg] = useState("");
   if (!hasSupabaseClient()) return <WaitlistForm form="join-waitlist" cta="Put me first in line" />;
 
-  const redirectTo = () => `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`;
+  // Supabase only honours redirects on its allow-list, and the deploy host is not on it.
+  // Pinning the canonical URL also stops a link mailed from a preview build pointing there.
+  const redirectTo = () => `${siteUrl()}/auth/callback?next=${encodeURIComponent(next)}`;
   const sendLink = async () => {
     if (!email.trim()) return;
     setState("busy");
