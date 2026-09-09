@@ -199,10 +199,34 @@ restored is a hope, not a backup.
 - `https://cycletowns.com/api/health` — returns **200** only when the database, Stripe
   and the routing service all answer and the required secrets are present. **503** names
   the failing one. Check this first in any incident.
-- **UptimeRobot** — checks the health endpoint and the homepage every 5 minutes, alerts
-  by email and SMS.
+- **UptimeRobot** — see below. It must watch the *health endpoint*, not the homepage.
 - **Sentry** — server and browser errors.
 - **Netlify → Logs → Functions** — live server logs. Where webhook and API failures show up.
+
+### Why the monitor must watch /api/health
+
+The homepage stays up when a feature inside the site dies. In September 2026 the loop
+builder was broken for **two and a half weeks** before anyone noticed, because the site
+itself was serving perfectly — only routing was failing. The health endpoint knew from the
+first minute. Nobody was reading it.
+
+A monitor pointed at the homepage answers "is the server alive". A monitor pointed at
+`/api/health` answers "is the product working", which is the question that matters.
+
+### Setting up the monitor
+
+1. UptimeRobot → **Add New Monitor**.
+2. Type **HTTP(s)**, URL `https://cycletowns.com/api/health`, interval **5 minutes**.
+3. Under alert contacts, tick email **and** SMS. An alert nobody reads is not monitoring.
+4. Leave keyword matching off — the endpoint already answers 503 on failure, and a keyword
+   rule would need updating every time a check is added.
+5. Keep a second monitor on `https://cycletowns.com/` as well. The two fail differently:
+   the homepage catches a dead deploy, the health endpoint catches a dead dependency.
+
+**Verify it actually alerts, don't assume.** Pause the monitor, or temporarily remove
+`ORS_API_KEY` from Netlify and redeploy, and confirm an alert reaches your phone. An
+untested alert path is the same as no monitoring — that is precisely how the outage above
+went unseen for so long. Put the key back afterwards.
 
 ---
 
@@ -217,7 +241,7 @@ restored is a hope, not a backup.
 | Someone paid but isn't an Insider | Webhook not delivering | Stripe → the webhook destination → check recent deliveries for non-200s; confirm `STRIPE_WEBHOOK_SECRET` and `SUPABASE_SERVICE_ROLE_KEY` are set |
 | Sign-in link fails | Resend SMTP misconfigured, or Supabase redirect URLs wrong | Supabase → Auth → URL Configuration must allow `https://cycletowns.com/**`. Turning custom SMTP off restores logins immediately |
 | "Unable to exchange external code" | Google client secret wrong in Supabase | Re-copy the secret from Google Cloud; regenerate it if it won't reveal |
-| Loop builder errors | ORS key or quota | `/api/health` says `routing` down. Free tier is 2,000 requests/day |
+| Loop builder errors | Routing host, key or quota | `/api/health` says `routing` down. Check in this order: (1) has HeiGIT moved the endpoint again — set `ORS_BASE_URL` and redeploy; (2) key still valid; (3) daily quota, free tier is 2,000/day and resets at UTC midnight. A healthy key and healthy quota with 403s means the host, not you |
 | Forms silently fail (404 on submit) | Netlify form detection off | Site configuration → Forms → enable detection, then redeploy |
 | Maps blank | OpenStreetMap tiles | Nothing to do but wait; GPX downloads still work |
 
@@ -230,11 +254,36 @@ clock — get advice the same day.
 
 ## 7. Routine maintenance
 
-**Weekly** — glance at Sentry and UptimeRobot; check the backup workflow ran.
+**Weekly** — open `/api/health` and read it, don't just glance at the green tick. Check
+Sentry and that the backup workflow ran.
 **Monthly** — `npm audit`, Supabase security advisors, Stripe for failed payments.
 **Quarterly** — restore a backup to a scratch project; review who has access to what;
-check the ORS free-tier quota is still enough.
+check the ORS free-tier quota is still enough; confirm the monitor still alerts (above).
 **Yearly** — review the privacy policy and terms against what the site actually does now.
+
+### Deprecation notices from third parties
+
+**Every supplier will eventually email you a breaking change with a deadline, and that
+email will arrive months before it matters.** In September 2026 the loop builder broke
+because HeiGIT shut off `api.openrouteservice.org` on a date announced well in advance.
+The notice was read and not actioned.
+
+When one arrives — from Supabase, Stripe, Resend, Strava, HeiGIT, Netlify, Google, anyone:
+
+1. **Put the deadline in the calendar the same day**, with a reminder a month before, and
+   the notice pasted into the event so the detail is there when it fires.
+2. Note it here, in the table below, so it survives an inbox.
+3. Do the migration early. These changes are almost always small — a URL, a field name, a
+   scope — and only become emergencies through delay.
+
+Suppliers to watch, because the site stops working properly without them: **Supabase**
+(database and sign-in), **Stripe** (payments), **Resend** (all email), **HeiGIT /
+OpenRouteService** (loop builder), **Strava** (ride verification), **Netlify** (hosting and
+builds), **Google** (sign-in).
+
+| Deadline | Supplier | Change | Done? |
+|---|---|---|---|
+| 2026-08-24 | HeiGIT | `api.openrouteservice.org` → `api.heigit.org/openrouteservice/v2` | Yes — late, after an outage |
 
 ---
 
