@@ -185,7 +185,7 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
             </h3>
             <div className="csub" style={{ color: "var(--grey-m)", fontSize: 12, margin: "2px 0 8px" }}>
               {eff.source === "riders"
-                ? `Ranked on the rider score — built from ${plural(eff.count, "verified review")}.`
+                ? `Ranked on the rider score — built from ${plural(eff.count, "published review")}.`
                 : `Ranked on our editorial score until riders take over at ${REVIEWS_TO_TAKE_OVER} reviews${eff.count ? ` (${plural(eff.count, "review")} so far)` : ""}. It is research, not riders — so treat it as a starting point.`}
             </div>
             {dims.map((k) => (

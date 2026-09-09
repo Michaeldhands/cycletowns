@@ -6,6 +6,7 @@ import { RankTable } from "@/components/RankTable";
 import { CAT_DEFS } from "@/lib/towns";
 import { loadCatalog, rankTowns } from "@/lib/content";
 import { fetchAllScores } from "@/lib/reviews";
+import { REVIEWS_TO_TAKE_OVER } from "@/lib/reviews-types";
 
 export const revalidate = 300;
 
@@ -30,8 +31,9 @@ export default async function RankingsPage() {
           </div>
           <div className="rankmeta">
             Ranked by the <b>Cyclist Score</b> across the five things that matter most: routes, café culture, road safety,
-            climbs and bike storage. Launch scores are editorial; as <b>verified rider reviews</b> come in they take over,
-            with more reviews and more-recent rides counting for more. <b>No paid placements, ever.</b>
+            climbs and bike storage. Launch scores are editorial; <b>rider reviews take over at {REVIEWS_TO_TAKE_OVER}</b>,
+            and we always show you which of the two a town is ranked on. <b>No paid placements, ever.</b>{" "}
+            <Link href="/how-rankings-work" style={{ color: "inherit" }}>How it’s calculated ›</Link>
           </div>
           <div className="catbar" style={{ justifyContent: "center", marginBottom: 18 }}>
             {CAT_DEFS.map((c) => (
@@ -42,15 +44,15 @@ export default async function RankingsPage() {
           </div>
           <div className="awardband">
             <div>
-              <div className="aw-kick">🏆 The Cycletowns Crown</div>
+              <div className="aw-kick">🏆 The Cycletowns Crown — coming</div>
               <h3>Who’s the World’s Best Cycletown?</h3>
               <p>
-                Each year we crown the winner — decided <b>70% by the Cyclist Score</b> (verified rider reviews) and{" "}
-                <b>30% by a rider People’s Choice vote</b>. Earned by riders, never bought.
+                We’re building an annual crown: weighted towards the Cyclist Score, with a capped rider vote alongside it.
+                Earned by riders, never bought. <b>No vote is open yet</b> — join and we’ll tell you the day it is.
               </p>
               <div className="aw-btns">
                 <Link href="/join" className="lk-coral big">
-                  🗳️ Join to vote for your town
+                  🗳️ Tell me when voting opens
                 </Link>
                 <Link
                   href="/how-rankings-work"

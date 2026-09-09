@@ -19,9 +19,9 @@ export default function About() {
         </p>
         <h3>Why we’re different</h3>
         <p>
-          No paid placements, ever. Every town earns its <b>Cyclist Score</b> from verified rider reviews across the five
-          things that matter most — routes, café culture, road safety, climbs and bike storage. The more reviews and the more
-          recent the rides, the more they count. <Link href="/how-rankings-work">See exactly how rankings work ›</Link>
+          No paid placements, ever. Every town is scored on the five things that matter most — routes, café culture, road
+          safety, climbs and bike storage — first by us, then by the riders who’ve been there, and we never blend the two
+          into one number. <Link href="/how-rankings-work">See exactly how rankings work ›</Link>
         </p>
         <h3>What you can do</h3>
         <p>

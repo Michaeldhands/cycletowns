@@ -138,7 +138,8 @@ create table if not exists reviews (
 );
 create index if not exists reviews_town on reviews(town_id, status);
 
--- per-town score: average of the five dimensions across published reviews, recency-weighted
+-- per-town score: plain average of the five dimensions across published reviews.
+-- Not recency- or volume-weighted. If that changes, /how-rankings-work must change with it.
 create or replace view town_scores as
 select
   r.town_id,

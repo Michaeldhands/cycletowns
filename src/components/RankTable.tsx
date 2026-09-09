@@ -39,7 +39,7 @@ export function RankTable({ full: allFull, lite: allLite, scores = {}, initialSc
           <b>✎ Editorial</b> — our own score, from published route, café and safety research.
         </span>
         <span>
-          <b>★ Riders</b> — built from verified reviews. It replaces the editorial score at {REVIEWS_TO_TAKE_OVER} reviews, and that is the score a town is ranked on.
+          <b>★ Riders</b> — built from riders’ published reviews. It replaces the editorial score at {REVIEWS_TO_TAKE_OVER} reviews, and that is the score a town is ranked on.
         </span>
       </div>
       <div className="ranktbl scrollrank" id="rankTbl">
@@ -89,7 +89,7 @@ export function RankTable({ full: allFull, lite: allLite, scores = {}, initialSc
                 <div className="rankwhy">
                   <div className="rankwhyh">
                     {e.riders
-                      ? `Ranked on the rider score — the average of ${plural(e.count, "verified review")}.`
+                      ? `Ranked on the rider score — the average of ${plural(e.count, "published review")}.`
                       : `Ranked on our editorial score. No rider score yet — reviews take over at ${REVIEWS_TO_TAKE_OVER}, and there ${e.count === 1 ? "is 1" : `are ${e.count}`} so far.`}
                   </div>
                   <div className="rankwhyg">
@@ -99,7 +99,7 @@ export function RankTable({ full: allFull, lite: allLite, scores = {}, initialSc
                           {DIM_LABELS[k][0]} {DIM_LABELS[k][1]}
                         </span>
                         <span className="rwdbar">
-                          <i style={{ width: `${(e.dims[k] / 10) * 100}%` }} />
+                          <i style={{ width: `${(e.dims[k] / 5) * 100}%` }} />
                         </span>
                         <span className="rwdv">{e.dims[k].toFixed(1)}</span>
                       </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ProsePage } from "@/components/Prose";
+import { REVIEWS_TO_TAKE_OVER } from "@/lib/reviews-types";
 
 export const metadata: Metadata = { title: "How rankings work" };
 
@@ -11,7 +12,7 @@ export default function HowRankings() {
     <ProsePage
       kick="How rankings work"
       title="Every Cycletown earns its place."
-      lead="The Cyclist Score is the most honest ranking in cycling — built from real riders, and impossible to buy."
+      lead="No town can buy its place. Here is exactly how the Cyclist Score is calculated today, and what we haven't built yet."
     >
       <div className="wscorebox" style={{ maxWidth: "none", margin: "8px 0 6px" }}>
         <h3 style={{ fontSize: 14, fontWeight: 800 }}>The Cyclist Score — five things that matter</h3>
@@ -26,31 +27,48 @@ export default function HowRankings() {
       </div>
       <div className="wprose">
         <p>
-          The score is the average of <b>verified rider reviews</b> across those five dimensions — café culture, routes &amp;
-          rides, road safety, climbs, and bike storage. Together they capture what actually makes a town great to ride.
+          Every town is scored on the same five dimensions — café culture, routes &amp; rides, road safety, climbs, and bike
+          storage. Together they capture what actually makes a town great to ride.
         </p>
-        <h3>Launch scores</h3>
+        <h3>Two scores, kept apart</h3>
         <p>
-          Until a town has enough rider reviews, its score is an editorial launch score set by the Cycletowns team from
-          riding it, local knowledge and published route data. It’s clearly marked on every town page, and it hands over to
-          rider reviews as they come in.
+          A town carries an <b>editorial score</b> and, once riders have reviewed it, a <b>rider score</b>. We show both
+          separately and never blend them, so you can always see which one a town is ranked on.
         </p>
-        <h3>Recency &amp; volume weighting</h3>
         <p>
-          More reviews and more-recent rides count for more, so a town’s score reflects how it rides <i>today</i> — not five
-          years ago. A town can rise or fall as the community keeps riding.
+          The <b>editorial score</b> is set by the Cycletowns team from published route data, local knowledge and riding the
+          place. It is research, not riders — a starting point, and we label it as one.
         </p>
-        <h3>Verified, not anonymous</h3>
-        <p>Reviews count when they come from riders with logged activity. That keeps the leaderboard honest and the intel trustworthy.</p>
+        <p>
+          The <b>rider score</b> is the plain average of every published review across the five dimensions. At{" "}
+          <b>{REVIEWS_TO_TAKE_OVER} reviews</b> it replaces the editorial score, and from then on that is what the town is ranked on. Each
+          review counts once and counts the same, whether it was written today or a year ago.
+        </p>
+        <h3>Who can review</h3>
+        <p>
+          Reviews come from signed-in Cycletowns accounts, one per rider per town, and they publish straight away. We remove
+          anything we can’t stand behind. We do <b>not</b> yet check that a reviewer has actually ridden the town — see
+          below.
+        </p>
         <h3>No pay-to-play — ever</h3>
         <p>
-          Brands and destinations can advertise, but they can <b>never</b> buy a ranking. Placement is earned, never sold.
-          It’s the whole point.
+          Brands and destinations can advertise, and a business can claim and update its own listing. Neither moves a town
+          up the leaderboard, and neither ever will. Placement is earned, never sold. It’s the whole point.
         </p>
-        <h3>The Cycletowns Crown</h3>
+        <h3>What we haven’t built yet</h3>
         <p>
-          Each year we crown the <b>World’s Best Cycletown</b>, decided <b>70% by the Cyclist Score</b> and{" "}
-          <b>30% by a capped rider People’s Choice vote</b> — earned by riders, never bought, and built so it can’t be gamed.
+          Three things we intend to add, and which the score does <i>not</i> do today:{" "}
+          <b>recency weighting</b>, so a town reflects how it rides now rather than how it rode three years ago;{" "}
+          <b>volume confidence</b>, so a town with sixty reviews outranks one with five at the same average; and{" "}
+          <b>ride verification</b>, connecting a rider’s logged activity so a review can be marked as coming from someone
+          who was demonstrably there.
+        </p>
+        <p>
+          The <b>Cycletowns Crown</b> — an annual World’s Best Cycletown, weighted towards the Cyclist Score with a capped
+          rider vote alongside it — is planned, not running. No crown has been awarded and no vote is open.
+        </p>
+        <p style={{ color: "var(--grey-m)" }}>
+          If we ever change how the score is calculated, this page changes with it on the same day.
         </p>
       </div>
       <div className="row btnpair" style={{ gap: 10, marginTop: 20, flexWrap: "wrap" }}>
