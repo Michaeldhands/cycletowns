@@ -56,17 +56,20 @@ export async function POST(req: NextRequest) {
       // Read what the service actually said before falling back to the status code — it
       // answers 403 both for a bad key and for a request beyond its limits, and telling a
       // rider their key is wrong when the loop was simply too long helps nobody.
+      // Order matters. ORS says "limit" in its quota and access-denied messages too, so the
+      // distance branch has to come last and has to require a distance-specific signal —
+      // otherwise a rider asking for 40 km is told to try shorter, which they cannot fix.
       let message = "The route service couldn’t build a loop from there.";
-      if (/2010|Could not find routable point|point.*not found|unable to find/i.test(detail)) {
-        message = "No rideable roads found near that start point. Try dropping the pin closer to town, or a different discipline.";
-      } else if (/2004|exceed|too (long|large)|maximum|limit/i.test(detail)) {
-        message = `That's beyond what the route service will plan in one loop — ${MAX_LOOP_KM} km is the ceiling. Try shorter.`;
-      } else if (/quota|rate limit|too many/i.test(detail) || res.status === 429) {
+      if (res.status === 401 || /api\s*key|unauthori[sz]ed|invalid.*(key|token)|access.*denied/i.test(detail)) {
+        message = "Route building is temporarily unavailable at our end — nothing you did. We’ve been alerted.";
+      } else if (res.status === 429 || /quota|rate.?limit|too many requests|daily limit/i.test(detail)) {
         message = "The route service is rate-limiting us right now. Give it a minute and try again.";
-      } else if (res.status === 401 || /api\s*key|unauthori[sz]ed|invalid.*key/i.test(detail)) {
-        message = "Route building is misconfigured — the API key was rejected.";
+      } else if (/2010|Could not find routable point|point.*not found|unable to find/i.test(detail)) {
+        message = "No rideable roads found near that start point. Try dropping the pin closer to town, or a different discipline.";
+      } else if (/2004|exceed.*(length|distance)|maximum.*(length|distance)|route length|too (long|large)/i.test(detail)) {
+        message = `That's beyond what the route service will plan in one loop — ${MAX_LOOP_KM} km is the ceiling. Try shorter.`;
       } else if (res.status === 403) {
-        message = "The route service refused that request. It may be past its daily limit — try again later.";
+        message = "The route service refused that request. This is usually our daily limit — try again later.";
       }
       return { err: message };
     }
