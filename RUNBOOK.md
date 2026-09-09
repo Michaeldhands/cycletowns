@@ -55,7 +55,8 @@ environment variables and the password manager, nowhere else.
 | `SUPABASE_SERVICE_ROLE_KEY` | **yes** | Functions | Supabase → Settings → API. Bypasses all access rules — webhook use only |
 | `STRIPE_SECRET_KEY` | **yes** | Functions | Stripe → Developers → API keys |
 | `STRIPE_WEBHOOK_SECRET` | **yes** | Functions | Stripe → the webhook destination → signing secret |
-| `ORS_API_KEY` | **yes** | Functions | openrouteservice.org account |
+| `ORS_API_KEY` | **yes** | Functions | openrouteservice.org account. Same key works on the new host |
+| `ORS_BASE_URL` | no | All | Optional override. Only set it if HeiGIT move the endpoint again |
 | `NEXT_PUBLIC_SITE_URL` | no | All | `https://cycletowns.com` |
 | `STRAVA_CLIENT_ID` | no | All | Strava → Settings → My API Application |
 | `STRAVA_CLIENT_SECRET` | **yes** | Functions | Same page. Without both, ride verification hides itself and reviews still publish |

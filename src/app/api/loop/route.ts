@@ -4,7 +4,10 @@ import { profileFor, type LoopPoint } from "@/lib/loops";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const ORS = "https://api.openrouteservice.org/v2/directions";
+// HeiGIT moved every openrouteservice endpoint to api.heigit.org and shut off
+// api.openrouteservice.org on 24 August 2026. Same key, same request shape, new host.
+// Overridable so a future move needs an env var and a redeploy, not a code change.
+const ORS = process.env.ORS_BASE_URL || "https://api.heigit.org/openrouteservice/v2/directions";
 /** The routing service refuses round trips longer than this. */
 export const MAX_LOOP_KM = 100;
 export const hasRouter = () => Boolean(process.env.ORS_API_KEY);
@@ -53,10 +56,8 @@ export async function POST(req: NextRequest) {
       const detail = await res.text().catch(() => "");
       console.error("ORS", res.status, detail.slice(0, 400));
 
-      // Read what the service actually said before falling back to the status code — it
-      // answers 403 both for a bad key and for a request beyond its limits, and telling a
-      // rider their key is wrong when the loop was simply too long helps nobody.
-      // Order matters. ORS says "limit" in its quota and access-denied messages too, so the
+      // Read what the service actually said before falling back to the status code: it
+      // answers 403 both for a bad key and for a request beyond its limits. Order matters. ORS says "limit" in its quota and access-denied messages too, so the
       // distance branch has to come last and has to require a distance-specific signal —
       // otherwise a rider asking for 40 km is told to try shorter, which they cannot fix.
       let message = "The route service couldn’t build a loop from there.";

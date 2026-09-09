@@ -48,7 +48,8 @@ export async function GET() {
     timed("routing", async () => {
       const key = process.env.ORS_API_KEY;
       if (!key) return { ok: false, note: "not configured" };
-      const res = await fetch("https://api.openrouteservice.org/v2/directions/cycling-road", {
+      const base = process.env.ORS_BASE_URL || "https://api.heigit.org/openrouteservice/v2/directions";
+      const res = await fetch(`${base}/cycling-road`, {
         method: "POST",
         headers: { Authorization: key, "Content-Type": "application/json" },
         body: JSON.stringify({ coordinates: [[146.9608, -36.7295], [146.9658, -36.7255]] }), // two points in Bright
