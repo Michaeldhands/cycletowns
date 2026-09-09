@@ -11,6 +11,9 @@ import { currentUser, isMember, supabaseServer } from "@/lib/supabase/server";
 import { JoinInsider } from "@/components/MembershipButtons";
 import { hasStripe } from "@/lib/stripe/server";
 import { getTown } from "@/lib/towns";
+import { StravaCard } from "@/components/StravaCard";
+import { getRow } from "@/lib/strava-server";
+import { hasStrava } from "@/lib/strava";
 
 export const metadata: Metadata = { title: "Your account" };
 export const dynamic = "force-dynamic";
@@ -25,6 +28,7 @@ export default async function Account() {
     sb.from("reviews").select("town_id, cafes, routes, safety, climbs, storage, created_at").eq("user_id", me.id).order("created_at", { ascending: false }),
     sb.from("point_events").select("kind, points, created_at").eq("user_id", me.id).order("created_at", { ascending: false }).limit(10),
   ]);
+  const strava = hasStrava() ? await getRow(me.id) : null;
   const p = me.profile;
   const name = p?.display_name || me.email?.split("@")[0] || "Rider";
   return (
@@ -62,6 +66,7 @@ export default async function Account() {
                 </p>
                 <JoinInsider userId={me.id} member={isMember(p)} enabled={hasStripe()} />
               </div>
+              {hasStrava() && <StravaCard connected={Boolean(strava)} athleteId={strava?.athlete_id ?? null} />}
               <div className="wscorebox" style={{ maxWidth: "none", marginBottom: 16 }}>
                 <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 8 }}>Your reviews</h3>
                 {!reviews?.length && (

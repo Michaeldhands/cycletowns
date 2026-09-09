@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { TownCard } from "@/components/Cards";
 import { SCOPES, regionOf } from "@/lib/towns";
 import { loadCatalog, rankIn, rankTowns } from "@/lib/content";
+import { fetchAllScores } from "@/lib/reviews";
 
 export const metadata: Metadata = {
   title: "All Cycletowns",
@@ -17,8 +18,8 @@ export default async function TownsPage({ searchParams }: PageProps<"/towns">) {
   const scope = typeof sp.region === "string" ? sp.region : "all";
   const match = (name: string, region: string, country: string) =>
     !q || `${name} ${region} ${country}`.toLowerCase().includes(q);
-  const c = await loadCatalog();
-  const towns = rankTowns(c).filter((t) => (scope === "all" || regionOf(t.country) === scope) && match(t.name, t.region, t.country));
+  const [c, scores] = await Promise.all([loadCatalog(), fetchAllScores()]);
+  const towns = rankTowns(c, scores).filter((t) => (scope === "all" || regionOf(t.country) === scope) && match(t.name, t.region, t.country));
   const lite = c.lite.filter((t) => (scope === "all" || regionOf(t.country) === scope) && match(t.name, t.region, t.country));
   return (
     <>
@@ -51,7 +52,7 @@ export default async function TownsPage({ searchParams }: PageProps<"/towns">) {
           )}
           <div className="wgrid">
             {towns.map((t) => (
-              <TownCard key={t.id} t={t} rank={rankIn(c, t.id)} />
+              <TownCard key={t.id} t={t} rank={rankIn(c, t.id, scores)} />
             ))}
           </div>
           {lite.length > 0 && (

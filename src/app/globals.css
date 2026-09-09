@@ -1357,3 +1357,13 @@ a.catchip,a.scopechip{text-decoration:none}
 .epv b{font-size:13.5px;color:var(--ink)}
 .epv span:not(.epvi){font-size:12.5px;color:var(--grey-m);line-height:1.5;margin-top:2px}
 .emptyprevf{margin-top:16px;padding-top:13px;border-top:1px solid var(--line);font-size:12px;color:var(--grey-m)}
+
+/* ride verification */
+.vrbox{margin-top:14px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:15px 16px}
+.vrbox b{display:block;font-size:13.5px;color:var(--ink);margin-bottom:3px}
+.vrbox span{display:block;font-size:12.5px;color:var(--grey-m);line-height:1.55}
+.vrbox.done{display:flex;gap:12px;align-items:flex-start;border-color:var(--teal);background:var(--teal-050)}
+.vrtick{flex-shrink:0;width:26px;height:26px;border-radius:99px;background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px}
+.vrpow{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--grey-m)}
+.vrmsg{margin-top:10px;font-size:12.5px;line-height:1.55;color:var(--grey-d);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.rvver{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--teal);background:var(--teal-050);border-radius:99px;padding:2px 7px;margin-right:7px;vertical-align:middle}

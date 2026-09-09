@@ -3,6 +3,7 @@
 import { hasSupabase, supabasePublic } from "@/lib/supabase/server";
 import { LITE_TOWNS, RACES, TOWNS, TOWN_GEO, TOWN_SEEDO, TOWN_WHEN, slugify, type LiteTown, type Race, type SeeDo, type Town, type WhenInfo } from "@/lib/towns";
 import { ARTICLES, type Article } from "@/lib/news";
+import { rankValue, type TownScore } from "@/lib/reviews-types";
 
 export type TownRow = {
   id: string; name: string; region: string; country: string; flag: string; currency: string; status: "full" | "radar" | "hidden";
@@ -78,8 +79,16 @@ export async function loadCatalog(): Promise<Catalog> {
   };
 }
 
-export const rankTowns = (c: Catalog) => c.towns.slice().sort((a, b) => b.score - a.score);
-export const rankIn = (c: Catalog, id: string) => rankTowns(c).findIndex((t) => t.id === id) + 1;
+/**
+ * The one ordering, used everywhere a rank is shown. Pass the rider scores wherever you have
+ * them: a town that reads "#4 ranked" on its own page and sits 7th on the leaderboard is the
+ * kind of thing that costs you a reader's trust for the whole site.
+ */
+export const rankTowns = (c: Catalog, scores?: Record<string, TownScore>) =>
+  c.towns.slice().sort((a, b) => rankValue(b.score, scores?.[b.id]) - rankValue(a.score, scores?.[a.id]));
+
+export const rankIn = (c: Catalog, id: string, scores?: Record<string, TownScore>) =>
+  rankTowns(c, scores).findIndex((t) => t.id === id) + 1;
 
 /* ---------- articles ---------- */
 const bundledArticles = (): Article[] => ARTICLES;

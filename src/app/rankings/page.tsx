@@ -65,7 +65,7 @@ export default async function RankingsPage() {
             </div>
             <div className="aw-tro">🏆</div>
           </div>
-          <RankTable full={rankTowns(c)} lite={c.lite} scores={scores} />
+          <RankTable full={rankTowns(c, scores)} lite={c.lite} scores={scores} />
           <div style={{ textAlign: "center", marginTop: 14, color: "var(--grey-m)", fontSize: 13, fontWeight: 700 }}>
             ↕ Scroll the leaderboard — every Cycletown, free to browse
           </div>

@@ -13,6 +13,8 @@ export type Review = {
   body: string;
   ride_type: string | null;
   visited_on: string | null;
+  verified_at: string | null;
+  verify_source: string | null;
   created_at: string;
   profiles?: { display_name: string | null; avatar_url: string | null; tier: string; home_town: string | null } | null;
 };

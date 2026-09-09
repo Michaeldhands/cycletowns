@@ -41,6 +41,7 @@ today, most of it is reachable only from one Google account.
 | Resend | Sending domain for cycletowns.com. |
 | OpenRouteService | Free routing API key. |
 | VentraIP | DNS. Losing this loses the domain. |
+| Strava | API application for ride verification. |
 
 **Never** paste a secret into chat, a ticket, or a commit. They belong in Netlify's
 environment variables and the password manager, nowhere else.
@@ -56,6 +57,9 @@ environment variables and the password manager, nowhere else.
 | `STRIPE_WEBHOOK_SECRET` | **yes** | Functions | Stripe → the webhook destination → signing secret |
 | `ORS_API_KEY` | **yes** | Functions | openrouteservice.org account |
 | `NEXT_PUBLIC_SITE_URL` | no | All | `https://cycletowns.com` |
+| `STRAVA_CLIENT_ID` | no | All | Strava → Settings → My API Application |
+| `STRAVA_CLIENT_SECRET` | **yes** | Functions | Same page. Without both, ride verification hides itself and reviews still publish |
+| `ATTIO_API_KEY` | **yes** | Functions | Attio → Settings → Developers. Optional; without it enquiries still save |
 
 Two traps, both of which have bitten us:
 
@@ -64,6 +68,32 @@ Two traps, both of which have bitten us:
   switch off.
 - Netlify only picks up variable changes **on a new build**. After editing one, always
   trigger a deploy.
+
+### Setting up ride verification (Strava)
+
+1. Strava → Settings → **My API Application**. Create one if it doesn't exist.
+2. **Authorization Callback Domain** must be exactly `cycletowns.com` — no scheme, no path.
+   Strava rejects the sign-in silently if this is wrong.
+3. Copy the Client ID and Client Secret into Netlify as above, then **trigger a deploy**.
+4. Check `/api/health` — `optional.ride_verification` should be `true`.
+5. Sign in on the live site, go to **Account → Ride verification**, connect, then verify a
+   review on a town you've actually ridden.
+
+**Rate limits.** Strava's default is roughly 100 requests per 15 minutes and 1,000 per day.
+Each verification attempt is 1–5 requests. If riders ever hit that, the site returns "Strava
+is rate-limiting us right now" and nothing breaks — but it's the number to watch if
+verification ever gets popular.
+
+**What we store, and why it's kept small.** `strava_accounts` holds OAuth tokens and is
+reachable only with the service-role key — row-level security is on with *no policies*, so
+no signed-in user can read it, only the server. Against a review we keep `verified_at` and
+the id of the activity that satisfied the check. We never store GPS tracks, routes, times,
+titles or distances: the coordinates are compared in memory and discarded. When a rider
+disconnects we revoke at Strava and delete both the tokens and the stored activity ids.
+
+If Strava ever objects to the integration, removing `STRAVA_CLIENT_ID` and
+`STRAVA_CLIENT_SECRET` from Netlify and redeploying turns the whole feature off cleanly —
+existing reviews stay published, they just stop being weighted as verified.
 
 ---
 

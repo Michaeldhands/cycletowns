@@ -11,6 +11,7 @@ import { HeroSearch } from "@/components/HeroSearch";
 import { ridePic } from "@/lib/images";
 import { CAT_DEFS } from "@/lib/towns";
 import { loadArticles, loadCatalog, rankTowns } from "@/lib/content";
+import { fetchAllScores } from "@/lib/reviews";
 import { OriginalCard } from "@/components/NewsCards";
 
 export const revalidate = 300;
@@ -18,8 +19,8 @@ export const revalidate = 300;
 const CAT_IMG: Record<string, string> = { road: "road", climb: "climb", gravel: "gravel", mtb: "mtb", ebike: "ebike", alpine: "alpine", pro: "group" };
 
 export default async function Home() {
-  const [c, articles, banners] = await Promise.all([loadCatalog(), loadArticles(), loadBanners()]);
-  const feat = rankTowns(c).slice(0, 8);
+  const [c, articles, banners, scores] = await Promise.all([loadCatalog(), loadArticles(), loadBanners(), fetchAllScores()]);
+  const feat = rankTowns(c, scores).slice(0, 8);
   return (
     <>
       <SiteNav />

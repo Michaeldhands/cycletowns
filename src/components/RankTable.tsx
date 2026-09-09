@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { DIM_LABELS, SCOPES, knownFor, plural, regionOf, type LiteTown, type Region, type ScoreDims, type Town } from "@/lib/towns";
-import { REVIEWS_TO_TAKE_OVER, type TownScore } from "@/lib/reviews-types";
+import { REVIEWS_TO_TAKE_OVER, rankValue, type TownScore } from "@/lib/reviews-types";
 
 const DIMS = Object.keys(DIM_LABELS) as (keyof ScoreDims)[];
 
@@ -16,12 +16,12 @@ export function RankTable({ full: allFull, lite: allLite, scores = {}, initialSc
     const s = scores[t.id];
     const count = s?.review_count || 0;
     if (s && count >= REVIEWS_TO_TAKE_OVER) {
-      return { score: Number(s.score), dims: { cafes: +s.cafes, routes: +s.routes, safety: +s.safety, climbs: +s.climbs, storage: +s.storage } as ScoreDims, riders: true, count };
+      return { score: Number(s.score), dims: { cafes: +s.cafes, routes: +s.routes, safety: +s.safety, climbs: +s.climbs, storage: +s.storage } as ScoreDims, riders: true, count, verified: s.verified_count || 0 };
     }
-    return { score: t.score, dims: t.scoreDims, riders: false, count };
+    return { score: t.score, dims: t.scoreDims, riders: false, count, verified: 0 };
   };
 
-  const full = allFull.filter((t) => scope === "all" || regionOf(t.country) === scope).sort((a, b) => eff(b).score - eff(a).score);
+  const full = allFull.filter((t) => scope === "all" || regionOf(t.country) === scope).sort((a, b) => rankValue(b.score, scores[b.id]) - rankValue(a.score, scores[a.id]));
   const lite = allLite.filter((t) => scope === "all" || regionOf(t.country) === scope);
 
   return (
@@ -39,7 +39,8 @@ export function RankTable({ full: allFull, lite: allLite, scores = {}, initialSc
           <b>✎ Editorial</b> — our own score, from published route, café and safety research.
         </span>
         <span>
-          <b>★ Riders</b> — built from riders’ published reviews. It replaces the editorial score at {REVIEWS_TO_TAKE_OVER} reviews, and that is the score a town is ranked on.
+          <b>★ Riders</b> — built from riders’ published reviews, weighted towards recent and ride-verified ones. It
+          replaces the editorial score at {REVIEWS_TO_TAKE_OVER} reviews, and that is the score a town is ranked on.
         </span>
       </div>
       <div className="ranktbl scrollrank" id="rankTbl">
@@ -89,7 +90,7 @@ export function RankTable({ full: allFull, lite: allLite, scores = {}, initialSc
                 <div className="rankwhy">
                   <div className="rankwhyh">
                     {e.riders
-                      ? `Ranked on the rider score — the average of ${plural(e.count, "published review")}.`
+                      ? `Ranked on the rider score — ${plural(e.count, "published review")}${e.verified ? `, ${e.verified} ride-verified` : ""}. Recent rides and verified ones count for more, and a town with more reviews is ordered ahead of a thinly-reviewed one on the same average.`
                       : `Ranked on our editorial score. No rider score yet — reviews take over at ${REVIEWS_TO_TAKE_OVER}, and there ${e.count === 1 ? "is 1" : `are ${e.count}`} so far.`}
                   </div>
                   <div className="rankwhyg">

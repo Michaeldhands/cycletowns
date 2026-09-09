@@ -9,13 +9,16 @@ import { CafeCard, RideCard, ShopCard, ThingCard, TownCard } from "@/components/
 import { TownMap } from "@/components/TownMap";
 import { SaveButton } from "@/components/SaveButton";
 import { ReviewForm } from "@/components/ReviewForm";
+import { VerifyRide } from "@/components/VerifyRide";
 import { Avatar } from "@/components/Avatar";
 import { currentUser } from "@/lib/supabase/server";
 import { eventsForTown } from "@/lib/events";
 import { loadEvents } from "@/lib/events-data";
 import { EventCard } from "@/components/EventCards";
-import { REVIEWS_TO_TAKE_OVER, effectiveScore, fetchTownReviews } from "@/lib/reviews";
+import { REVIEWS_TO_TAKE_OVER, effectiveScore, fetchAllScores, fetchTownReviews } from "@/lib/reviews";
 import { fetchFeed, fetchTownGroups } from "@/lib/community";
+import { isConnected } from "@/lib/strava-server";
+import { hasStrava } from "@/lib/strava";
 import { loadCatalog, rankIn, rankTowns, type Catalog } from "@/lib/content";
 import { PostCard, PostComposer } from "@/components/Community";
 import { photoURL, ridePic, townHero, townImages } from "@/lib/images";
@@ -93,17 +96,19 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
   const t = c.towns.find((x) => x.id === slug);
   if (!t) return <LiteTownPage c={c} slug={slug} userId={me?.id ?? null} />;
 
-  const [{ reviews, score }, groups, posts] = await Promise.all([fetchTownReviews(t.id), fetchTownGroups(t.id), fetchFeed({ townId: t.id, limit: 6 })]);
+  const [{ reviews, score }, groups, posts, scores] = await Promise.all([fetchTownReviews(t.id), fetchTownGroups(t.id), fetchFeed({ townId: t.id, limit: 6 }), fetchAllScores()]);
   const eff = effectiveScore(t, score);
   const mine = me ? reviews.find((r) => r.user_id === me.id) : undefined;
+  const stravaOn = hasStrava() && Boolean(me) && Boolean(mine);
+  const stravaConnected = stravaOn && me ? await isConnected(me.id) : false;
   const imgs = townImages(t);
-  const rk = rankIn(c, t.id);
+  const rk = rankIn(c, t.id, scores);
   const geo = c.geo[t.id];
   const w = whenFor(c, t);
   const events = eventsForTown(await loadEvents(), t.id);
   const seedo = c.seeDo[t.id] || [];
   const dims = Object.keys(DIM_LABELS) as (keyof ScoreDims)[];
-  const related = rankTowns(c).filter((x) => x.id !== t.id && regionOf(x.country) === regionOf(t.country)).slice(0, 4);
+  const related = rankTowns(c, scores).filter((x) => x.id !== t.id && regionOf(x.country) === regionOf(t.country)).slice(0, 4);
   const cat = t.tags[0]?.toLowerCase() || "road";
   const more = related.length >= 2 ? related : c.towns.slice().sort((a, b) => catScore(b, cat) - catScore(a, cat)).filter((x) => x.id !== t.id).slice(0, 4);
 
@@ -430,7 +435,10 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
                         <div className="rvname">{r.profiles?.display_name || "Rider"}{r.profiles?.tier === "champion" ? " 👑" : ""}</div>
                         <div className="rvmeta">{[r.ride_type, r.profiles?.home_town].filter(Boolean).join(" · ")} · {new Date(r.created_at).toLocaleDateString("en-AU", { month: "short", year: "numeric" })}</div>
                       </div>
-                      <span className="rvsc">★ {avg.toFixed(1)}</span>
+                      <span className="rvsc">
+                        {r.verified_at && <span className="rvver" title="We matched a ride of theirs starting near here">✓ Ride verified</span>}
+                        ★ {avg.toFixed(1)}
+                      </span>
                     </div>
                     {r.body && <p className="rvbody">{r.body}</p>}
                   </div>
@@ -438,7 +446,10 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
               })}
             </div>
           </div>
-          <ReviewForm townId={t.id} townName={t.name} userId={me?.id ?? null} existing={mine} />
+          <div>
+            <ReviewForm townId={t.id} townName={t.name} userId={me?.id ?? null} existing={mine} />
+            {stravaOn && <VerifyRide townId={t.id} townName={t.name} verified={Boolean(mine?.verified_at)} connected={stravaConnected} />}
+          </div>
         </div>
       </div>
 
@@ -453,7 +464,7 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
           </div>
           <div className="wgrid">
             {more.map((x) => (
-              <TownCard key={x.id} t={x} rank={rankIn(c, x.id)} />
+              <TownCard key={x.id} t={x} rank={rankIn(c, x.id, scores)} />
             ))}
           </div>
           <div className="photocredit" style={{ margin: "26px 0 0" }}>
@@ -468,10 +479,11 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
 }
 
 /* ---------- towns without a full guide yet ---------- */
-function LiteTownPage({ c, slug, userId }: { c: Catalog; slug: string; userId: string | null }) {
+async function LiteTownPage({ c, slug, userId }: { c: Catalog; slug: string; userId: string | null }) {
   const l = c.lite.find((x) => x.slug === slug);
   if (!l) notFound();
-  const nearby = rankTowns(c).filter((x) => regionOf(x.country) === regionOf(l.country)).slice(0, 4);
+  const scores = await fetchAllScores();
+  const nearby = rankTowns(c, scores).filter((x) => regionOf(x.country) === regionOf(l.country)).slice(0, 4);
   return (
     <>
       <TopBar back={{ href: "/rankings", label: "Rankings" }} />
@@ -522,7 +534,7 @@ function LiteTownPage({ c, slug, userId }: { c: Catalog; slug: string; userId: s
           </div>
           <div className="wgrid">
             {nearby.map((x) => (
-              <TownCard key={x.id} t={x} rank={rankIn(c, x.id)} />
+              <TownCard key={x.id} t={x} rank={rankIn(c, x.id, scores)} />
             ))}
           </div>
         </div>

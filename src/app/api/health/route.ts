@@ -76,15 +76,21 @@ export async function GET() {
   ]);
 
   // Config that must simply be present for the site to behave correctly.
+  // Strava is optional: without it ride verification hides itself and reviews still publish,
+  // so its absence is reported but doesn't fail the check.
   const config = {
     webhook_secret: Boolean(process.env.STRIPE_WEBHOOK_SECRET),
     service_role_key: Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY),
+  };
+  const optional = {
+    ride_verification: Boolean(process.env.STRAVA_CLIENT_ID && process.env.STRAVA_CLIENT_SECRET),
+    crm: Boolean(process.env.ATTIO_API_KEY || process.env.CRM_WEBHOOK_URL),
   };
   const configOk = Object.values(config).every(Boolean);
   const ok = checks.every((c) => c.ok) && configOk;
 
   return NextResponse.json(
-    { ok, checked_at: new Date().toISOString(), checks, config },
+    { ok, checked_at: new Date().toISOString(), checks, config, optional },
     { status: ok ? 200 : 503, headers: { "Cache-Control": "no-store" } },
   );
 }
