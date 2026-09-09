@@ -24,8 +24,11 @@ const SUSPECT: [RegExp, string][] = [
   [/\b(TODO|TBD|FIXME|XXX)\b/, "unfinished marker"],
   [/illustrative|for the demo|demo only|sample data|placeholder/i, "demo-stage wording"],
   [/coming (friday|monday|next week|soon)|new this week|next week/i, "stale relative date"],
-  [/our (correspondent|reporter|photographer)|correspondent ·/i, "claimed correspondent"],
-  [/launch film|our film|documentary/i, "claimed video that may not exist"],
+  // Deliberately broad. The narrow version — /our (correspondent|reporter)/ — missed
+  // "Our Asia correspondent Kenji Mori" because of the word in between, and that row stayed
+  // published for a whole extra round. A false positive costs a glance; a miss costs trust.
+  [/\b(correspondent|reporter|our photographer|staff writer|words by|photographs by)\b/i, "claimed byline or correspondent"],
+  [/launch film|our film|documentary|\bep(isode)? ?\d/i, "claimed film or series episode"],
   [/\bexample\.(com|org)\b|test@|@test\./i, "placeholder contact"],
   [/verified (cycletowns )?partner/i, "asserted commercial relationship"],
   [/\b\d+(\.\d+)?%\s*(uplift|increase|conversion|more|lift)/i, "performance claim"],
@@ -90,7 +93,7 @@ export async function GET() {
 
   const [content, people, notPublished] = await Promise.all([
     Promise.all([
-      scan("articles", ["title", "dek", "body", "series"]),
+      scan("articles", ["title", "dek", "body", "series", "episode"]),
       scan("towns", ["name", "blurb"]),
       scan("places", ["name", "note"]),
       scan("events", ["name", "note", "organiser", "url"]),
