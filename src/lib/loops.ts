@@ -22,13 +22,40 @@ export const profileFor = (d: string) => LOOP_DISCIPLINES.find((x) => x.id === d
 export const km = (m: number) => `${(m / 1000).toFixed(1)} km`;
 export const metres = (m: number) => `${Math.round(m).toLocaleString()} m`;
 
-/** Rough ride time: flat-ish speeds by discipline, plus a penalty for climbing. */
-export function estimateHours(distance_m: number, ascent_m: number, discipline: string): number {
-  const base: Record<string, number> = { road: 25, gravel: 20, mtb: 14, ebike: 24 };
-  const speed = base[discipline] ?? 21;
-  const flat = distance_m / 1000 / speed;
-  const climbing = ascent_m / 500; // ~30 min per 500 m of climbing
-  return flat + climbing;
+/* Ride time.
+
+   The old model charged half an hour for every 500 m of climbing on top of a rolling-terrain
+   average speed, which double-counted the hills and produced badly pessimistic numbers — a
+   50 km loop with 1,200 m came out at four and a half hours, nearly twice what it takes.
+
+   The model now: distance at your own average speed, plus a smaller correction for climbing.
+   The correction is ~30 minutes per 1,000 m, which is what's left once you accept that the
+   descents on the other side of those climbs give most of the time back. Sanity checks —
+   Peaks Challenge (235 km / 4,000 m) lands near 11½ hours, and a flat 50 km at 25 km/h is
+   two hours flat, both about right.
+
+   Every rider is different, which is why the speed is theirs to set rather than ours to
+   guess. These are averages including stops-you-don't-take, not race pace. */
+
+/** Typical moving average by discipline, km/h. The starting point, not the answer. */
+export const DEFAULT_SPEED: Record<string, number> = { road: 25, gravel: 20, mtb: 14, ebike: 24 };
+export const SPEED_MIN = 8;
+export const SPEED_MAX = 40;
+/** Hours added per metre climbed, after descents are taken into account. */
+const CLIMB_HOURS_PER_M = 1 / 2000;
+
+export function defaultSpeed(discipline: string): number {
+  return DEFAULT_SPEED[discipline] ?? 21;
+}
+
+export function estimateHours(distance_m: number, ascent_m: number, discipline: string, speedKmh?: number): number {
+  const speed = Math.max(SPEED_MIN, Math.min(SPEED_MAX, speedKmh || defaultSpeed(discipline)));
+  return distance_m / 1000 / speed + ascent_m * CLIMB_HOURS_PER_M;
+}
+
+/** The average speed this ride works out at, once climbing is counted. What a computer shows. */
+export function impliedSpeed(distance_m: number, hours: number): number {
+  return hours > 0 ? distance_m / 1000 / hours : 0;
 }
 export function prettyHours(h: number): string {
   const total = Math.round(h * 60);

@@ -16,7 +16,7 @@
   ]
  },
  "adelaide-hills": {
-  "season": "Sep–Apr · TDU in January",
+  "season": "Sep–Nov and Mar–May · TDU in January",
   "getThere": "~30 min from Adelaide CBD",
   "reviews": [
    [
@@ -32,7 +32,7 @@
   ]
  },
  "beechworth": {
-  "season": "Sep–May",
+  "season": "Oct–Apr",
   "getThere": "~3 hrs from Melbourne",
   "reviews": [
    [
@@ -48,7 +48,7 @@
   ]
  },
  "noosa": {
-  "season": "Year-round (mild winters)",
+  "season": "Apr–Oct (mild winters)",
   "getThere": "~2 hrs north of Brisbane",
   "reviews": [
    [
@@ -96,7 +96,7 @@
   ]
  },
  "mallorca": {
-  "season": "Feb–May & Sep–Oct",
+  "season": "Mar–May and Sep–Oct",
   "getThere": "Fly to Palma; island-wide transfers",
   "reviews": [
    [

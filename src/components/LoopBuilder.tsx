@@ -1,23 +1,89 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { LoopMap } from "./LoopMap";
-import { LOOP_DISCIPLINES, elevationPath, estimateHours, km as fmtKm, loopGrade, metres, prettyHours, toGpx, type LoopResult } from "@/lib/loops";
+import { LOOP_DISCIPLINES, SPEED_MAX, SPEED_MIN, defaultSpeed, elevationPath, estimateHours, impliedSpeed, km as fmtKm, loopGrade, metres, prettyHours, toGpx, type LoopResult } from "@/lib/loops";
 import { slugify } from "@/lib/towns";
 
 export type LoopTown = { id: string; name: string; lat: number | null; lng: number | null };
 
+/* The rider's own average speed, remembered between loops.
+
+   Read through useSyncExternalStore rather than an effect: LoopStats is server-rendered on
+   a saved loop's page, so reading localStorage during render would hydrate differently to
+   the server's HTML. The server snapshot is "no preference", and the stored value is adopted
+   on the client without a render-time setState. */
+const SPEED_KEY = "ct-speed";
+
+const speedStore = {
+  listeners: new Set<() => void>(),
+  subscribe(cb: () => void) {
+    speedStore.listeners.add(cb);
+    window.addEventListener("storage", cb);
+    return () => {
+      speedStore.listeners.delete(cb);
+      window.removeEventListener("storage", cb);
+    };
+  },
+  get(): string | null {
+    try {
+      return window.localStorage.getItem(SPEED_KEY);
+    } catch {
+      return null; // private browsing, or storage blocked — fall back to the default
+    }
+  },
+  set(v: number) {
+    try {
+      window.localStorage.setItem(SPEED_KEY, String(v));
+    } catch {
+      /* it just won't be remembered next time */
+    }
+    speedStore.listeners.forEach((l) => l());
+  },
+};
+
+function useSpeed(): [number | null, (v: number) => void] {
+  const raw = useSyncExternalStore(speedStore.subscribe, speedStore.get, () => null);
+  const n = Number(raw);
+  const valid = raw !== null && n >= SPEED_MIN && n <= SPEED_MAX;
+  return [valid ? n : null, speedStore.set];
+}
+
 export function LoopStats({ result, discipline }: { result: LoopResult; discipline: string }) {
   const grade = loopGrade(result.distance_m, result.ascent_m);
   const prof = elevationPath(result.coords);
+  const [speed, setPace] = useSpeed();
+
+  const used = speed ?? defaultSpeed(discipline);
+  const hours = estimateHours(result.distance_m, result.ascent_m, discipline, used);
   return (
     <>
       <div className="kpis" style={{ marginBottom: 14 }}>
         <div className="kpi"><div className="k">Distance</div><div className="v">{fmtKm(result.distance_m)}</div></div>
         <div className="kpi"><div className="k">Climbing</div><div className="v">{metres(result.ascent_m)}</div></div>
-        <div className="kpi"><div className="k">Rough time</div><div className="v">{prettyHours(estimateHours(result.distance_m, result.ascent_m, discipline))}</div></div>
+        <div className="kpi"><div className="k">Your time</div><div className="v">{prettyHours(hours)}</div></div>
         <div className="kpi"><div className="k">Grade</div><div className="v" style={{ color: grade.color }}>{grade.label}</div></div>
+      </div>
+
+      <div className="pacebox">
+        <label htmlFor="pace">
+          At <b>{used} km/h</b> on the flat{speed === null ? " — the usual pace for this kind of riding" : ""}
+        </label>
+        <input
+          id="pace"
+          type="range"
+          min={SPEED_MIN}
+          max={SPEED_MAX}
+          step={1}
+          value={used}
+          onChange={(e) => setPace(Number(e.target.value))}
+        />
+        <div className="pacenote">
+          Set your own average and the estimate follows you. Climbing adds about half an hour per 1,000 m on top —
+          this loop works out at {impliedSpeed(result.distance_m, hours).toFixed(1)} km/h overall. Moving time, so add
+          your own café stops.
+        </div>
       </div>
       {prof && (
         <div className="elebox">

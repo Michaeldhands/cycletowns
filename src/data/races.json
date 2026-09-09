@@ -10,7 +10,7 @@
    "date": "2026-10-23",
    "status": "upcoming",
    "disc": "climbs",
-   "note": "Sea level at Qixingtan to 3,275m at Wuling through Taroko Gorge — ~7% for 90km, then ramps to 27%. One of the world's hardest climbs."
+   "note": "Sea level at Qixingtan to 3,275m at Wuling through Taroko Gorge — ~7% for 87km, then ramps to 20%. One of the world's hardest climbs."
   }
  ],
  "mallorca": [
@@ -38,7 +38,7 @@
    "date": "2026-10-17",
    "status": "upcoming",
    "disc": "gravel",
-   "note": "Life Time Grand Prix finale on the chunky Ozark gravel around Bentonville — 104mi / ~7,000ft. Full pro field."
+   "note": "Life Time Grand Prix finale on the chunky Ozark gravel around Bentonville — 100mi / ~6,200ft. Full pro field."
   }
  ],
  "medellin": [
@@ -100,11 +100,11 @@
    "name": "Peaks Challenge Falls Creek",
    "series": "Peaks Challenge",
    "km": 235,
-   "vert": 4500,
+   "vert": 4000,
    "date": "2027-03-07",
    "status": "upcoming",
    "disc": "climbs",
-   "note": "235km / 4,500m around the high country — Tawonga Gap, Mt Hotham and the ‘Beast’ at the back of Falls Creek. 13-hour limit."
+   "note": "235km / 4,000m around the high country — Tawonga Gap, Mt Hotham and the ‘Beast’ at the back of Falls Creek. 13-hour limit."
   }
  ],
  "girona": [
@@ -115,7 +115,7 @@
    "series": "Sea Otter Europe Girona",
    "km": 140,
    "vert": 2200,
-   "date": "2026-09-20",
+   "date": "2026-09-19",
    "status": "upcoming",
    "disc": "road",
    "note": "Europe's biggest cycling festival — road & gravel gran fondos and the UCI Gravel World Series, all from Girona."
@@ -209,12 +209,12 @@
    "badge": "🏆",
    "name": "Come! BikeDay — Round-the-Lake",
    "series": "Taiwan Cycling Festival",
-   "km": 30,
+   "km": 29,
    "vert": 400,
    "date": "2026-11-07",
    "status": "upcoming",
    "disc": "road",
-   "note": "The Taiwan Cycling Festival's flagship ride around Sun Moon Lake — culture, music and the classic 30km lake loop."
+   "note": "The Taiwan Cycling Festival's flagship ride around Sun Moon Lake — culture, music and the classic 29km lake loop."
   }
  ],
  "pokhara": [
