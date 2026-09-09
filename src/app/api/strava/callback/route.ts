@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { currentUser } from "@/lib/supabase/server";
 import { StravaCapError, exchangeCode } from "@/lib/strava";
+import { siteUrl } from "@/lib/stripe/server";
 import { saveTokens } from "@/lib/strava-server";
 
 export const runtime = "nodejs";
@@ -10,7 +11,8 @@ export async function GET(req: NextRequest) {
   const sp = req.nextUrl.searchParams;
   const back = req.cookies.get("st_next")?.value || "/";
   const done = (q: string) => {
-    const res = NextResponse.redirect(new URL(`${back}${back.includes("?") ? "&" : "?"}${q}`, req.nextUrl.origin));
+    // Same reason as in connect/: send the rider back to the real site, not the deploy host.
+    const res = NextResponse.redirect(new URL(`${back}${back.includes("?") ? "&" : "?"}${q}`, siteUrl()));
     res.cookies.delete("st_nonce");
     res.cookies.delete("st_next");
     return res;
