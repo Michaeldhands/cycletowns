@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { TopBar } from "@/components/SiteNav";
@@ -12,6 +13,7 @@ import { JoinInsider } from "@/components/MembershipButtons";
 import { hasStripe } from "@/lib/stripe/server";
 import { getTown } from "@/lib/towns";
 import { StravaCard } from "@/components/StravaCard";
+import { StravaNotice } from "@/components/StravaNotice";
 import { getRow } from "@/lib/strava-server";
 import { hasStrava } from "@/lib/strava";
 
@@ -66,6 +68,11 @@ export default async function Account() {
                 </p>
                 <JoinInsider userId={me.id} member={isMember(p)} enabled={hasStripe()} />
               </div>
+              {hasStrava() && (
+                <Suspense fallback={null}>
+                  <StravaNotice />
+                </Suspense>
+              )}
               {hasStrava() && <StravaCard connected={Boolean(strava)} athleteId={strava?.athlete_id ?? null} />}
               <div className="wscorebox" style={{ maxWidth: "none", marginBottom: 16 }}>
                 <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 8 }}>Your reviews</h3>

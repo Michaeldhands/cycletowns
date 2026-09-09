@@ -25,6 +25,14 @@ export const VERIFY_WINDOW_DAYS = 14;
 
 export const hasStrava = () => Boolean(process.env.STRAVA_CLIENT_ID && process.env.STRAVA_CLIENT_SECRET);
 
+/** Strava refused because the app's connected-athlete cap is full. */
+export class StravaCapError extends Error {
+  constructor(detail: string) {
+    super(`strava athlete cap: ${detail}`);
+    this.name = "StravaCapError";
+  }
+}
+
 export type StravaTokens = { access_token: string; refresh_token: string; expires_at: number; athlete_id: number; scope?: string };
 
 export function authorizeURL(redirectUri: string, state: string): string {
@@ -50,7 +58,14 @@ async function tokenCall(body: Record<string, string>): Promise<TokenResponse> {
     body: JSON.stringify({ client_id: process.env.STRAVA_CLIENT_ID, client_secret: process.env.STRAVA_CLIENT_SECRET, ...body }),
     signal: AbortSignal.timeout(10000),
   });
-  if (!res.ok) throw new Error(`strava token ${res.status} ${(await res.text().catch(() => "")).slice(0, 200)}`);
+  if (!res.ok) {
+    const body = (await res.text().catch(() => "")).slice(0, 300);
+    // A new Strava app can only be authorised by its owner until the athlete cap is raised,
+    // and only by 10 riders until Strava reviews it. Worth naming, because the generic
+    // "that didn't work" sends you looking in entirely the wrong place. See RUNBOOK.md.
+    if (res.status === 403 || /limit of connected athletes/i.test(body)) throw new StravaCapError(body);
+    throw new Error(`strava token ${res.status} ${body}`);
+  }
   return (await res.json()) as TokenResponse;
 }
 

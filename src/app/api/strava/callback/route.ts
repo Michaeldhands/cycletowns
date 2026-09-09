@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { currentUser } from "@/lib/supabase/server";
-import { exchangeCode } from "@/lib/strava";
+import { StravaCapError, exchangeCode } from "@/lib/strava";
 import { saveTokens } from "@/lib/strava-server";
 
 export const runtime = "nodejs";
@@ -33,6 +33,6 @@ export async function GET(req: NextRequest) {
     return done("strava=connected");
   } catch (err) {
     console.error("strava callback", (err as Error).message);
-    return done("strava=failed");
+    return done(err instanceof StravaCapError ? "strava=cap" : "strava=failed");
   }
 }

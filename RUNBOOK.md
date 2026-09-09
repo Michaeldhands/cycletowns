@@ -71,18 +71,49 @@ Two traps, both of which have bitten us:
 
 ### Setting up ride verification (Strava)
 
-1. Strava → Settings → **My API Application**. Create one if it doesn't exist.
-2. **Authorization Callback Domain** must be exactly `cycletowns.com` — no scheme, no path.
-   Strava rejects the sign-in silently if this is wrong.
-3. Copy the Client ID and Client Secret into Netlify as above, then **trigger a deploy**.
-4. Check `/api/health` — `optional.ride_verification` should be `true`.
-5. Sign in on the live site, go to **Account → Ride verification**, connect, then verify a
+All of this happens inside Strava, on the Cycletowns Strava account — nothing here touches
+Netlify until step 4.
+
+1. Log in to Strava → **strava.com/settings/api** (Settings → My API Application). Create one
+   if it doesn't exist. Strava's own docs say creating an application requires a Strava
+   subscription; confirm on the page before assuming otherwise.
+2. Fill in Application Name (`Cycletowns`), Category, Website (`https://cycletowns.com`),
+   description and icon. The description and icon are what a rider sees on the "allow
+   Cycletowns to…" screen, so write them properly.
+3. **Authorization Callback Domain** must be exactly `cycletowns.com` — no scheme, no path,
+   no `www`. Strava rejects the sign-in silently if this is wrong, and it is the single most
+   common reason the connect button appears to do nothing.
+4. Copy **Client ID** and **Client Secret** from that page into Netlify as above, then
+   **trigger a deploy**. Ignore the Access Token and Refresh Token also shown there — those
+   authorise the owner's own account for testing and the site does not use them.
+5. Check `/api/health` — `optional.ride_verification` should be `true`.
+6. Sign in on the live site, go to **Account → Ride verification**, connect, then verify a
    review on a town you've actually ridden.
+
+**The athlete cap — plan around this.** A new Strava application starts in effectively
+single-player mode: only the account that owns it can authorise it. From the settings page
+you can raise it to **10 connected athletes**. Beyond 10 you must **submit the app to Strava
+for review**, and that approval is not instant.
+
+So the rollout has three stages, and it is worth starting the review application well before
+you need it:
+
+| Stage | Who can verify | What to do |
+|---|---|---|
+| Fresh app | Michael only | Enough to prove it works end to end |
+| Raised in settings | 10 riders | Enough for a friends-and-family test |
+| After Strava's review | Everyone | Apply from the API settings page |
+
+A rider who tries to connect past the cap gets a **403 "limit of connected athletes
+exceeded"** from Strava. The site treats that as a failed connection and the rider's review
+still publishes and still counts — but the message they see won't explain the real cause, so
+if testers report the connect button failing, check the cap first.
 
 **Rate limits.** Strava's default is roughly 100 requests per 15 minutes and 1,000 per day.
 Each verification attempt is 1–5 requests. If riders ever hit that, the site returns "Strava
 is rate-limiting us right now" and nothing breaks — but it's the number to watch if
-verification ever gets popular.
+verification ever gets popular. Note the daily limit and the athlete cap are separate things
+and are raised separately.
 
 **What we store, and why it's kept small.** `strava_accounts` holds OAuth tokens and is
 reachable only with the service-role key — row-level security is on with *no policies*, so

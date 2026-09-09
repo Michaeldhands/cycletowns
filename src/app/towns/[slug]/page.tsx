@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TopBar } from "@/components/SiteNav";
@@ -10,6 +11,7 @@ import { TownMap } from "@/components/TownMap";
 import { SaveButton } from "@/components/SaveButton";
 import { ReviewForm } from "@/components/ReviewForm";
 import { VerifyRide } from "@/components/VerifyRide";
+import { StravaNotice } from "@/components/StravaNotice";
 import { Avatar } from "@/components/Avatar";
 import { currentUser } from "@/lib/supabase/server";
 import { eventsForTown } from "@/lib/events";
@@ -448,6 +450,11 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
           </div>
           <div>
             <ReviewForm townId={t.id} townName={t.name} userId={me?.id ?? null} existing={mine} />
+            {stravaOn && (
+              <Suspense fallback={null}>
+                <StravaNotice />
+              </Suspense>
+            )}
             {stravaOn && <VerifyRide townId={t.id} townName={t.name} verified={Boolean(mine?.verified_at)} connected={stravaConnected} />}
           </div>
         </div>
