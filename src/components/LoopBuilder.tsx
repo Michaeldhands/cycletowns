@@ -133,13 +133,45 @@ export function LoopBuilder({ towns, initialTown, userId, routerOn }: { towns: L
         ) : (
           <div className="wbar" style={{ alignItems: "center" }}>
             <button className="lk-coral big" onClick={() => build(Math.floor(Math.random() * 9999))} disabled={!townId || busy}>
-              {busy ? "Finding roads…" : result ? "Build another" : "Build my loop"}
+              {busy ? "Finding roads…" : result ? "Build another" : townId ? "Build my loop" : "Choose a town above to build a loop"}
             </button>
             {result && !busy && <button className="lk-ghost" onClick={() => build(Math.floor(Math.random() * 9999))}>🎲 Different loop, same distance</button>}
           </div>
         )}
         {err && <div style={{ color: "var(--coral-700)", fontWeight: 700, fontSize: 13, marginTop: 10 }}>{err}</div>}
       </div>
+
+      {!result && routerOn && (
+        <div className="emptyprev">
+          <div className="emptyprevh">
+            <b>What you’ll get</b> — a loop that starts and finishes where you tell it to, drawn on roads and paths that
+            actually exist. Not a suggestion to go and find one.
+          </div>
+          <div className="emptyprevg">
+            <div className="epv">
+              <span className="epvi">📍</span>
+              <b>Your start point</b>
+              <span>Choose the town, then click the map to move the start to your hotel, a car park, wherever you begin.</span>
+            </div>
+            <div className="epv">
+              <span className="epvi">⛰️</span>
+              <b>Distance and climbing</b>
+              <span>The real numbers for the loop it found, with an elevation profile before you commit to it.</span>
+            </div>
+            <div className="epv">
+              <span className="epvi">🎲</span>
+              <b>Don’t like it? Roll again</b>
+              <span>Same distance, different roads — as many times as you want.</span>
+            </div>
+            <div className="epv">
+              <span className="epvi">⬇️</span>
+              <b>GPX for your head unit</b>
+              <span>Download it to your Garmin or Wahoo, or save it to your account.</span>
+            </div>
+          </div>
+          <div className="emptyprevf">Loops are capped at 100 km — that’s the limit of the routing service we use.</div>
+        </div>
+      )}
 
       {result && town && (
         <div style={{ marginTop: 24 }}>

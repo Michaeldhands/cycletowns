@@ -138,6 +138,11 @@ export const DIM_LABELS: Record<keyof ScoreDims, [string, string]> = {
   climbs: ["⛰️", "Climbs"],
   storage: ["🅿️", "Bike storage"],
 };
+/** "1 shop", "3 shops". Pass an explicit plural for irregular words. */
+export function plural(n: number, one: string, many?: string): string {
+  return `${n} ${n === 1 ? one : many || one + "s"}`;
+}
+
 /** The dimension a town scores highest on, e.g. "⛰️ Climbs". */
 export function knownFor(t: Town): string {
   let best: keyof ScoreDims = "routes";

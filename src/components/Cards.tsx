@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Photo } from "./Photo";
 import { townHero } from "@/lib/images";
-import { gmaps, rankOf, type Place, type SeeDo, type Town, rideDiscipline } from "@/lib/towns";
+import { gmaps, plural, rankOf, type Place, type SeeDo, type Town, rideDiscipline } from "@/lib/towns";
 
 /** Landing / listing town card. */
 export function TownCard({ t, rank }: { t: Town; rank?: number }) {
@@ -28,7 +28,7 @@ export function TownCard({ t, rank }: { t: Town; rank?: number }) {
           ))}
         </div>
         <div className="rd">
-          {t.routes.length} routes · {t.cafes.length} cafés · {t.shops.length} shops
+          {plural(t.routes.length, "route")} · {plural(t.cafes.length, "café")} · {plural(t.shops.length, "shop")}
         </div>
       </div>
     </Link>

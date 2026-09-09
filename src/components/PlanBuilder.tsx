@@ -150,9 +150,40 @@ export function PlanBuilder({ towns, data, initialTown, userId }: { towns: TownO
           </div>
         </div>
         <button className="lk-coral big" onClick={() => setBuilt(true)} disabled={!townId}>
-          {townId ? "Build my plan" : "Pick a town first"}
+          {townId ? "Build my plan" : "Choose a town above to build your plan"}
         </button>
       </div>
+
+      {!built && (
+        <div className="emptyprev">
+          <div className="emptyprevh">
+            <b>What you’ll get</b> — a day-by-day itinerary you can print, save and adjust. Nothing is generic: every ride,
+            café and shop in it is one we’ve researched in that town.
+          </div>
+          <div className="emptyprevg">
+            <div className="epv">
+              <span className="epvi">🚴</span>
+              <b>A ride for each day</b>
+              <span>Matched to how you ride and what you came for — with distance, climbing and a map link.</span>
+            </div>
+            <div className="epv">
+              <span className="epvi">☕</span>
+              <b>Where to stop</b>
+              <span>The café on that day’s route, and the bike shop to know if something breaks.</span>
+            </div>
+            <div className="epv">
+              <span className="epvi">📅</span>
+              <b>Timed to your dates</b>
+              <span>Rest days placed sensibly, plus what the weather usually does when you’re there.</span>
+            </div>
+            <div className="epv">
+              <span className="epvi">🖨</span>
+              <b>Yours to keep</b>
+              <span>Print it, or save it to your account and edit it later.</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {built && plan && town && (
         <div style={{ marginTop: 26 }}>

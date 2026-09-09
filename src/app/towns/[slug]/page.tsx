@@ -24,6 +24,7 @@ import {
   LITE_TOWNS,
   TOWNS,
   catScore,
+  plural,
   regionOf,
   rideDiscipline,
   type ScoreDims,
@@ -128,11 +129,18 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
             <h1>{t.name}</h1>
             <div className="meta">
               <span className="rk">#{rk} ranked</span>
-              <span className="sc">★ {eff.score.toFixed(1)} Cyclist Score{eff.count ? ` · ${eff.count} review${eff.count === 1 ? "" : "s"}` : ""}</span>
+              <span className="sc" title="Our editorial score, set at launch from published route, café and safety research">
+                ✎ {t.score.toFixed(1)} editorial
+              </span>
+              <span className="sc" title={`Built from rider reviews once a town has ${REVIEWS_TO_TAKE_OVER}`}>
+                {eff.source === "riders"
+                  ? `★ ${eff.score.toFixed(1)} riders · ${plural(eff.count, "review")}`
+                  : `★ riders — ${eff.count} of ${REVIEWS_TO_TAKE_OVER} reviews`}
+              </span>
               <span className="sc">
                 {t.flag} {t.region} · {t.country}
               </span>
-              <span className="sc">{t.routes.length} routes · {t.cafes.length} cafés · {t.shops.length} shops</span>
+              <span className="sc">{plural(t.routes.length, "route")} · {plural(t.cafes.length, "café")} · {plural(t.shops.length, "shop")}</span>
             </div>
             <div className="wbar">
               <Link href={`/plan?town=${t.id}`} className="lk-coral big">
@@ -172,11 +180,13 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
             </div>
           </div>
           <div className="wscorebox" style={{ maxWidth: "none" }}>
-            <h3 style={{ fontSize: 14, fontWeight: 800 }}>Cyclist Score breakdown</h3>
+            <h3 style={{ fontSize: 14, fontWeight: 800 }}>
+              Why {t.name} sits at #{rk}
+            </h3>
             <div className="csub" style={{ color: "var(--grey-m)", fontSize: 12, margin: "2px 0 8px" }}>
               {eff.source === "riders"
-                ? `From ${eff.count} verified rider reviews`
-                : `Editorial launch score · rider reviews take over at ${REVIEWS_TO_TAKE_OVER}${eff.count ? ` (${eff.count} so far)` : ""}`}
+                ? `Ranked on the rider score — built from ${plural(eff.count, "verified review")}.`
+                : `Ranked on our editorial score until riders take over at ${REVIEWS_TO_TAKE_OVER} reviews${eff.count ? ` (${plural(eff.count, "review")} so far)` : ""}. It is research, not riders — so treat it as a starting point.`}
             </div>
             {dims.map((k) => (
               <DimBar key={k} label={DIM_LABELS[k][1]} v={eff.dims[k]} />
@@ -378,12 +388,12 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
       {/* CAFÉS / SHOPS / THINGS */}
       <SectionCarousel
         title="Best café stops"
-        sub={`${t.cafes.length} rider-rated cafés`}
+        sub={`${plural(t.cafes.length, "café")}, rider-rated`}
         items={t.cafes.map((p) => ({ key: p.n, node: <CafeCard t={t} p={p} /> }))}
       />
       <SectionCarousel
         title="Bike shops & hire"
-        sub={`${t.shops.length} shops & hire`}
+        sub={`${plural(t.shops.length, "shop")} & hire`}
         items={t.shops.map((p) => ({ key: p.n, node: <ShopCard t={t} p={p} /> }))}
       />
       {seedo.length > 0 && (
@@ -399,7 +409,7 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
         <div className="wh">
           <div>
             <h2>Rider reviews</h2>
-            <span className="wsub">{reviews.length ? `${eff.count} honest reviews from riders who’ve ridden here` : "honest, from riders who’ve actually ridden here"}</span>
+            <span className="wsub">{reviews.length ? `${plural(eff.count, "honest review")} from riders who’ve ridden here` : "honest, from riders who’ve actually ridden here"}</span>
           </div>
         </div>
         <div className="twocol">
