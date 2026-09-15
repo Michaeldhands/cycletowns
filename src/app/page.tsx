@@ -93,6 +93,56 @@ export default async function Home() {
         </div>
       </div>
 
+      {/* FEATURED TOWNS */}
+      <div className="sec2 alt" id="towns">
+        <div className="in">
+          <div className="kick">Top ranked</div>
+          <div className="h2">The world’s best Cycletowns</div>
+          <div className="lead">
+            Ranked by riders. Swipe through and dive into any town — its rides, café stops, bike shops, groups and things to do.
+            No sign-up needed.
+          </div>
+          <LpCarousel>
+            {feat.map((t, i) => (
+              <TownCard key={t.id} t={t} rank={i + 1} />
+            ))}
+          </LpCarousel>
+          <div style={{ textAlign: "center", marginTop: 20 }}>
+            <Link href="/rankings" className="lk-coral big">
+              See the full leaderboard ›
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* NEWS TEASER */}
+      <div className="sec2 alt" id="news" style={{ paddingTop: 0 }}>
+        <div className="in">
+          <div className="kick">The hub · Originals</div>
+          <div className="h2">Cycletowns News</div>
+          <div className="lead">
+            Town guides, route guides and features, written by the Cycletowns team.
+          </div>
+          <LpCarousel>
+            {articles.slice(0, 8).map((a, i) => (
+              <OriginalCard key={i} a={a} idx={i} />
+            ))}
+          </LpCarousel>
+          <div style={{ textAlign: "center", marginTop: 18 }}>
+            <Link href="/news" className="lk-coral big">
+              Open the News hub ›
+            </Link>
+          </div>
+          <div className="wscorebox" style={{ maxWidth: 640, margin: "26px auto 0" }}>
+            <h3 style={{ fontFamily: "var(--disp)", textTransform: "uppercase", fontSize: 24, marginBottom: 4 }}>Get it in your inbox.</h3>
+            <p className="wsub" style={{ display: "block", marginBottom: 14 }}>
+              New town guides, routes worth travelling for, and the odd long read. Sent when there&rsquo;s something worth your time.
+            </p>
+            <Subscribe source="home" compact />
+          </div>
+        </div>
+      </div>
+
       {/* TWO WAYS TO ROLL */}
       <div className="sec2" id="how">
         <div className="in">
@@ -166,58 +216,8 @@ export default async function Home() {
         </div>
       </div>
 
-      {/* FEATURED TOWNS */}
-      <div className="sec2 alt" id="towns">
-        <div className="in">
-          <div className="kick">Top ranked</div>
-          <div className="h2">The world’s best Cycletowns</div>
-          <div className="lead">
-            Ranked by riders. Swipe through and dive into any town — its rides, café stops, bike shops, groups and things to do.
-            No sign-up needed.
-          </div>
-          <LpCarousel>
-            {feat.map((t, i) => (
-              <TownCard key={t.id} t={t} rank={i + 1} />
-            ))}
-          </LpCarousel>
-          <div style={{ textAlign: "center", marginTop: 20 }}>
-            <Link href="/rankings" className="lk-coral big">
-              See the full leaderboard ›
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* NEWS TEASER */}
-      <div className="sec2 alt" id="news" style={{ paddingTop: 0 }}>
-        <div className="in">
-          <div className="kick">The hub · Originals</div>
-          <div className="h2">Cycletowns News</div>
-          <div className="lead">
-            Town guides, route guides and features, written by the Cycletowns team.
-          </div>
-          <LpCarousel>
-            {articles.slice(0, 8).map((a, i) => (
-              <OriginalCard key={i} a={a} idx={i} />
-            ))}
-          </LpCarousel>
-          <div style={{ textAlign: "center", marginTop: 18 }}>
-            <Link href="/news" className="lk-coral big">
-              Open the News hub ›
-            </Link>
-          </div>
-          <div className="wscorebox" style={{ maxWidth: 640, margin: "26px auto 0" }}>
-            <h3 style={{ fontFamily: "var(--disp)", textTransform: "uppercase", fontSize: 24, marginBottom: 4 }}>Get it in your inbox.</h3>
-            <p className="wsub" style={{ display: "block", marginBottom: 14 }}>
-              New town guides, routes worth travelling for, and the odd long read. Sent when there&rsquo;s something worth your time.
-            </p>
-            <Subscribe source="home" compact />
-          </div>
-        </div>
-      </div>
-
       {/* MEMBERSHIP TEASER */}
-      <div className="sec2">
+      <div className="sec2" style={{ paddingTop: 0 }}>
         <div className="in">
           <div className="concierge">
             <div className="cgl">
