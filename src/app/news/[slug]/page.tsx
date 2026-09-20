@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { alternatesFor } from "@/lib/i18n";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TopBar } from "@/components/SiteNav";
@@ -19,7 +20,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/news/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const a = (await loadArticles()).find((x) => articleSlug(x) === slug);
-  return a ? { title: a.title, description: a.dek } : {};
+  return a ? { title: a.title, description: a.dek, alternates: alternatesFor(`/news/${slug}`) } : {};
 }
 
 export default async function ArticlePage({ params }: PageProps<"/news/[slug]">) {

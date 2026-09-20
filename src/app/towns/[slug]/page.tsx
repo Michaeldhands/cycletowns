@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { alternatesFor } from "@/lib/i18n";
 import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -51,11 +52,12 @@ export async function generateMetadata({ params }: PageProps<"/towns/[slug]">): 
     return {
       title: `${t.name} cycling guide — routes, cafés, bike shops`,
       description: t.blurb,
+      alternates: alternatesFor(`/towns/${t.id}`),
       openGraph: { images: [townHero(t, 1200)] },
     };
   }
   const l = c.lite.find((x) => x.slug === slug);
-  return l ? { title: `${l.name} — Cycletown` } : {};
+  return l ? { title: `${l.name} — Cycletown`, alternates: alternatesFor(`/towns/${l.slug}`) } : {};
 }
 
 /* ---------- helpers ---------- */

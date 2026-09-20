@@ -3,17 +3,20 @@ import Link from "next/link";
 import { useState } from "react";
 import { Logo } from "./Logo";
 import { AccountChip } from "./AccountChip";
+import { t, type MessageKey } from "@/i18n";
 
-const LINKS: [string, string][] = [
-  ["Towns", "/towns"],
-  ["Rankings", "/rankings"],
-  ["Routes", "/loop"],
-  ["Events", "/events"],
-  ["News", "/news"],
-  ["Feed", "/feed"],
-  ["Shop", "/shop"],
-  ["Membership", "/membership"],
-  ["Partners", "/partners"],
+// Label keys, not labels: the nav is the most-seen text on the site and the first thing a
+// translator needs. See @/i18n/en.ts.
+const LINKS: [key: MessageKey, href: string][] = [
+  ["nav.towns", "/towns"],
+  ["nav.rankings", "/rankings"],
+  ["nav.routes", "/loop"],
+  ["nav.events", "/events"],
+  ["nav.news", "/news"],
+  ["nav.feed", "/feed"],
+  ["nav.shop", "/shop"],
+  ["nav.membership", "/membership"],
+  ["nav.partners", "/partners"],
 ];
 
 /** Landing-page style navigation (full links). */
@@ -22,41 +25,41 @@ export function SiteNav() {
   return (
     <div className="lpnav">
       <div className="in">
-        <Link href="/" aria-label="Cycletowns home">
+        <Link href="/" aria-label={t("nav.home")}>
           <Logo h={30} />
         </Link>
         <div className="links">
-          {LINKS.map(([l, href]) => (
+          {LINKS.map(([key, href]) => (
             <Link key={href} href={href}>
-              {l}
+              {t(key)}
             </Link>
           ))}
         </div>
         <div className="cta">
           <Link href="/saved" className="savepill">
-            <span className="hc">♡</span> Saved
+            <span className="hc">♡</span> {t("nav.saved")}
           </Link>
           <AccountChip />
           <Link href="/plan" className="lk-coral navdesk" style={{ textDecoration: "none" }}>
-            ✨ Plan my trip
+            ✨ {t("nav.planMyTrip")}
           </Link>
-          <button className="navtog" onClick={() => setOpen(!open)} aria-label="Open menu">
+          <button className="navtog" onClick={() => setOpen(!open)} aria-label={t("nav.openMenu")}>
             ☰
           </button>
         </div>
       </div>
       <div className={"mobnav" + (open ? " open" : "")} id="mobNav">
-        {LINKS.map(([l, href]) => (
+        {LINKS.map(([key, href]) => (
           <Link key={href} href={href} onClick={() => setOpen(false)}>
-            {l}
+            {t(key)}
           </Link>
         ))}
         <div className="mobcta">
           <Link href="/login" className="lk-ghost" onClick={() => setOpen(false)}>
-            Log in
+            {t("nav.logIn")}
           </Link>
           <Link href="/plan" className="lk-coral" onClick={() => setOpen(false)}>
-            ✨ Plan my trip
+            ✨ {t("nav.planMyTrip")}
           </Link>
         </div>
       </div>
@@ -69,7 +72,7 @@ export function TopBar({ back }: { back?: { href: string; label: string } }) {
   return (
     <div className="wtop">
       <div className="in">
-        <Link href="/" aria-label="Cycletowns home">
+        <Link href="/" aria-label={t("nav.home")}>
           <Logo h={26} />
         </Link>
         <div className="cta">
@@ -79,20 +82,20 @@ export function TopBar({ back }: { back?: { href: string; label: string } }) {
             </Link>
           )}
           <Link href="/towns" className="lk-ghost" style={{ textDecoration: "none" }}>
-            All towns
+            {t("nav.allTowns")}
           </Link>
           <Link href="/saved" className="savepill">
-            <span className="hc">♡</span> Saved
+            <span className="hc">♡</span> {t("nav.saved")}
           </Link>
           <Link href="/shop" className="lk-ghost navdesk" style={{ textDecoration: "none" }}>
-            🛍️ Shop
+            🛍️ {t("nav.shop")}
           </Link>
           <Link href="/membership" className="lk-ghost navdesk" style={{ textDecoration: "none" }}>
-            ★ Rewards
+            ★ {t("nav.rewards")}
           </Link>
           <AccountChip compact />
           <Link href="/join" className="lk-coral navdesk" style={{ textDecoration: "none" }}>
-            Get started
+            {t("nav.getStarted")}
           </Link>
         </div>
       </div>

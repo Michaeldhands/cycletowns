@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { alternatesFor } from "@/lib/i18n";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TopBar } from "@/components/SiteNav";
@@ -14,7 +15,7 @@ export const revalidate = 3600;
 export async function generateMetadata({ params }: PageProps<"/events/[slug]">): Promise<Metadata> {
   const e = getEvent(await loadEvents(), (await params).slug);
   if (!e) return { title: "Event" };
-  return { title: e.name, description: e.note.slice(0, 155) };
+  return { title: e.name, description: e.note.slice(0, 155), alternates: alternatesFor(`/events/${e.slug}`) };
 }
 
 export default async function EventPage({ params }: PageProps<"/events/[slug]">) {
