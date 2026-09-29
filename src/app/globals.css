@@ -1442,3 +1442,5 @@ a.catchip,a.scopechip{text-decoration:none}
   .whero .meta{gap:7px;font-size:12.5px}
   .whero .sc,.whero .rk{padding:5px 10px}
 }
+.evheronote a{color:#fff;text-decoration:underline;font-weight:600}
+@media(max-width:560px){.evheronote{left:10px;right:10px;border-radius:10px;font-size:10.5px}}

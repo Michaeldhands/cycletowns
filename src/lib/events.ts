@@ -1,4 +1,5 @@
 import eventsJson from "@/data/events.json";
+import eventCredits from "@/data/event-photo-credits.json";
 import { photoURL } from "@/lib/images";
 import { getTown } from "@/lib/towns";
 
@@ -89,3 +90,15 @@ export function eventPhoto(e: CtEvent, w = 900): string | null {
 
 export const eventsForTown = (list: CtEvent[], townId: string) => sortEvents(list.filter((e) => e.town_id === townId));
 export const getEvent = (list: CtEvent[], slug: string) => list.find((e) => e.slug === slug) || null;
+
+/** Where an event's photograph came from, and what it actually shows. */
+export type EventPhotoCredit = { file: string; caption: string; author: string; licence: string; kind: "event" | "race" | "place" };
+const EVENT_CREDITS = eventCredits as Record<string, EventPhotoCredit>;
+export const EVENT_PHOTO_CREDITS = EVENT_CREDITS;
+
+/** The credit for the photo an event is showing — only if it is still the one we credited. */
+export function eventPhotoCredit(e: CtEvent): EventPhotoCredit | null {
+  const c = EVENT_CREDITS[e.slug];
+  return c && e.img === c.file ? c : null;
+}
+export const commonsPage = (file: string) => `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file.replace(/ /g, "_"))}`;

@@ -57,7 +57,8 @@
   "discipline": "road",
   "month": "September",
   "note": "Run on closed sections of the Great Ocean Road between Lorne and Apollo Bay — one of the few chances to ride that coastline without traffic. A timed 122 km gran fondo sits alongside shorter recreational options and a 3 km family ride, in memory of Amy Gillett.",
-  "verified": "2026-09-05"
+  "verified": "2026-09-05",
+  "img": "Great Ocean Road, Lorne, Australia - Feb 2012.jpg"
  },
  {
   "slug": "cape-to-cape-mtb",
@@ -97,7 +98,8 @@
   "discipline": "road",
   "month": "July",
   "note": "Seven Dolomite passes — Sella, Gardena, Campolongo, Pordoi, Falzarego, Giau among them — on roads closed to traffic for the day. Entry is by public ballot and heavily oversubscribed, so plan a year ahead rather than a month.",
-  "verified": "2026-09-05"
+  "verified": "2026-09-05",
+  "img": "Maratona dles Dolomites - Dolomites.jpg"
  },
  {
   "slug": "mallorca-312",
@@ -176,7 +178,8 @@
   "discipline": "road",
   "month": "April",
   "note": "The cobbled bergs of the Tour of Flanders — the Oude Kwaremont, the Paterberg — ridden the day before the professionals race the same roads. Every route finishes in Oudenaarde; the longest starts in Antwerp.",
-  "verified": "2026-09-05"
+  "verified": "2026-09-05",
+  "img": "Tour des Flandres cyclo 2017- Oude Kwaremont VF.jpg"
  },
  {
   "slug": "gran-fondo-strade-bianche",
@@ -196,7 +199,8 @@
   "discipline": "gravel",
   "month": "March",
   "note": "The white gravel roads of the Crete Senesi, on the same course the professionals race, finishing in the Piazza del Campo in Siena. Mixed gravel and tarmac with a firm seven-hour cutoff on the long route.",
-  "verified": "2026-09-05"
+  "verified": "2026-09-05",
+  "img": "Strade Bianche 2014 (13504915215).jpg"
  },
  {
   "slug": "haute-route-alps",
@@ -255,7 +259,8 @@
   "discipline": "road",
   "month": "April",
   "note": "Sonoma wine country and the coastal ridgelines above it — King Ridge and Meyers Grade — with five distances from a family ride to the 119-mile Growler. Founded by Levi Leipheimer and still one of the harder one-day road routes in the United States.",
-  "verified": "2026-09-05"
+  "verified": "2026-09-05",
+  "img": "King Ridge Road - Terry Morse.jpg"
  },
  {
   "slug": "unbound-gravel",
@@ -278,7 +283,8 @@
   "discipline": "gravel",
   "month": "June",
   "note": "Gravel racing's biggest day, on the flint-studded roads of the Kansas Flint Hills, with the 200-mile distance as the one everyone means. Entry is by lottery, drawn the November before, and the rock is famous for destroying tyres.",
-  "verified": "2026-09-05"
+  "verified": "2026-09-05",
+  "img": "Dirty Kanza.png"
  },
  {
   "slug": "leadville-trail-100-mtb",
@@ -297,7 +303,8 @@
   "discipline": "mtb",
   "month": "August",
   "note": "An out-and-back between Leadville and Twin Lakes entirely above 9,200 feet, topping out at 12,600 on the Columbine Mine climb. Entry is by lottery, and finishing inside the cutoff earns the belt buckle the race is built around.",
-  "verified": "2026-09-05"
+  "verified": "2026-09-05",
+  "img": "Mount Massive and Leadville from 7th Street.jpg"
  },
  {
   "slug": "sbt-grvl",
@@ -319,7 +326,8 @@
   "discipline": "gravel",
   "month": "June",
   "note": "High-altitude ranchland gravel out of the ski town of Steamboat Springs, graded from a 25-mile green ride to the 108-mile black course. Places are allocated by random draw in an open registration window rather than first come, first served.",
-  "verified": "2026-09-05"
+  "verified": "2026-09-05",
+  "img": "Steamboat Springs downtown.jpg"
  },
  {
   "slug": "sea-otter-classic",
@@ -339,7 +347,8 @@
   "discipline": "mixed",
   "month": "April",
   "note": "Part bike festival, part race meeting: an enormous industry expo at Laguna Seca alongside road, cross-country, downhill, enduro and gravel racing plus two gran fondos. The trade sees it as the season's product launch; riders see it as a weekend of racing anything they own.",
-  "verified": "2026-09-05"
+  "verified": "2026-09-05",
+  "img": "Todd Wells Sea Otter Finish.JPG"
  },
  {
   "slug": "belgian-waffle-ride-california",
@@ -455,7 +464,8 @@
   "discipline": "mtb",
   "month": "March",
   "note": "Eight days and roughly 650 km through the Western Cape, ridden in pairs who must finish together. UCI hors catégorie, and generally treated as the hardest mountain bike stage race in the world.",
-  "verified": "2026-09-05"
+  "verified": "2026-09-05",
+  "img": "Cape epic petter fagerhaug 4.jpg"
  },
  {
   "slug": "cape-town-cycle-tour",
@@ -475,7 +485,8 @@
   "discipline": "road",
   "month": "March",
   "note": "A fully closed 109 km loop of the Cape Peninsula, run every year since 1978 and the largest timed individual cycling event in the world. A 42 km option covers part of the same coastline.",
-  "verified": "2026-09-05"
+  "verified": "2026-09-05",
+  "img": "2024 Cape Town Cycle Tour (8).jpg"
  },
  {
   "slug": "tour-de-bintan",
@@ -670,7 +681,8 @@
   "discipline": "road",
   "month": "November",
   "note": "New Zealand's biggest mass road ride, looping all the way around Great Lake Taupō on the headline Round the Lake course, with shorter road, gravel and mountain-bike options on the same weekend. Round the Lake riders must pass Tūrangi by 3:15pm and finish by 7pm or may be pulled from the course.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Taupo Cycle Challenge 02.jpg"
  },
  {
   "slug": "whaka-100",
@@ -693,7 +705,8 @@
   "discipline": "mtb",
   "month": "October",
   "note": "A marathon mountain-bike weekend built on the singletrack of Rotorua's Whakarewarewa Forest, with distances from a short family loop up to the 175km Giant Miler. It draws thousands of riders and includes e-bike categories.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Redwoods Forest Rotorua 37.jpg"
  },
  {
   "slug": "le-race",
@@ -712,7 +725,8 @@
   "discipline": "road",
   "month": "March",
   "note": "A point-to-point road ride from Christchurch over Banks Peninsula via Little River to the harbour village of Akaroa, with roots going back to 1935. Riders can enter solo, as a tandem, in relay pairs or in teams of four, and there is a king and queen of the mountain contest.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Akaroa, New Zealand.jpg"
  },
  {
   "slug": "motatapu-mtb",
@@ -731,7 +745,8 @@
   "discipline": "mtb",
   "month": "March",
   "note": "A one-way backcountry mountain-bike crossing through private high-country stations between Wanaka and Arrowtown, on land that is normally closed to the public. It runs alongside trail-running events and an e-bike ride on the same route.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Motatapu Valley,Otago Region, New Zealand. - panoramio.jpg"
  },
  {
   "slug": "otway-odyssey",
@@ -752,7 +767,8 @@
   "discipline": "mtb",
   "month": "February",
   "note": "A long-running marathon mountain-bike race on the singletrack and forest roads of the Otway Ranges, based in the small town of Forrest. A separate Great Otway Gravel Grind (106km and 50km) runs the same weekend, so it suits both MTB and gravel riders.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Forrest Station Street.JPG"
  },
  {
   "slug": "transtasmania-mtb",
@@ -827,7 +843,8 @@
   "discipline": "road",
   "month": "November",
   "note": "A multi-day touring holiday rather than a race: riders camp together in a moving tent city with meals, luggage transfer and on-road support included. The 2026 route runs from Bendigo to Creswick over five days, and there is a one-day option from Castlemaine.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "GVBR Tent City at Anglesea Pano, Vic, jjron, 09, 04.12.2009.jpg"
  },
  {
   "slug": "tour-of-bright-fondo",
@@ -913,7 +930,8 @@
   "discipline": "gravel",
   "month": "April",
   "note": "A gravel weekend based in Gloucester, heading up into the Barrington Tops, with the long Monument course being one of the country's hardest one-day gravel routes. There is also a self-supported bikepacking option on set routes.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Barrington Tops - panoramio (2).jpg"
  },
  {
   "slug": "gravel-n-granite",
@@ -935,7 +953,8 @@
   "discipline": "mixed",
   "month": "March",
   "note": "A weekend of gravel and mountain-bike riding through the granite country and national-park back roads around Tenterfield, near the Queensland border. It has an event village with local food and music, plus an adaptive-friendly course and a family ride.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Tenterfield, New South Wales CBD.jpg"
  },
  {
   "slug": "seven-gravel-race",
@@ -957,7 +976,8 @@
   "discipline": "gravel",
   "month": "May",
   "note": "A hilly one-day gravel race between Nannup and Balingup in WA's South West, with route names that match the number of gravel sectors each one includes. It is a UCI Gravel World Series event, and the same region hosts the 2026 UCI Gravel World Championships.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Vasse Highway, main street of Nannup, Western Australia, January 2023 01.jpg"
  },
  {
   "slug": "tour-de-brisbane",
@@ -978,7 +998,8 @@
   "discipline": "road",
   "month": "April",
   "note": "A closed-road mass ride through inner Brisbane that finishes by crossing the traffic-free Story Bridge. It has been linked with the UCI Gran Fondo World Series, and there are three distances.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Story Bridge Panorama.jpg"
  },
  {
   "slug": "dragon-ride",
@@ -997,7 +1018,8 @@
   "discipline": "road",
   "month": "June",
   "note": "Wales's big sportive starts and finishes at Margam Park near Port Talbot and heads into the Brecon Beacons, with four routes from the short Cymru Classic up to the Dragon Devil. The Gran Fondo is the most popular choice and climbs Rhigos Mountain. The organiser says the 2027 routes are still to be confirmed.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "The Rhigos (geograph 6234062).jpg"
  },
  {
   "slug": "otztaler-radmarathon",
@@ -1016,7 +1038,8 @@
   "discipline": "road",
   "month": "August",
   "note": "A single, very long Alpine loop from Sölden crossing four Alpine passes, widely treated as one of the hardest one-day amateur rides in Europe. About 4,000 riders take part. There is one route only, so riders need to be ready for the full distance and climbing.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Timmelsjoch Panorama.jpg"
  },
  {
   "slug": "vatternrundan",
@@ -1037,7 +1060,8 @@
   "discipline": "road",
   "month": "June",
   "note": "A lap of Lake Vättern from Motala that has run since 1966 and bills itself as the world's largest recreational cycling event. The 315 km ride starts on a Friday evening and continues through the night into Saturday, with depots such as Jönköping and Hjo. Shorter options include Halvvättern (150 km, on 12 June 2027) and 100 km rides, plus separate gravel and MTB events.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Vätternrundan 2013.jpg"
  },
  {
   "slug": "nove-colli",
@@ -1057,7 +1081,8 @@
   "discipline": "road",
   "month": "May",
   "note": "A granfondo running since 1971 that starts on the Cesenatico seafront at sunrise and heads into the Romagna Apennines. The long route is 200 km and the medium 137 km, and a 107 km gravel option has been added. Entries for 2027 open on 5 December 2026.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Partenza-nove-colli-cesenatico.JPG"
  },
  {
   "slug": "quebrantahuesos",
@@ -1077,7 +1102,8 @@
   "discipline": "road",
   "month": "June",
   "note": "Spain's best-known Pyrenean marcha, based in Sabiñánigo, with the 200 km Quebrantahuesos and the 85 km Treparriscos. Places are limited and handed out by a draw that needs a small paid pre-registration. The 2026 edition had a 07:15 start and a 19:30 finish cutoff.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Start of Quebrantahuesos 2011.jpg"
  },
  {
   "slug": "paris-roubaix-challenge",
@@ -1098,7 +1124,8 @@
   "discipline": "road",
   "month": "April",
   "note": "An amateur ride over the pro race's cobbled sectors that finishes at the Roubaix velodrome. The 170 km Hell of the North route starts in Busigny and takes in 30 cobbled sections, while the 145 km and 70 km routes start in Roubaix. Pick a bike and tyres that can cope with long stretches of rough pavé.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Paris-Roubaix 2021 KM39.jpg"
  },
  {
   "slug": "liege-bastogne-liege-challenge",
@@ -1119,7 +1146,8 @@
   "discipline": "road",
   "month": "April",
   "note": "A Saturday ride over the climbs of 'La Doyenne' in the Ardennes, starting from Banneux the day before the pro race. Climbs include La Redoute and the Roche-aux-Faucons, with the 250 km route taking in 12 climbs. Expect short, very steep ramps as well as the distance.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Liège-Bastogne-Liège 2014 Echappée du jour Côte de Wanne.JPG"
  },
  {
   "slug": "amstel-gold-race-toerversie",
@@ -1143,7 +1171,8 @@
   "discipline": "road",
   "month": "April",
   "note": "The amateur version of the Amstel Gold Race rides the South Limburg hills the day before the pros race them, starting at the Shimano Experience Center in Valkenburg. Six distances make it one of the more accessible spring classic rides. Registration for 2027 opens on 1 October 2026 and stays open for one month.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "2019 Amstel Gold Race 074.jpg"
  },
  {
   "slug": "lardechoise",
@@ -1167,7 +1196,8 @@
   "discipline": "road",
   "month": "June",
   "note": "A huge multi-day festival of mountain-road riding based in Saint-Félicien; the organisers counted 13,137 participants in 2026. The Saturday gives a choice of cyclosportive and cyclotourist routes, and there are 2–4 day formats as well as a separate gravel weekend in April. It suits groups whose riders want very different distances.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Ardéchoise Mariac Ravitaillement.jpg"
  },
  {
   "slug": "la-stelvio-santini",
@@ -1188,7 +1218,8 @@
   "discipline": "road",
   "month": "June",
   "note": "An untimed granfondo from Bormio built around the Passo dello Stelvio (2,758 m), with the Mortirolo also on the programme. All three road routes involve serious climbing even at the shortest distance. Gravel routes of 44 km and 70 km are being added for 2027.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Stelvio Pass Bormio side 2.jpg"
  },
  {
   "slug": "dreilandergiro",
@@ -1208,7 +1239,8 @@
   "discipline": "road",
   "month": "June",
   "note": "A cycling marathon from Nauders that crosses Austria, Italy and Switzerland in a single day, with the Stelvio Pass as the high point on both routes. The Vinschgau route is 120 km and the Engadin route is 168 km. Each includes more than 3,000 m of climbing.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Stelvio Pass Bolzano side 1.jpg"
  },
  {
   "slug": "styrkeproven",
@@ -1249,7 +1281,8 @@
   "discipline": "road",
   "month": "June",
   "note": "A lake-country marathon in the Salzkammergut that links five lakes around Mondsee. About 2,500 riders take part, and it is gentler than the Alpine events: the 75 km route has only 400 m of climbing. There is also a handbike category.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Aerial image of the Mondsee (view from the southeast).jpg"
  },
  {
   "slug": "arlberg-giro",
@@ -1268,7 +1301,8 @@
   "discipline": "road",
   "month": "August",
   "note": "A loop that starts and finishes in St. Anton, going over the Arlberg Pass, down the Klostertal and Montafon valleys, and over the Silvretta High Alpine Road. It covers Tyrol and Vorarlberg on a single route. Riders come from more than 30 nations.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Silvretta-Hochalpenstrasse 02.jpg"
  },
  {
   "slug": "alpenbrevet",
@@ -1285,7 +1319,8 @@
   "discipline": "road",
   "month": "September",
   "note": "A non-competitive ride over the high Swiss passes from Andermatt, with four tiers from Bronze (two passes) to Platinum (five passes). The focus is on finishing, not racing. Registration for 2027 opens in autumn 2026.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Alpenbrevet 2024 Anfahrt Furka 1.jpg"
  },
  {
   "slug": "cyclotour-du-leman",
@@ -1306,7 +1341,8 @@
   "discipline": "road",
   "month": "October",
   "note": "A lap of Lake Geneva from Lausanne that passes through Switzerland and France, with shorter one-way options between Évian and Lausanne. It is mostly flat lakeside riding past vineyards, with only 890 m of climbing on the full lap. The organisers present it as a pace ride rather than a race.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Lake Geneva in Lausanne.jpg"
  },
  {
   "slug": "gran-fondo-il-lombardia",
@@ -1325,7 +1361,8 @@
   "discipline": "road",
   "month": "October",
   "note": "The amateur ride linked to the autumn Monument is now based in Bergamo and named after Felice Gimondi. It takes in the Valico di Valcava and Selvino climbs, with gradients up to 17%. It runs the day after the pro race, and the field is about 2,000 riders.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Il Lombardia 2023 - 001 Pogacar.jpg"
  },
  {
   "slug": "milano-sanremo-amatori",
@@ -1344,7 +1381,8 @@
   "discipline": "road",
   "month": "June",
   "note": "An untimed ride over the full classic route from the outskirts of Milan to San Remo, crossing the Turchino before the coastal Capi, the Cipressa and the Poggio. At about 296 km, it is one of the longest one-day amateur rides anywhere. Riders need a valid sports licence or a day licence, which requires a medical certificate.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Milano Sanremo 2005.jpg"
  },
  {
   "slug": "tour-transalp",
@@ -1363,7 +1401,8 @@
   "discipline": "road",
   "month": "June",
   "note": "A seven-stage road race across the Alps from Lienz to Riva del Garda, ridden in teams of two. The organiser puts the total at around 750 km and 17,000 m of climbing. Riders need a partner and the ability to cope with back-to-back mountain days.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Arnoga ^ Schwalbe-Tour-Transalp - panoramio.jpg"
  },
  {
   "slug": "leroica",
@@ -1469,7 +1508,8 @@
   "discipline": "gravel",
   "month": "May",
   "note": "A gravel festival in Galloway Forest Park, based at Gatehouse of Fleet. It has a UCI Gravel World Series race over 111 km, open to amateurs in age-group categories, plus a 323 km ultra and two non-competitive sportive routes. The race route is more than 80% gravel.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Galloway Forest Park.JPG"
  },
  {
   "slug": "grinduro-scotland",
@@ -1488,7 +1528,8 @@
   "discipline": "gravel",
   "month": "June",
   "note": "A mixed-terrain gravel and MTB weekend at the Drumlanrig Castle estate. Everyone starts together for a loop of about 100 km, but only four short timed segments count towards the result. Camping, music and food are part of the weekend.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Drumlanrig Castle FZ82 P1080141.jpg"
  },
  {
   "slug": "nova-eroica-buonconvento",
@@ -1511,7 +1552,8 @@
   "discipline": "gravel",
   "month": "April",
   "note": "A gravel fondo on the white roads of the Crete Senesi, south of Siena, for gravel, cyclocross or modern road bikes. On the medium and long routes, timed sections alternate with untimed stretches. There is also a 290 km Epic Route that starts at 4 am.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Crete senesi - Asciano (Siena).jpg"
  },
  {
   "slug": "nova-eroica-prosecco-hills",
@@ -1532,7 +1574,8 @@
   "discipline": "gravel",
   "month": "May",
   "note": "A gravel fondo through the vineyard hills of Conegliano–Valdobbiadene, which are UNESCO-listed. All three routes combine timed sections with untimed riding. Gravel, cyclocross and modern road bikes are allowed.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Tra le vigne di Collagù - wikiraduno Alle colline del prosecco abc 02.jpg"
  },
  {
   "slug": "titan-desert-morocco",
@@ -1593,7 +1636,8 @@
   "discipline": "mtb",
   "month": "August",
   "note": "A point-to-point Alpine MTB marathon that finishes in Grimentz, with shorter versions starting in villages along the way. The full route from Verbier goes over the Pas de Lona at more than 2,700 m. There are strict intermediate cutoffs, and riders who miss one are taken out of the race.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Becs de Bosson depuis le Pas de Lona.jpg"
  },
  {
   "slug": "salzkammergut-trophy",
@@ -1617,7 +1661,8 @@
   "discipline": "mtb",
   "month": "July",
   "note": "Austria's biggest MTB marathon, based in Bad Goisern and passing through the lake country around Hallstatt. Its 202 km extreme route is one of the longest one-day MTB marathons in Europe, and there are many shorter options. Registration for 2027 is open, but the date is not yet published.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Bad Goisern SKGT2024.jpg"
  },
  {
   "slug": "megavalanche-alpe-dhuez",
@@ -1636,7 +1681,8 @@
   "discipline": "mtb",
   "month": "July",
   "note": "The original mass-start downhill marathon, starting on the glacier at Pic Blanc (3,330 m) and dropping 2,600 m to Allemond. Qualifying runs early in the weekend decide who starts in the main Sunday race, and there are separate amateur, women's and e-bike races.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Megavalanche-2010-Huez.jpg"
  },
  {
   "slug": "roc-dazur",
@@ -1699,7 +1745,8 @@
   "discipline": "mtb",
   "month": "August",
   "note": "A five-day MTB stage race for two-rider teams, based in Davos for 2027, with a new route each year. Amateurs race alongside professionals over mountain passes, flow trails and bike parks. Past riders got early registration before general entry opened.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Swiss Epic.jpg"
  },
  {
   "slug": "riva-bike-marathon",
@@ -1765,7 +1812,8 @@
   "discipline": "gravel",
   "month": "September",
   "note": "Rebecca's Private Idaho now sits inside a multi-day gravel festival based in Sun Valley and Ketchum. Two shorter stages lead into the Saturday main event, where riders choose from four distances up to 118 miles on high-desert backcountry roads.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Ketchum, Idaho street July 2024.jpg"
  },
  {
   "slug": "barry-roubaix",
@@ -1808,7 +1856,8 @@
   "discipline": "gravel",
   "month": "March",
   "note": "The desert edition of the BWR series, starting from McDowell Mountain Park near Scottsdale. The 122-mile Waffle is 58% unpaved, mixing rough dirt roads and washes in the Tonto forest with singletrack and some steep paved climbs. Shorter Wafer and Wanna routes are offered.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "McDowell Mountain Regional Park, Arizona, US.jpg"
  },
  {
   "slug": "bwr-mexico",
@@ -1825,7 +1874,8 @@
   "discipline": "gravel",
   "month": "November",
   "note": "Mexican edition of the Belgian Waffle Ride series, held around Tequisquiapan in Querétaro state. Routes suit gravel or mountain bikes and follow the BWR Waffle/Wafer/Wanna distance format; check the event site for this year's course lengths.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Plaza principal, Tequisquiapan Querétaro. México.jpg"
  },
  {
   "slug": "chequamegon-mtb-festival",
@@ -1862,7 +1912,8 @@
   "discipline": "mtb",
   "month": "May",
   "note": "Five-day all-inclusive mountain bike stage race moving between Whistler, Squamish, Cumberland, Parksville and North Cowichan, using BC Ferries between venues. Riders choose a classic XC or an enduro format. For 2027 the race moves to late May from its usual July slot.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "ZF-1931-66284-1-001.jpg"
  },
  {
   "slug": "breck-epic",
@@ -1879,7 +1930,8 @@
   "discipline": "mtb",
   "month": "August",
   "note": "Six-day mountain bike stage race at high altitude, with each backcountry loop starting and finishing near downtown Breckenridge. Loops run between 35 and 50 miles on trails across Summit and Park counties; a three-day version is also offered.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Racing in Breck.jpg"
  },
  {
   "slug": "whiskey-off-road",
@@ -1900,7 +1952,8 @@
   "discipline": "mtb",
   "month": "April",
   "note": "Three-day mountain bike festival in downtown Prescott with amateur backcountry routes of about 15, 25 and 50 miles through Prescott National Forest singletrack, doubletrack and gravel. A pro race, expo and street party run alongside. Registration opens on Black Friday.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Prescott National Forest region 2015 015.jpg"
  },
  {
   "slug": "pisgah-111",
@@ -1919,7 +1972,8 @@
   "discipline": "mtb",
   "month": "October",
   "note": "Tough backcountry endurance mountain bike race in Pisgah National Forest near Brevard, based around Davidson River Campground. The 65.1-mile course packs in 10,200 feet of climbing on rocky, rooty trails and forest roads, with four rest areas.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "170730-fs-pisgah-cmr-681 23543772678 o (38863300350).jpg"
  },
  {
   "slug": "iceman-cometh-challenge",
@@ -1938,7 +1992,8 @@
   "discipline": "mtb",
   "month": "November",
   "note": "Point-to-point 30-mile mountain bike race from Kalkaska to Timber Ridge Resort in Traverse City, held in early November when snow or cold is common. Amateurs start in waves in the morning, with the pro race later in the day; a shorter Slush Cup is also offered.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Kalkaska.jpg"
  },
  {
   "slug": "el-tour-de-tucson",
@@ -1980,7 +2035,8 @@
   "discipline": "road",
   "month": "September",
   "note": "Traffic-free ride from Stanley Park in Vancouver up the Sea to Sky Highway to Whistler. The 122 km Gran Fondo climbs 2,300 m; the 146 km Forte is capped at 600 riders, and a 55 km Medio starts in Whistler. The 2026 edition sold out.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Sea to Sky Highway and Howe Sound at Porteau Road.jpg"
  },
  {
   "slug": "triple-bypass",
@@ -1999,7 +2055,8 @@
   "discipline": "road",
   "month": "July",
   "note": "One-day supported road ride from Evergreen to Avon over Juniper, Loveland and Vail passes: 110 miles with more than 10,000 feet of climbing at high altitude. A Double Bypass from Empire covers Loveland and Vail only.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Průsmyk Loveland Pass, 3655 m n.m., rozvodí Atlatik-Pacifik; jih Colorada, Front Range0241112 123004.jpg"
  },
  {
   "slug": "ragbrai",
@@ -2016,7 +2073,8 @@
   "discipline": "road",
   "month": "July",
   "note": "Week-long ride across Iowa held every year since 1973 in the last full week of July, with overnight stops in host towns and a new route each year. Daily stages range from 35 to 85 miles. Entry is first-come, first-served from 15 November, with weeklong and day-rider options.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "USAF RAGBRAI cyclists.jpg"
  },
  {
   "slug": "hotter-n-hell-hundred",
@@ -2033,7 +2091,8 @@
   "discipline": "road",
   "month": "August",
   "note": "Long-running late-summer century in Wichita Falls, held since 1982, known for the North Texas heat. Road distances run from 10 miles up to 100, and the weekend also includes gravel and mountain bike routes plus a trail run.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Hotter'N Hell Hundred Ride (9630742494).jpg"
  },
  {
   "slug": "blue-sky-hill-climb",
@@ -2052,7 +2111,8 @@
   "discipline": "road",
   "month": "July",
   "note": "Timed road climb from Idaho Springs to the 14,130-foot summit of Mt. Blue Sky (formerly Mount Evans), on the highest paved road in North America. The 27.4-mile course gains 6,714 feet. Open to amateurs in age-group categories from 15 up; no USA Cycling licence needed.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Mt Evans Road P6040208.jpg"
  },
  {
   "slug": "grinduro-california",
@@ -2072,7 +2132,8 @@
   "discipline": "gravel",
   "month": "September",
   "note": "Gravel-and-dirt event based at the fairgrounds in Quincy in the northern Sierra. Only four short timed segments count toward results, so most of the 51-mile loop is ridden at your own pace. The shorter Grindurito has two segments.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Quincy, California from Q on mountain..JPG"
  },
  {
   "slug": "lost-and-found-gravel",
@@ -2153,7 +2214,8 @@
   "discipline": "road",
   "month": "November",
   "note": "Amateur races held alongside the Tour de Okinawa, with the longest citizen category covering 200 km through the forested Yanbaru region of northern Okinawa. Categories are split by age and gender; most long-distance classes are listed for men only, while women race a 50 km category. Entries are capped per class and the 2026 entry window closed on 19 September.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Alan Marangoni vince al Tour de Okinawa, 2018.jpg"
  },
  {
   "slug": "mt-fuji-hill-climb",
@@ -2172,7 +2234,8 @@
   "discipline": "road",
   "month": "June",
   "note": "A timed mass-participation climb up the Fuji Subaru Line from Fuji Kitaroku Park to Mt Fuji's fifth station, with the road closed to traffic on race day. The gradient is steady rather than steep, so it attracts first-timers as well as fast climbers. Entry is online through RUNNET, with the 2026 window running February to March.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Fuji Subaru Line Fifth Station 02.JPG"
  },
  {
   "slug": "yak-attack",
@@ -2189,7 +2252,8 @@
   "discipline": "mtb",
   "month": "May",
   "note": "A multi-day mountain bike stage race in the Nepal Himalaya, billed as the highest MTB race on earth, with the route crossing the Thorong La pass at 5,416 m in past editions. Expect rough trails, suspension bridges, possible snow and big temperature swings. The organiser only accepts riders with solid mountain bike experience.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Muktinath Valley, View of Thorong La Pass, Mountains, Nepal.jpg"
  },
  {
   "slug": "spinneys-dubai-92-cycle-challenge",
@@ -2269,7 +2333,8 @@
   "discipline": "road",
   "month": "April",
   "note": "A Tour de France–branded sportive in the hill town of Cunha, where L'Étape Brasil held its first three editions. The long route has a lot of climbing for its distance, and a much gentler short route is also offered. The event runs across a weekend.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Morros em Cunha, São Paulo 1.jpg"
  },
  {
   "slug": "letape-campos-do-jordao",
@@ -2306,7 +2371,8 @@
   "discipline": "mtb",
   "month": "October",
   "note": "A three-day mountain bike crossing of Costa Rica from the Pacific to the Caribbean, first run in 1993. Stages run Jacó to San José, San José to Turrialba, then a loop from Turrialba down towards Limón, climbing from sea level to above 3,000 m past volcanic terrain, jungle and river crossings. Full stage distances had not been published at the time of checking.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Ruta de Los Conquistadores, Costa Rica.jpg"
  },
  {
   "slug": "transandes-challenge-patagonia",
@@ -2363,7 +2429,8 @@
   "discipline": "mtb",
   "month": "November",
   "note": "A three-day mountain bike stage race for teams of two, linking the Lourensford and Oak Valley wine estates with Benguela Cove on the coast. It runs as three separate editions (Chardonnay, Pinotage and Shiraz) on the same route over roughly ten days, mixing gravel roads with flowing singletrack.",
-  "verified": "2026-09-29"
+  "verified": "2026-09-29",
+  "img": "Lourensford Wine estate 03.jpg"
  },
  {
   "slug": "sani2c",

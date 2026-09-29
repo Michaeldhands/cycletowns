@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { TopBar } from "@/components/SiteNav";
 import { Footer } from "@/components/Footer";
 import { EventCard } from "@/components/EventCards";
-import { countdown, disciplineEmoji, disciplineLabel, eventPhoto, getEvent, isUpcoming, sortEvents, whenLabel } from "@/lib/events";
+import { commonsPage, countdown, disciplineEmoji, disciplineLabel, eventPhoto, eventPhotoCredit, getEvent, isUpcoming, sortEvents, whenLabel } from "@/lib/events";
 import { loadEvents } from "@/lib/events-data";
 import { Photo } from "@/components/Photo";
 import { getTown } from "@/lib/towns";
@@ -24,6 +24,7 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
   if (!e) notFound();
   const town = e.town_id ? getTown(e.town_id) : null;
   const soon = countdown(e);
+  const credit = eventPhotoCredit(e);
   const related = sortEvents(all.filter((x) => x.slug !== e.slug && (x.country === e.country || x.discipline === e.discipline))).slice(0, 3);
 
   return (
@@ -31,8 +32,16 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
       <TopBar back={{ href: "/events", label: "All events" }} />
       {eventPhoto(e, 1400) && (
         <div className="evhero">
-          <Photo src={eventPhoto(e, 1400)!} alt={town ? `${town.name}, where ${e.name} is held` : e.name} />
+          <Photo src={eventPhoto(e, 1400)!} alt={credit ? credit.caption : town ? `${town.name}, where ${e.name} is held` : e.name} />
           {!e.img && town && <div className="evheronote">Photo: {town.name} — not the event itself</div>}
+          {credit && (
+            <div className="evheronote">
+              {credit.caption} ·{" "}
+              <a href={commonsPage(credit.file)} target="_blank" rel="noopener">
+                {credit.author}, {credit.licence}
+              </a>
+            </div>
+          )}
         </div>
       )}
       <div className="sec2" style={{ paddingTop: 22 }}>
