@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { DISCIPLINES, countdown, disciplineEmoji, distanceLabel, eventPhoto, sortEvents, whenLabel, type CtEvent } from "@/lib/events";
+import { DISCIPLINES, countdown, daysAway, disciplineEmoji, distanceLabel, eventPhoto, sortEvents, whenLabel, type CtEvent } from "@/lib/events";
 import { Photo } from "./Photo";
 
 /** One event, as it appears in a list. */
@@ -34,11 +34,23 @@ export function EventCard({ e, townName }: { e: CtEvent; townName?: string }) {
   );
 }
 
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+/** "Next 3 months" uses published dates only; a month matches the published date, or the usual month when there isn't one. */
+function matchesWhen(e: CtEvent, when: string): boolean {
+  if (!when) return true;
+  const d = daysAway(e);
+  if (when === "soon") return d !== null && d <= 92;
+  if (d !== null) return MONTHS[new Date(e.next_date!).getMonth()] === when;
+  return (e.month || "").toLowerCase() === when.toLowerCase();
+}
+
 /** The events index, filtered client-side — the list is small enough that this beats a round trip. */
 export function EventBrowser({ events, townNames }: { events: CtEvent[]; townNames: Record<string, string> }) {
   const [disc, setDisc] = useState<string>("");
   const [country, setCountry] = useState<string>("");
   const [q, setQ] = useState("");
+  const [when, setWhen] = useState<string>("");
 
   const countries = useMemo(() => [...new Set(events.map((e) => e.country).filter(Boolean))].sort() as string[], [events]);
 
@@ -49,10 +61,11 @@ export function EventBrowser({ events, townNames }: { events: CtEvent[]; townNam
         (e) =>
           (!disc || e.discipline === disc) &&
           (!country || e.country === country) &&
+          matchesWhen(e, when) &&
           (!needle || `${e.name} ${e.region} ${e.country} ${e.note}`.toLowerCase().includes(needle)),
       ),
     );
-  }, [events, disc, country, q]);
+  }, [events, disc, country, q, when]);
 
   return (
     <>
@@ -72,6 +85,11 @@ export function EventBrowser({ events, townNames }: { events: CtEvent[]; townNam
             </button>
           ))}
         </div>
+        <select value={when} onChange={(e) => setWhen(e.target.value)} aria-label="Filter by month" className="evselect">
+          <option value="">Any time</option>
+          <option value="soon">Next 3 months</option>
+          {MONTHS.map((m) => <option key={m}>{m}</option>)}
+        </select>
         <select value={country} onChange={(e) => setCountry(e.target.value)} aria-label="Filter by country" className="evselect">
           <option value="">Everywhere</option>
           {countries.map((c) => <option key={c}>{c}</option>)}

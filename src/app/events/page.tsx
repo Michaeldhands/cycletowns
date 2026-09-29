@@ -25,8 +25,9 @@ export default async function EventsIndex() {
           <div className="kick">Ride the calendar</div>
           <div className="h2">Cycling events</div>
           <div className="lead">
-            The gran fondos, stage races and mass rides riders actually book flights for. Every entry links to the
-            organiser&rsquo;s own site — that is where you enter, and where the current details live.
+            {events.length} gran fondos, gravel races, MTB marathons and stage races worth travelling for — road, gravel and
+            mountain, on six continents. Every entry links to the organiser&rsquo;s own site — that is where you enter,
+            and where the current details live.
           </div>
           <EventBrowser events={events} townNames={townNames} />
 
