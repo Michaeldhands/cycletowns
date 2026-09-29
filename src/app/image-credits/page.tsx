@@ -9,7 +9,8 @@ export const metadata: Metadata = { title: "Image credits" };
 
 type Credit = { file: string; caption: string; author: string; licence: string };
 const CREDITS = credits as Record<string, Credit>;
-const commons = (file: string) => `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file.replace(/ /g, "_"))}`;
+const commons = (file: string) =>
+  /^https?:\/\//.test(file) ? file : `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file.replace(/ /g, "_"))}`;
 
 export default function Credits() {
   const rows = TOWNS.map((t) => ({ town: t.name, id: t.id, c: CREDITS[t.id] })).filter((r) => r.c);
@@ -18,7 +19,8 @@ export default function Credits() {
       <div className="wprose">
         <p>
           Town and event photographs come from Wikimedia Commons under Creative Commons licences that permit commercial reuse
-          with attribution. Each is credited below, with a link to the original file and its licence.
+          with attribution, except where marked as supplied. Each is credited below, with a link to the original file and its
+          licence.
         </p>
         <p>
           <b>Where we don&rsquo;t have a real photograph of somewhere, we don&rsquo;t show one.</b> Cafés, bike shops,

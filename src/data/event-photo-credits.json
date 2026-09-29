@@ -474,5 +474,12 @@
   "author": "Rooblu",
   "licence": "CC BY-SA 4.0",
   "kind": "place"
+ },
+ "leroica": {
+  "file": "https://cycletowns.com/img/events/leroica.jpg",
+  "caption": "Riders on the white gravel roads of L'Eroica, Tuscany",
+  "author": "Supplied",
+  "licence": "Used with permission",
+  "kind": "event"
  }
 }

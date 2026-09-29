@@ -101,4 +101,6 @@ export function eventPhotoCredit(e: CtEvent): EventPhotoCredit | null {
   const c = EVENT_CREDITS[e.slug];
   return c && e.img === c.file ? c : null;
 }
-export const commonsPage = (file: string) => `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file.replace(/ /g, "_"))}`;
+/** Link for a credited photo: its Wikimedia Commons page, or the file itself when it was supplied directly. */
+export const commonsPage = (file: string) =>
+  /^https?:\/\//.test(file) ? file : `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file.replace(/ /g, "_"))}`;
