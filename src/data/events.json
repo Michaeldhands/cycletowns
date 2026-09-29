@@ -2467,5 +2467,26 @@
   "month": "September",
   "note": "A mountain bike stage race around Oudtshoorn, taking in the Karoo desert landscape, the Klein Karoo mountains and Garden Route forest. The relaunched event now runs on a shorter route than the original Cape Pioneer. Stage details for future editions had not been published at the time of checking.",
   "verified": "2026-09-29"
+ },
+ {
+  "slug": "ride-ballarat",
+  "name": "Ride Ballarat",
+  "organiser": "Ride Ballarat, for the Fiona Elsey Cancer Research Institute",
+  "url": "https://rideballarat.com/",
+  "country": "Australia",
+  "region": "Ballarat, Victoria",
+  "town_id": null,
+  "next_date": "2026-11-15",
+  "window": "Mid-November, annually",
+  "km": [
+   103,
+   55
+  ],
+  "vert": 1333,
+  "discipline": "road",
+  "month": "November",
+  "note": "A fully supported charity ride, not a race, from Mars Stadium in Ballarat through rolling farmland towards Daylesford, raising money for cancer research at the Fiona Elsey Cancer Research Institute. The Long Mac (103 km, 1,333 m) and Short Mac (55 km) both include short sections of unsealed road, under a tenth of each course. It is the new form of the Ballarat Cycle Classic, and the weekend opens with a cocktail party on the Saturday night.",
+  "verified": "2026-09-29",
+  "img": "Mars Stadium Aerial.jpg"
  }
 ]
