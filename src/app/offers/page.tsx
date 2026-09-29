@@ -16,8 +16,8 @@ export default async function Offers() {
   const { data } = await sb.from("offers").select("*").eq("active", true).order("sort");
   const offers = (data as Offer[]) || [];
   return (
-    <ProsePage kick="Member offers" title="Riders-only deals." lead="Offers from partners who want Cycletowns riders through the door. Codes are shown to Insiders." wide>
-      {offers.length === 0 && <div className="unlocknote" style={{ fontSize: 14, padding: 16, maxWidth: 640, margin: "0 auto" }}>No offers listed yet — the first partners are being signed up now. {!member && <><Link href="/membership#insider">Go Insider</Link> to be first in line.</>}</div>}
+    <ProsePage kick="Member offers" title="Riders-only deals." lead="Offers from partners who want Cycletowns riders through the door. When they’re live, codes are shown to Insiders." wide>
+      {offers.length === 0 && <div className="unlocknote" style={{ fontSize: 14, padding: 16, maxWidth: 640, margin: "0 auto" }}>No offers are live yet — the first partners are being signed now, and they’ll appear here when they are. Nothing to buy in the meantime.</div>}
       <div className="wgrid g3">
         {offers.map((o) => {
           const t = o.town_id ? getTown(o.town_id) : null;

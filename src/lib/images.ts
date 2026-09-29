@@ -43,9 +43,11 @@ export function venuePic(cat: "cafe" | "shop" | "thing", seed: string, w = 520):
 /** Hero image for a town: its licensed photo, or a distinct rider photo if it has none. */
 export function townHero(t: Town, w = 1000): string {
   if (t.photo) return photoURL(t.photo, w);
-  const photoless = TOWNS.filter((x) => !x.photo);
-  const i = Math.max(0, photoless.findIndex((x) => x.id === t.id));
-  return pexURL(TOWN_PIX[i % TOWN_PIX.length], w);
+  const bundled = TOWNS.find((x) => x.id === t.id)?.photo;
+  if (bundled) return photoURL(bundled, w);
+  // Last resort: a stock rider photo, chosen by the town's id so two towns rarely share one.
+  // (It used to index into a list this town often wasn't in, which always returned photo 0.)
+  return pexURL(TOWN_PIX[hashStr(t.id) % TOWN_PIX.length], w);
 }
 export function townImages(t: Town): string[] {
   return [t.photo, ...(t.gallery || [])].filter(Boolean) as string[];

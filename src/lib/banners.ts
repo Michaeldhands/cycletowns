@@ -11,10 +11,6 @@ export type SlotDef = { slot: string; label: string; where: string; kind: string
 
 export const SLOTS: SlotDef[] = [
   { slot: "home-hero", label: "Home hero", where: "The big image behind the headline on the home page", kind: "road", seed: "hero", ratio: "wide" },
-  { slot: "home-partner", label: "Home partner slot", where: "The 'Your brand here' panel on the home page", kind: "road", seed: "ad-1", ratio: "wide" },
-  { slot: "home-lane-1", label: "Home — 'Just here to ride'", where: "First of the two lanes on the home page", kind: "group", seed: "lane-1", ratio: "square" },
-  { slot: "home-lane-2", label: "Home — second lane", where: "Second of the two lanes on the home page", kind: "group", seed: "lane-2", ratio: "square" },
-  { slot: "home-club", label: "Home — Cycletowns Club", where: "Beside the club sign-up on the home page", kind: "group", seed: "club", ratio: "wide" },
   { slot: "membership-hero", label: "Membership hero", where: "Top of the membership page", kind: "alpine", seed: "membership-hero", ratio: "wide" },
   { slot: "membership-insider", label: "Membership — Insider panel", where: "Beside the Insider pitch", kind: "group", seed: "insider", ratio: "wide" },
   { slot: "partners-hero", label: "Partners hero", where: "Top of the partners page", kind: "group", seed: "partners-hero", ratio: "wide" },

@@ -3,96 +3,111 @@
   "id": "cafe",
   "e": "🏪",
   "name": "Small business",
-  "pitch": "Cafés, bike shops &amp; local services — get in front of the riders rolling through your town and turn them into regulars.",
-  "bullets": [
+  "pitch": "Cafés, bike shops & local services — get in front of the riders rolling through your town and turn them into regulars.",
+  "now": [
    "Verified bike-friendly badge on the town guide",
-   "Rider footfall, search terms &amp; reviews",
-   "List repairs, hire or experiences",
-   "You see only your own data"
+   "Claim your listing and keep it accurate",
+   "Riders saving your town and reviewing it, in your dashboard",
+   "Member offers shown to Cycletowns riders"
+  ],
+  "next": [
+   "Listing views and enquiries",
+   "List repairs, hire or experiences"
   ]
  },
  {
   "id": "brand",
   "e": "🚲",
   "name": "Brands",
-  "pitch": "Bikes, gear &amp; apparel — reach riders ready to buy, and see who already rides you.",
-  "bullets": [
-   "Brand-affinity &amp; purchase-intent audience",
-   "Promo-code redemptions + full click→buy funnel",
-   "Attributed sales, AOV &amp; ROAS",
-   "Featured next to real rider reviews"
+  "pitch": "Bikes, gear & apparel — reach riders while they’re planning where to ride next.",
+  "now": [
+   "Member offers and promo codes shown to riders",
+   "Reach riders by town and discipline"
+  ],
+  "next": [
+   "Click and redemption reporting",
+   "Attributed sales"
   ]
  },
  {
   "id": "tourism",
   "e": "🧭",
   "name": "Tourism",
-  "pitch": "Boards &amp; destinations — put your region in riders’ plans and prove the spend to your funders.",
-  "bullets": [
-   "Live travel-intent &amp; origin markets",
-   "Attributed visits, room-nights &amp; visitor spend",
-   "Co-op campaign ROI, by partner",
-   "Disperse riders across your whole region"
+  "pitch": "Boards & destinations — put your region in riders’ plans.",
+  "now": [
+   "Researched town guides for your region, kept current",
+   "Your region’s events on the calendar and town guides",
+   "Riders saving your towns, in your dashboard"
+  ],
+  "next": [
+   "Origin-market and travel-intent reporting",
+   "Co-op campaigns with local partners"
   ]
  },
  {
   "id": "stay",
   "e": "🏡",
   "name": "Accommodation",
-  "pitch": "Hotels, stays &amp; B&amp;Bs — fill rooms with high-spend, long-stay cyclists.",
-  "bullets": [
-   "Bookings from the planner &amp; concierge",
-   "Occupancy, pace &amp; payout dashboard",
-   "Booker insights &amp; reviews",
-   "Member-rate visibility"
+  "pitch": "Hotels, stays & B&Bs — be the obvious place for visiting riders to stay.",
+  "now": [
+   "Member offers and rates shown to riders"
+  ],
+  "next": [
+   "Listed on the town guide",
+   "Bookings from the trip planner"
   ]
  },
  {
   "id": "travel",
   "e": "✈️",
-  "name": "Travel &amp; transport",
-  "pitch": "Airlines, bike transport, transfers, rail &amp; car hire — move riders and their bikes to the start line.",
-  "bullets": [
-   "Offered in the concierge at the moment of need",
-   "Bookings, attach rate &amp; top corridors",
-   "Solve cycling’s #1 stress: getting the bike there",
-   "Attributed GMV &amp; ROAS"
+  "name": "Travel & transport",
+  "pitch": "Airlines, bike transport, transfers, rail & car hire — getting riders and their bikes to the start line.",
+  "now": [
+   "Member offers shown to riders travelling with bikes"
+  ],
+  "next": [
+   "Offered in the trip planner at the moment of need",
+   "Bookings reporting"
   ]
  },
  {
   "id": "guide",
   "e": "🧑‍🦱",
-  "name": "Guides &amp; experiences",
-  "pitch": "Local guides, tour operators &amp; clinics — sell out your rides.",
-  "bullets": [
-   "Bookable on every town page",
-   "Earnings + ratings dashboard",
-   "Concierge referrals",
-   "Keep your own pricing"
+  "name": "Guides & experiences",
+  "pitch": "Local guides, tour operators & clinics — fill your rides.",
+  "now": [
+   "Member offers shown to riders"
+  ],
+  "next": [
+   "Listed and bookable on the town guide",
+   "Ratings and bookings in your dashboard"
   ]
  },
  {
   "id": "insure",
   "e": "🛡️",
-  "name": "Insurance &amp; cover",
-  "pitch": "Travel insurance, bike cover &amp; roadside — protect every ride.",
-  "bullets": [
-   "High-intent, long-cookie audience",
-   "Offered at booking &amp; checkout",
-   "Attach-rate &amp; redemption reporting",
-   "Bundle with transport &amp; trips"
+  "name": "Insurance & cover",
+  "pitch": "Travel insurance, bike cover & roadside — protect every ride.",
+  "now": [
+   "Member offers shown to travelling riders"
+  ],
+  "next": [
+   "Offered alongside trip plans",
+   "Redemption reporting"
   ]
  },
  {
   "id": "events",
   "e": "🏁",
-  "name": "Events &amp; camps",
-  "pitch": "Gran fondos, gravel events &amp; training camps — fill your start list.",
-  "bullets": [
-   "Promote by discipline &amp; region",
-   "Registrations &amp; reach",
-   "Creator briefs &amp; town takeovers",
-   "Drive shoulder-season demand"
+  "name": "Events & camps",
+  "pitch": "Gran fondos, gravel events & training camps — fill your start list.",
+  "now": [
+   "Listed free on the events calendar and nearby town guides",
+   "Details checked against your own site, and kept current"
+  ],
+  "next": [
+   "Promote by discipline and region",
+   "Registration reporting"
   ]
  }
 ]

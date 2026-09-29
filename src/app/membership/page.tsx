@@ -25,7 +25,7 @@ export default async function Membership() {
         <div className="wov">
           <div className="winner">
             <div className="awards"><span className="award alt">Cycletowns Club</span></div>
-            <h1>Ride more. Pay less.<br />Go further.</h1>
+            <h1>Join free.<br />Back the bunch.</h1>
             <div className="meta"><span className="rk">Free to join</span><span className="sc">Insider from A$7 / month</span><span className="sc">Cancel anytime</span></div>
           </div>
         </div>
@@ -51,14 +51,13 @@ export default async function Membership() {
           <div className="cgl">
             <div className="cgtag">★ Insider · A$7 / month or A$80 / year</div>
             <h2>Go Insider. Back the bunch.</h2>
-            <p>Insider is how Cycletowns stays independent — no paid rankings, no selling your data. Members get the good stuff and keep the lights on.</p>
+            <p>Insider is how Cycletowns stays independent — no paid rankings, no selling your data. It’s mostly a way to back the site. Here’s exactly what it gets you today.</p>
             <div className="cgfeat">
               <span>⚡ Double points on everything</span>
-              <span>🚫 Ad-free browsing</span>
-              <span>🎟️ Members-only partner offers</span>
-              <span>🔭 Early access to new town guides</span>
-              <span>★ Insider badge on your reviews</span>
+              <span>★ Insider status straight away</span>
+              <span>🎟️ Member offers, as partners come on board</span>
             </div>
+            <p style={{ fontSize: 13, opacity: 0.85, marginTop: 10 }}>No member offers are live yet — the first partners are being signed now. Insider doesn’t change how much your reviews count: every rider’s review is weighted the same way.</p>
             <JoinInsider userId={me?.id ?? null} member={member} enabled={hasStripe()} />
             <p style={{ fontSize: 12, opacity: 0.8, marginTop: 12 }}>Prices in Australian dollars, GST inclusive. Cancel anytime from your account — you keep Insider until the end of the period you’ve paid for.</p>
           </div>
@@ -70,9 +69,9 @@ export default async function Membership() {
         <div className="wh"><div><h2>Earn your status</h2><span className="wsub">contribute → climb tiers → bigger rewards</span></div></div>
         <div className="wgrid g3">
           {[
-            ["Rider", "Free to join", "Browse everything, save trips, rate towns, join groups."],
-            ["Insider", "Members & top contributors", "Double points, ad-free, partner offers, early access. Reach it by subscribing or by earning 250 points."],
-            ["Champion", "Top 10% of riders", "Your reviews carry the most weight, profile placement on town pages, and the best partner perks."],
+            ["Rider", "Free to join", "Browse everything, save trips, review towns, join groups."],
+            ["Insider", "Subscribe, or earn 250 points", "Double points, and member offers as partners come on board."],
+            ["Champion", "Earn 1,000 points", "A 👑 beside your name on your reviews and posts. Recognition, not extra weight — the score counts every rider’s review the same way."],
           ].map(([n, s, d], i) => (
             <div className="wcard" style={{ padding: 20, border: i === 2 ? "2px solid var(--coral)" : "1px solid var(--line)" }} key={n}>
               <div className="pcr" style={{ textAlign: "left" }}>{i === 2 ? "★ Top tier" : "Tier"}</div>

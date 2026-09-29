@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { ABILITIES, DISCIPLINES, buildPlan, prettyDate, type Ability, type Plan, type PlanTown } from "@/lib/planner";
-import { slugify } from "@/lib/towns";
+import { slugify, placeLine } from "@/lib/towns";
 
 export type TownOption = { id: string; name: string; region: string; country: string; flag: string };
 
@@ -108,7 +108,7 @@ export function PlanBuilder({ towns, data, initialTown, userId }: { towns: TownO
               <option value="">Choose a town…</option>
               {towns.map((t) => (
                 <option key={t.id} value={t.id}>
-                  {t.flag} {t.name} — {t.region}, {t.country}
+                  {t.flag} {t.name} — {placeLine(t.region, t.country, ", ")}
                 </option>
               ))}
             </select>

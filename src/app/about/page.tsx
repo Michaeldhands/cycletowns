@@ -15,7 +15,7 @@ export default function About() {
         <p>
           It started with a simple frustration: the best intel about where to ride lives in riders’ heads, not on the sites
           trying to sell you a holiday. So we built the place that puts riders first — a living, global guide to the world’s
-          great cycling towns, ranked by the people who actually rode them.
+          great cycling towns, researched by us and then ranked by the people who ride them.
         </p>
         <h3>Why we’re different</h3>
         <p>
@@ -25,18 +25,19 @@ export default function About() {
         </p>
         <h3>What you can do</h3>
         <p>
-          Discover and compare towns, find the best rides, café stops and bike shops, ride historic pro stages and gran
-          fondos, and plan your trip around when each town rides best. Browse it all free — no account needed.
+          Discover and compare towns, find the best rides, café stops and bike shops, find mass-participation events worth
+          entering, build your own loops, and plan your trip around when each town rides best. Browse it all free — no account needed.
         </p>
         <h3>The community</h3>
         <p>
-          Sign up to contribute — log rides, add café and route intel, write reviews — and climb from rider to creator to{" "}
-          <b>Champion</b>, the top 10% whose reviews shape each town’s score. It’s the bit the corporates can’t buy.
+          Join free to contribute — review the towns you’ve ridden, and post ride reports.
+          Five rider reviews and a town’s score stops being ours and becomes riders’. Points earn you status, from Rider to
+          Insider to <b>Champion</b> — but status is recognition only: every rider’s review is weighted the same way.
         </p>
         <h3>For partners</h3>
         <p>
-          Cafés, bike shops, stays, brands and tourism boards partner with us to reach riders who actually go — measured,
-          consented and on their terms. <Link href="/partners">Partner with us ›</Link>
+          Cafés, bike shops, stays, brands and tourism boards can partner with us to reach riders who actually go. Partners
+          never buy a place in the rankings. <Link href="/partners">Partner with us ›</Link>
         </p>
         <h3>The vision</h3>
         <p>

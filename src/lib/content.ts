@@ -17,6 +17,9 @@ export type PlaceRow = {
 export type RaceRow = { id: string; town_id: string; kind: Race["kind"]; badge: string; name: string; series: string | null; km: number | null; vert: number | null; race_date: string | null; status: string | null; discipline: string | null; note: string | null; sort: number };
 export type ArticleRow = { id: string; slug: string; title: string; dek: string; body: string; kind: string | null; series: string | null; episode: number | null; town_id: string | null; image_kind: string; image_url: string | null; published: boolean; published_at: string | null; created_at: string };
 
+const BUNDLED_PHOTO: Record<string, string | undefined> = Object.fromEntries(TOWNS.map((t) => [t.id, t.photo]));
+const BUNDLED_GALLERY: Record<string, string[] | undefined> = Object.fromEntries(TOWNS.map((t) => [t.id, t.gallery]));
+
 const toPlace = (p: PlaceRow, verified?: Set<string>) => ({
   n: p.name, s: Number(p.editorial_rating ?? 0), note: p.note, hire: p.hire,
   price: p.price ?? undefined, km: p.km ?? undefined, vert: p.vert ?? undefined,
@@ -28,7 +31,10 @@ export function rowToTown(t: TownRow, places: PlaceRow[], verified?: Set<string>
   const mine = places.filter((p) => p.town_id === t.id).sort((a, b) => a.sort - b.sort);
   return {
     id: t.id, name: t.name, region: t.region, country: t.country, flag: t.flag, cur: t.currency || "$",
-    score: Number(t.editorial_score ?? 4), photo: t.photo ?? undefined, gallery: t.gallery || [], tags: t.tags || [], personas: t.personas || [],
+    // The bundled data carries a researched, credited photo for every launch town. A database row
+    // that lost its photo used to fall through to the same stock rider on every card — four of the
+    // top eight towns wore one picture — so fall back to the bundled photo first.
+    score: Number(t.editorial_score ?? 4), photo: t.photo ?? BUNDLED_PHOTO[t.id], gallery: t.gallery?.length ? t.gallery : BUNDLED_GALLERY[t.id] || [], tags: t.tags || [], personas: t.personas || [],
     blurb: t.blurb || "", scoreDims: t.editorial_dims || { cafes: 4, routes: 4, safety: 4, climbs: 4, storage: 4 },
     cafes: mine.filter((p) => p.kind === "cafe").map((p) => toPlace(p, verified)),
     shops: mine.filter((p) => p.kind === "shop").map((p) => toPlace(p, verified)),
@@ -47,7 +53,13 @@ export type Catalog = {
   source: "db" | "bundled";
 };
 
-const bundled = (): Catalog => ({ towns: TOWNS, lite: LITE_TOWNS, geo: TOWN_GEO, when: TOWN_WHEN, seeDo: TOWN_SEEDO, races: RACES, source: "bundled" });
+/** A preview town that is also a full guide (Chiang Mai was both) shows up twice on the leaderboard. */
+const withoutFull = (lite: LiteTown[], full: Town[]): LiteTown[] => {
+  const taken = new Set(full.flatMap((t) => [t.id, slugify(t.name)]));
+  return lite.filter((l) => !taken.has(l.slug) && !taken.has(slugify(l.name)));
+};
+
+const bundled = (): Catalog => ({ towns: TOWNS, lite: withoutFull(LITE_TOWNS, TOWNS), geo: TOWN_GEO, when: TOWN_WHEN, seeDo: TOWN_SEEDO, races: RACES, source: "bundled" });
 
 /** Everything needed to render town lists and guides. One query set per request; pages cache via `revalidate`. */
 export async function loadCatalog(): Promise<Catalog> {
@@ -72,9 +84,10 @@ export async function loadCatalog(): Promise<Catalog> {
   ((races as RaceRow[]) || []).forEach((r) => {
     (rc[r.town_id] ||= []).push({ kind: r.kind, badge: r.badge, name: r.name, series: r.series ?? undefined, km: Number(r.km ?? 0), vert: Number(r.vert ?? 0), date: r.race_date ?? undefined, status: r.status ?? undefined, disc: r.discipline ?? undefined, note: r.note ?? undefined });
   });
+  const fullTowns = full.map((t) => rowToTown(t, (places as PlaceRow[]) || [], verified));
   return {
-    towns: full.map((t) => rowToTown(t, (places as PlaceRow[]) || [], verified)),
-    lite: rows.filter((t) => t.status === "radar").map((t) => ({ slug: t.id, name: t.name, region: t.region, country: t.country, flag: t.flag })),
+    towns: fullTowns,
+    lite: withoutFull(rows.filter((t) => t.status === "radar").map((t) => ({ slug: t.id, name: t.name, region: t.region, country: t.country, flag: t.flag })), fullTowns),
     geo, when, seeDo, races: rc, source: "db",
   };
 }

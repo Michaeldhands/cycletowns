@@ -5,7 +5,7 @@ import { TopBar } from "@/components/SiteNav";
 import { Footer } from "@/components/Footer";
 import { Photo } from "@/components/Photo";
 import { ridePic } from "@/lib/images";
-import { CAT_DEFS, CAT_HERO, SCOPES, catDef, catScore, regionOf } from "@/lib/towns";
+import { CAT_DEFS, CAT_HERO, SCOPES, catDef, catScore, regionOf, placeLine } from "@/lib/towns";
 import { loadCatalog } from "@/lib/content";
 
 export const dynamicParams = false;
@@ -95,7 +95,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps<"
                 <span className="rnm">
                   {t.name}
                   <small>
-                    {t.region} · {t.country}
+                    {placeLine(t.region, t.country)}
                   </small>
                 </span>
                 <span className="catfit">
@@ -112,7 +112,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps<"
                 <span className="rnm">
                   {t.name}
                   <small>
-                    {t.region} · {t.country}
+                    {placeLine(t.region, t.country)}
                   </small>
                 </span>
                 <span className="catfit">{d.icon} on the radar</span>

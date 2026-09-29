@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useSaved, useSyncSaved } from "./SaveButton";
 import { TownCard } from "./Cards";
-import { getLiteTown, getTown } from "@/lib/towns";
+import { getLiteTown, getTown, placeLine } from "@/lib/towns";
 
 export function SavedList({ userId }: { userId?: string | null }) {
   useSyncSaved(userId);
@@ -21,7 +21,7 @@ export function SavedList({ userId }: { userId?: string | null }) {
       {lite.length > 0 && (
         <div className="litegrid" style={{ marginTop: 16 }}>
           {lite.map((t) => t && (
-            <Link key={t.slug} href={`/towns/${t.slug}`} className="litechip"><span>{t.flag}</span><b>{t.name}</b><small>{t.region} · {t.country}</small></Link>
+            <Link key={t.slug} href={`/towns/${t.slug}`} className="litechip"><span>{t.flag}</span><b>{t.name}</b><small>{placeLine(t.region, t.country)}</small></Link>
           ))}
         </div>
       )}

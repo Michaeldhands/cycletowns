@@ -17,7 +17,7 @@ export const en = {
   nav: {
     towns: "Towns",
     rankings: "Rankings",
-    routes: "Route planner",
+    routes: "Build a loop",
     events: "Events",
     news: "News",
     feed: "Feed",
@@ -42,7 +42,7 @@ export const en = {
   },
 
   footer: {
-    tagline: "Every town ranked by the riders who actually rode it.",
+    tagline: "Every town researched by us, then ranked by the riders who’ve been there.",
     explore: "Explore",
     riders: "Riders",
     business: "For business",

@@ -17,17 +17,16 @@ export const metadata: Metadata = {
 
 export default async function RankingsPage() {
   const [c, scores] = await Promise.all([loadCatalog(), fetchAllScores()]);
-  const total = c.towns.length + c.lite.length;
   return (
     <>
       <TopBar />
       <div className="sec2" id="rankings">
         <div className="in">
           <div className="kick">Global rankings</div>
-          <div className="h2">{total} Cycletowns · {c.towns.length} ranked</div>
+          <div className="h2">The world’s best Cycletowns</div>
           <div className="lead">
-            A living leaderboard of the world’s cycling towns — every one free to browse. Going global, or just want what’s
-            close to home? Filter by region. Towns with a full guide are scored; the rest are on our radar and open a preview.
+            {c.towns.length} towns with a full guide, ranked. {c.lite.length} more on our radar. Free to browse — filter by
+            region, or by the kind of riding you do.
           </div>
           <div className="rankmeta">
             Ranked by the <b>Cyclist Score</b> across the five things that matter most: routes, café culture, road safety,
@@ -42,18 +41,17 @@ export default async function RankingsPage() {
               </Link>
             ))}
           </div>
+          <RankTable full={rankTowns(c, scores)} lite={c.lite} scores={scores} />
+          <div style={{ marginTop: 26 }} />
           <div className="awardband">
             <div>
               <div className="aw-kick">🏆 The Cycletowns Crown — coming</div>
               <h3>Who’s the World’s Best Cycletown?</h3>
               <p>
                 We’re building an annual crown: weighted towards the Cyclist Score, with a capped rider vote alongside it.
-                Earned by riders, never bought. <b>No vote is open yet</b> — join and we’ll tell you the day it is.
+                Earned by riders, never bought. <b>No vote is open yet</b> — we’ll announce it in the newsletter.
               </p>
               <div className="aw-btns">
-                <Link href="/join" className="lk-coral big">
-                  🗳️ Tell me when voting opens
-                </Link>
                 <Link
                   href="/how-rankings-work"
                   className="lk-ghost big"
@@ -64,10 +62,6 @@ export default async function RankingsPage() {
               </div>
             </div>
             <div className="aw-tro">🏆</div>
-          </div>
-          <RankTable full={rankTowns(c, scores)} lite={c.lite} scores={scores} />
-          <div style={{ textAlign: "center", marginTop: 14, color: "var(--grey-m)", fontSize: 13, fontWeight: 700 }}>
-            ↕ Scroll the leaderboard — every Cycletown, free to browse
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { DIM_LABELS, SCOPES, knownFor, plural, regionOf, type LiteTown, type Region, type ScoreDims, type Town } from "@/lib/towns";
+import { DIM_LABELS, SCOPES, knownFor, plural, regionOf, type LiteTown, type Region, type ScoreDims, type Town, placeLine } from "@/lib/towns";
 import { REVIEWS_TO_TAKE_OVER, rankValue, type TownScore } from "@/lib/reviews-types";
 
 const DIMS = Object.keys(DIM_LABELS) as (keyof ScoreDims)[];
@@ -43,15 +43,14 @@ export function RankTable({ full: allFull, lite: allLite, scores = {}, initialSc
           replaces the editorial score at {REVIEWS_TO_TAKE_OVER} reviews, and that is the score a town is ranked on.
         </span>
       </div>
-      <div className="ranktbl scrollrank" id="rankTbl">
+      <div className="ranktbl v2" id="rankTbl">
         <div className="rankhead">
           <span className="rnum">#</span>
           <span className="rfl"></span>
           <span className="rnm">Cycletown</span>
           <span className="rstrength">Known for</span>
-          <span className="rrev">Editorial</span>
-          <span className="rmv">Riders</span>
-          <span className="rsc">Ranked on</span>
+          <span className="rsc">Score</span>
+          <span className="rmv">Rider reviews</span>
           <span className="rgo"></span>
         </div>
         {full.map((t, i) => {
@@ -64,23 +63,16 @@ export function RankTable({ full: allFull, lite: allLite, scores = {}, initialSc
                 <span className="rfl">{t.flag}</span>
                 <Link href={`/towns/${t.id}`} className="rnm" style={{ textDecoration: "none", color: "inherit" }}>
                   {t.name}
-                  <small>
-                    {t.region} · {t.country}
-                  </small>
+                  <small>{placeLine(t.region, t.country)}</small>
                 </Link>
                 <span className="rstrength">{knownFor(t)}</span>
-                <span className="rrev flat">
-                  ✎ {t.score.toFixed(1)}
+                <span className="rsc" title={e.riders ? "Rider score" : "Our editorial score — riders take over at " + REVIEWS_TO_TAKE_OVER + " reviews"}>
+                  {e.riders ? "★" : "✎"} {e.score.toFixed(1)}
+                  <small className="rsrc">{e.riders ? "riders" : "editorial"}</small>
                 </span>
                 <span className="rmv flat">
-                  {e.riders ? `★ ${e.score.toFixed(1)}` : "—"}
-                  <small>{e.riders ? plural(e.count, "review") : `${e.count} of ${REVIEWS_TO_TAKE_OVER} reviews`}</small>
-                </span>
-                <span className="rsc">
-                  {e.score.toFixed(1)}
-                  <small style={{ display: "block", fontSize: 10.5, fontWeight: 700, color: "var(--grey-m)", letterSpacing: ".04em" }}>
-                    {e.riders ? "RIDERS" : "EDITORIAL"}
-                  </small>
+                  {e.riders ? plural(e.count, "review") : `${e.count} of ${REVIEWS_TO_TAKE_OVER}`}
+                  <small>{e.riders ? (e.verified ? `${e.verified} ride-verified` : "published") : "to take over"}</small>
                 </span>
                 <button className="rgo rwhy" onClick={() => setOpen(isOpen ? null : t.id)} aria-expanded={isOpen}>
                   {isOpen ? "Hide ▲" : "Why? ▾"}
@@ -90,7 +82,7 @@ export function RankTable({ full: allFull, lite: allLite, scores = {}, initialSc
                 <div className="rankwhy">
                   <div className="rankwhyh">
                     {e.riders
-                      ? `Ranked on the rider score — ${plural(e.count, "published review")}${e.verified ? `, ${e.verified} ride-verified` : ""}. Recent rides and verified ones count for more, and a town with more reviews is ordered ahead of a thinly-reviewed one on the same average.`
+                      ? `Ranked on the rider score — ${plural(e.count, "published review")}${e.verified ? `, ${e.verified} ride-verified` : ""}. Recent rides and verified ones count for more, and a town with more reviews is ordered ahead of a thinly-reviewed one on the same average. Our editorial score was ${t.score.toFixed(1)}.`
                       : `Ranked on our editorial score. No rider score yet — reviews take over at ${REVIEWS_TO_TAKE_OVER}, and there ${e.count === 1 ? "is 1" : `are ${e.count}`} so far.`}
                   </div>
                   <div className="rankwhyg">
@@ -114,30 +106,22 @@ export function RankTable({ full: allFull, lite: allLite, scores = {}, initialSc
             </div>
           );
         })}
-        {lite.map((t) => (
-          <Link href={`/towns/${t.slug}`} className="rankrow lb lk" key={t.slug} style={{ textDecoration: "none", color: "inherit" }}>
-            <span className="rnum">·</span>
-            <span className="rfl">{t.flag}</span>
-            <span className="rnm">
-              {t.name}
-              <small>
-                {t.region} · {t.country}
-              </small>
-            </span>
-            <span className="rstrength">On the radar</span>
-            <span className="rrev">In progress</span>
-            <span className="rmv flat">
-              —<small>not yet rated</small>
-            </span>
-            <span className="rsc" style={{ color: "var(--grey-m)" }}>
-              —
-            </span>
-            <span className="rgo" style={{ color: "var(--teal)" }}>
-              Preview ›
-            </span>
-          </Link>
-        ))}
+        {full.length === 0 && <div className="rankrow" style={{ color: "var(--grey-m)" }}>No full guides in this region yet.</div>}
       </div>
+
+      {lite.length > 0 && (
+        <div className="radarlist">
+          <h3>On our radar · {lite.length}</h3>
+          <p>Guides in progress. Unscored until we’ve researched them — tap one for a preview.</p>
+          <div className="radarchips">
+            {lite.map((t) => (
+              <Link href={`/towns/${t.slug}`} key={t.slug} className="radarchip">
+                <span>{t.flag}</span> {t.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </>
   );
 }

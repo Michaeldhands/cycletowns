@@ -3,7 +3,7 @@ import Link from "next/link";
 import { TopBar } from "@/components/SiteNav";
 import { Footer } from "@/components/Footer";
 import { TownCard } from "@/components/Cards";
-import { SCOPES, regionOf } from "@/lib/towns";
+import { SCOPES, regionOf, placeLine } from "@/lib/towns";
 import { loadCatalog, rankIn, rankTowns } from "@/lib/content";
 import { fetchAllScores } from "@/lib/reviews";
 
@@ -70,7 +70,7 @@ export default async function TownsPage({ searchParams }: PageProps<"/towns">) {
                     <span>{t.flag}</span>
                     <b>{t.name}</b>
                     <small>
-                      {t.region} · {t.country}
+                      {placeLine(t.region, t.country)}
                     </small>
                   </Link>
                 ))}

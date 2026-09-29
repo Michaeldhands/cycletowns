@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Photo } from "./Photo";
 import { townHero } from "@/lib/images";
-import { gmaps, plural, rankOf, type Place, type SeeDo, type Town, rideDiscipline } from "@/lib/towns";
+import { gmaps, plural, rankOf, type Place, type SeeDo, type Town, rideDiscipline, placeLine } from "@/lib/towns";
 
 /** Landing / listing town card. */
 export function TownCard({ t, rank }: { t: Town; rank?: number }) {
@@ -11,14 +11,14 @@ export function TownCard({ t, rank }: { t: Town; rank?: number }) {
         <Photo src={townHero(t, 900)} alt={t.name} />
         {(rank ?? rankOf(t.id)) > 0 && <div className="rankbadge">#{rank ?? rankOf(t.id)}</div>}
         <div className="flag">{t.flag}</div>
-        <div className="badge">
+        <div className="badge" title="Editorial score — our own research, until riders take over">
           <span className="s">✎</span> {t.score.toFixed(1)}
         </div>
       </div>
       <div className="meta">
         <div className="nm">{t.name}</div>
         <div className="rg">
-          {t.region} · {t.country}
+          {placeLine(t.region, t.country)}
         </div>
         <div className="tags">
           {t.tags.slice(0, 3).map((x) => (

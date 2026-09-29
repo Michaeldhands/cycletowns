@@ -263,7 +263,7 @@ html{scroll-behavior:smooth}
 .btnpair>:last-child{background:var(--coral)!important;border:1.7px solid var(--coral)!important;color:#fff!important;box-shadow:0 8px 18px rgba(253,61,53,.26)!important}
 .btnpair>:first-child:hover{background:var(--teal-700)!important;border-color:var(--teal-700)!important}
 .btnpair>:last-child:hover{background:var(--coral-700)!important;border-color:var(--coral-700)!important}
-@media(max-width:760px){.lpnav .links{display:none}.navdesk{display:none}.navtog{display:inline-flex;align-items:center}.lpnav .in{flex-wrap:wrap}.mobnav.open{display:flex;flex-direction:column;flex-basis:100%;gap:0;padding:6px 22px 14px;border-top:1px solid var(--line)}.mobnav.open a{padding:12px 2px;font-weight:700;font-size:15px;color:var(--ink);border-bottom:1px solid var(--line);cursor:pointer;text-decoration:none}.mobnav.open .mobcta{display:flex;gap:10px;margin-top:12px}.mobnav.open .mobcta button{flex:1}}
+@media(max-width:760px){.lpnav .links{display:none}.navdesk,a.navdesk{display:none!important}.navtog{display:inline-flex;align-items:center}.lpnav .in{flex-wrap:wrap}.mobnav.open{display:flex;flex-direction:column;flex-basis:100%;gap:0;padding:6px 22px 14px;border-top:1px solid var(--line)}.mobnav.open a{padding:12px 2px;font-weight:700;font-size:15px;color:var(--ink);border-bottom:1px solid var(--line);cursor:pointer;text-decoration:none}.mobnav.open .mobcta{display:flex;gap:10px;margin-top:12px}.mobnav.open .mobcta button{flex:1}}
 .hero{background:radial-gradient(900px 520px at 86% -20%, rgba(253,61,53,.30), transparent 60%),linear-gradient(165deg,#01536C 0%,#013E52 68%,#012734 100%);color:#fff;position:relative;overflow:hidden}
 .hero .in{max-width:1160px;margin:0 auto;padding:64px 22px 70px;display:grid;grid-template-columns:1fr;gap:34px;align-items:center}
 .hero-l{max-width:840px;margin:0 auto;text-align:center}
@@ -1378,3 +1378,67 @@ a.catchip,a.scopechip{text-decoration:none}
 .pacebox label b{color:var(--ink)}
 .pacebox input[type=range]{width:100%;max-width:420px;display:block}
 .pacenote{font-size:11.5px;color:var(--grey-m);line-height:1.5;margin-top:6px;max-width:620px}
+
+/* ---- home: loop builder showcase, trust grid, single invitation (Sept 2026 reshape) ---- */
+.nowrap{white-space:nowrap}
+.hometool{display:grid;grid-template-columns:1.3fr 1fr;gap:34px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:24px;padding:38px}
+.hometool h2{font-family:var(--disp);text-transform:uppercase;font-size:44px;letter-spacing:.5px;line-height:1;margin:4px 0 12px}
+.hometool p{color:var(--ink-2,#3d4a52);margin-bottom:14px;max-width:560px}
+.htlist{list-style:none;padding:0;margin:0 0 22px;display:grid;gap:8px}
+.htlist li{padding-left:22px;position:relative;font-size:15px}
+.htlist li:before{content:"";position:absolute;left:0;top:8px;width:10px;height:10px;border-radius:50%;background:var(--coral)}
+.htr{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.htstat{background:linear-gradient(160deg,#01536C,#012734);color:#fff;border-radius:16px;padding:18px 16px;display:flex;flex-direction:column;gap:4px;min-height:96px;justify-content:flex-end}
+.htstat span{font-size:11.5px;letter-spacing:1.2px;text-transform:uppercase;opacity:.7;font-weight:800}
+.htstat b{font-family:var(--disp);text-transform:uppercase;font-size:26px;line-height:1}
+.trustgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:22px}
+.trustgrid>div{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px}
+.trustgrid b{display:block;font-size:16px;margin-bottom:6px}
+.trustgrid p{font-size:14px;color:var(--ink-2,#3d4a52);margin:0}
+.fcbtns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.finalcta .fcghost{border-color:rgba(255,255,255,.55);color:#fff;text-decoration:none}
+.finalcta .fcghost:hover{background:rgba(255,255,255,.14)}
+.finalcta .finalsub{font-size:14px;margin:22px auto 0;opacity:.85}
+.finalcta .finalsub a{color:#fff;font-weight:800}
+@media(max-width:900px){.trustgrid{grid-template-columns:1fr 1fr}.hometool{grid-template-columns:1fr;padding:26px}}
+@media(max-width:560px){.trustgrid{grid-template-columns:1fr}.hometool h2{font-size:36px}.finalcta h2{font-size:36px}}
+/* partners: three-up grid that actually collapses on phones (the inline 3-column rule used to win and overflow) */
+.whygrid3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:860px){.whygrid3{grid-template-columns:1fr}}
+.ptype ul.pnow li::before,.ptype ul.pnext li::before{content:none}
+.ptype ul.pnow li,.ptype ul.pnext li{padding-left:0;display:flex;gap:8px;align-items:baseline}
+.ptype ul.pnext{margin-top:-6px}
+.ptype ul.pnext li{color:#6b7780}
+.plive,.pnx{flex:none;font-size:10px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;border-radius:6px;padding:2px 6px}
+.plive{background:#e3f3ec;color:#0b6b43}
+.pnx{background:#eef1f3;color:#5b6770}
+
+/* one nav everywhere: five links that fit on a laptop, secondary pages in the phone menu and footer */
+.lpnav .links a,.lpnav .cta a{white-space:nowrap}
+@media(max-width:1020px) and (min-width:761px){.lpnav .links{gap:14px}.lpnav .links a{font-size:13.5px}}
+.mobnav .mobsec{font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--grey-d);padding:16px 2px 4px;border-bottom:none}
+.mobnav.open a.mobsm{font-weight:600;font-size:14px;padding:9px 2px}
+/* ghost buttons sitting on a photo: white, not teal-on-dark */
+.wbar a.lk-ghost.onphoto,.wbar .lk-ghost.onphoto{color:#fff;border-color:rgba(255,255,255,.65);background:rgba(255,255,255,.12)}
+.wbar a.lk-ghost.onphoto:hover{background:rgba(255,255,255,.22)}
+/* leaderboard v2: one score column that says which score it is, rider-review progress beside it */
+.ranktbl.v2 .rankhead,.ranktbl.v2 .rankrow.lb{grid-template-columns:36px 24px minmax(0,1fr) 130px 84px 104px 62px}
+.ranktbl.v2 .rsc{width:auto}
+.ranktbl.v2 .rsc .rsrc{display:block;font-size:10px;font-weight:800;color:var(--grey-m);letter-spacing:.05em;text-transform:uppercase}
+.ranktbl.v2 .rmv{width:auto}
+@media(max-width:760px){.ranktbl.v2 .rankhead,.ranktbl.v2 .rankrow.lb{grid-template-columns:28px 22px minmax(0,1fr) 64px 70px 52px;gap:8px}}
+.radarlist{margin-top:26px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px}
+.radarlist h3{font-family:var(--disp);text-transform:uppercase;font-size:22px;letter-spacing:.4px}
+.radarlist p{font-size:13.5px;color:var(--grey-d);margin:2px 0 12px}
+.radarchips{display:flex;flex-wrap:wrap;gap:8px}
+.radarchip{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;background:var(--paper)}
+.radarchip:hover{border-color:var(--teal);color:var(--teal)}
+/* phone: the hero grows with its content instead of clipping the town name off the top */
+@media(max-width:760px){
+  .whero{height:auto!important;min-height:340px}
+  .whero .wov{position:relative;inset:auto;min-height:340px;padding-top:110px}
+  .whero h1{font-size:46px}
+  .whero .awards{display:none}
+  .whero .meta{gap:7px;font-size:12.5px}
+  .whero .sc,.whero .rk{padding:5px 10px}
+}

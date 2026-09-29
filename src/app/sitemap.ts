@@ -66,7 +66,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Full guides rank; radar towns are thin pages, so they are listed but weighted low.
   for (const t of c.towns) out.push(entry(`/towns/${t.id}`, "weekly", 0.8));
-  for (const t of c.lite) out.push(entry(`/towns/${t.slug}`, "monthly", 0.3));
+  // Preview ("on the radar") towns are deliberately left out: they are noindex until they have a guide.
 
   for (const cat of CAT_DEFS) out.push(entry(`/rankings/${cat.id}`, "weekly", 0.6));
 
@@ -86,5 +86,6 @@ export const EXCLUDED_FROM_SITEMAP = [
   "/admin", "/account", "/saved", "/feed", "/groups", "/join", "/login",
   "/subscribed", "/unsubscribed", "/thanks", "/offline", "/shop",
   "/partners/claim", "/partners/dashboard", "/membership/thanks",
+  "/towns/<preview towns>", // noindex until each has a full guide
 ] as const;
 void ALT_LOCALES;

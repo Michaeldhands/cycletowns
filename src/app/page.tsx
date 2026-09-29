@@ -3,24 +3,32 @@ import { SiteNav } from "@/components/SiteNav";
 import { Footer } from "@/components/Footer";
 import { bannerAlt, bannerSrc } from "@/lib/banners";
 import { loadBanners } from "@/lib/banners-data";
-import { Subscribe } from "@/components/Subscribe";
 import { LpCarousel } from "@/components/Carousel";
 import { TownCard } from "@/components/Cards";
 import { Photo } from "@/components/Photo";
 import { HeroSearch } from "@/components/HeroSearch";
-import { ridePic } from "@/lib/images";
 import { CAT_DEFS } from "@/lib/towns";
 import { loadArticles, loadCatalog, rankTowns } from "@/lib/content";
 import { fetchAllScores } from "@/lib/reviews";
 import { OriginalCard } from "@/components/NewsCards";
+import { REVIEWS_TO_TAKE_OVER as RIDER_THRESHOLD } from "@/lib/reviews-types";
 
 export const revalidate = 300;
 
-const CAT_IMG: Record<string, string> = { road: "road", climb: "climb", gravel: "gravel", mtb: "mtb", ebike: "ebike", alpine: "alpine", pro: "group" };
+/* The home page, in the order a first-time visitor needs it:
+   what this is → pick your riding → the towns → what we've written → the tool nobody else has →
+   why the rankings can be trusted → one invitation to join.
+
+   Deliberately absent: an empty "your brand here" slot, a second newsletter form (the footer has
+   one on every page), and three separate sign-up pitches saying the same thing. */
 
 export default async function Home() {
   const [c, articles, banners, scores] = await Promise.all([loadCatalog(), loadArticles(), loadBanners(), fetchAllScores()]);
-  const feat = rankTowns(c, scores).slice(0, 8);
+  const ranked = rankTowns(c, scores);
+  const feat = ranked.slice(0, 8);
+  const loopTown = c.towns.find((t) => t.id === "bright") || ranked[0];
+  const anyRiderRanked = ranked.some((t) => (scores?.[t.id]?.review_count ?? 0) >= RIDER_THRESHOLD);
+
   return (
     <>
       <SiteNav />
@@ -47,60 +55,33 @@ export default async function Home() {
           </div>
         </div>
       </div>
-      <div className="drcband">
-        Discover <b>·</b> Ride <b>·</b> Connect
-      </div>
 
-      {/* CATEGORIES */}
+      {/* RIDE TYPES */}
       <div className="sec2">
         <div className="in">
-          <div className="kick">How do you ride?</div>
           <div className="h2">What&apos;s your ride?</div>
           <div className="lead">Whatever you ride, there’s a town for it — explore by the kind of riding you love.</div>
           <LpCarousel>
-            {CAT_DEFS.map((c) => (
-              <Link key={c.id} href={`/rankings/${c.id}`} className="cat">
-                <Photo src={bannerSrc(banners, `cat-${c.id}`, 440)} alt={bannerAlt(banners, `cat-${c.id}`)} />
-                <span className="cl">{c.label}</span>
+            {CAT_DEFS.map((cat) => (
+              <Link key={cat.id} href={`/rankings/${cat.id}`} className="cat">
+                <Photo src={bannerSrc(banners, `cat-${cat.id}`, 440)} alt={bannerAlt(banners, `cat-${cat.id}`)} />
+                <span className="cl">{cat.label}</span>
               </Link>
             ))}
           </LpCarousel>
         </div>
       </div>
 
-      {/* PARTNER SLOT */}
-      <div className="sec2" style={{ paddingTop: 0 }}>
-        <div className="in">
-          <div className="adbanner hc">
-            <div className="adimg">
-              <Photo src={bannerSrc(banners, "home-partner", 760)} alt={bannerAlt(banners, "home-partner")} />
-              <span className="adlabel">Partner offer</span>
-            </div>
-            <div className="adbody">
-              <div className="adbrand">Your brand here</div>
-              <h3>Reach riders who actually go.</h3>
-              <p>
-                Bike brands, tourism boards, stays and events can put an offer in front of Cycletowns riders right here — on
-                the front page and on the town guides that matter to them.
-              </p>
-              <div className="adcta btnpair">
-                <Link href="/partners" className="lk-coral big">
-                  🤝 Become a partner
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* FEATURED TOWNS */}
+      {/* TOP RANKED */}
       <div className="sec2 alt" id="towns">
         <div className="in">
-          <div className="kick">Top ranked</div>
+          <div className="kick">The leaderboard</div>
           <div className="h2">The world’s best Cycletowns</div>
           <div className="lead">
-            Ranked by riders. Swipe through and dive into any town — its rides, café stops, bike shops, groups and things to do.
-            No sign-up needed.
+            {anyRiderRanked
+              ? "Ranked by riders where enough have reviewed a town, and on our own research where they haven’t yet."
+              : `Ranked on our own research for now — once a town has ${RIDER_THRESHOLD} rider reviews, their score takes over.`}{" "}
+            <span className="nowrap">✎ marks an editorial score.</span> No paid placements, ever.
           </div>
           <LpCarousel>
             {feat.map((t, i) => (
@@ -115,14 +96,12 @@ export default async function Home() {
         </div>
       </div>
 
-      {/* NEWS TEASER */}
+      {/* NEWS */}
       <div className="sec2 alt" id="news" style={{ paddingTop: 0 }}>
         <div className="in">
-          <div className="kick">The hub · Originals</div>
+          <div className="kick">Written by the Cycletowns team</div>
           <div className="h2">Cycletowns News</div>
-          <div className="lead">
-            Town guides, route guides and features, written by the Cycletowns team.
-          </div>
+          <div className="lead">Town guides, route guides and features.</div>
           <LpCarousel>
             {articles.slice(0, 8).map((a, i) => (
               <OriginalCard key={i} a={a} idx={i} />
@@ -130,146 +109,119 @@ export default async function Home() {
           </LpCarousel>
           <div style={{ textAlign: "center", marginTop: 18 }}>
             <Link href="/news" className="lk-coral big">
-              Open the News hub ›
+              Read the News ›
             </Link>
           </div>
-          <div className="wscorebox" style={{ maxWidth: 640, margin: "26px auto 0" }}>
-            <h3 style={{ fontFamily: "var(--disp)", textTransform: "uppercase", fontSize: 24, marginBottom: 4 }}>Get it in your inbox.</h3>
-            <p className="wsub" style={{ display: "block", marginBottom: 14 }}>
-              New town guides, routes worth travelling for, and the odd long read. Sent when there&rsquo;s something worth your time.
-            </p>
-            <Subscribe source="home" compact />
-          </div>
         </div>
       </div>
 
-      {/* TWO WAYS TO ROLL */}
-      <div className="sec2" id="how">
+      {/* LOOP BUILDER — the tool nobody else has, so it gets its own section */}
+      <div className="sec2" id="loop">
         <div className="in">
-          <div className="kick">Two ways to roll</div>
-          <div className="h2">Get the most out of Cycletowns</div>
-          <div className="lead">
-            However you ride, there’s a lane for you — kick back and ride the wave of what other riders already know, or get
-            stuck in and help build it. Either way, your next trip gets better.
-          </div>
-          <div className="lanes">
-            <div className="lane wave">
-              <div className="laneimg">
-                <Photo src={bannerSrc(banners, "home-lane-1", 520)} alt={bannerAlt(banners, "home-lane-1")} />
-                <span className="lanetag">🌊 Just here to ride</span>
-              </div>
-              <div className="laneb">
-                <h3>Ride the wave</h3>
-                <p className="lanesub">
-                  All the local intel, none of the homework. Tap into what other riders already know — no account, no effort.
-                </p>
-                <div className="lsteps">
-                  <div className="ls">
-                    <span className="lsi">🔎</span>
-                    <div>
-                      <b>Discover</b> every town, ranked by the riders who actually rode it — free to browse, no sign-up.
-                    </div>
-                  </div>
-                  <div className="ls">
-                    <span className="lsi">🗺️</span>
-                    <div>
-                      <b>Plan</b> your trip: your dates and style in, a ride-ready itinerary out.
-                    </div>
-                  </div>
-                </div>
-                <Link href="/towns" className="lk-coral big">
-                  Start exploring ›
-                </Link>
-              </div>
-            </div>
-            <div className="lane build">
-              <div className="laneimg">
-                <Photo src={bannerSrc(banners, "home-lane-2", 520)} alt={bannerAlt(banners, "home-lane-2")} />
-                <span className="lanetag alt">🤝 Here to build it</span>
-              </div>
-              <div className="laneb">
-                <h3>Get involved</h3>
-                <p className="lanesub">
-                  Help build the most honest rankings in cycling — and get rewarded as you go. This is the bit the corporates
-                  can’t buy.
-                </p>
-                <div className="lsteps">
-                  <div className="ls">
-                    <span className="lsi">👥</span>
-                    <div>
-                      <b>Connect</b> — join groups and crews, and meet locals and visitors wherever you ride.
-                    </div>
-                  </div>
-                  <div className="ls">
-                    <span className="lsi">⭐</span>
-                    <div>
-                      <b>Contribute</b> — log rides, drop café and route intel, leave reviews. Every bit makes your town richer.
-                    </div>
-                  </div>
-                </div>
-                <Link href="/join" className="lk-coral big">
-                  Join the bunch ›
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* MEMBERSHIP TEASER */}
-      <div className="sec2" style={{ paddingTop: 0 }}>
-        <div className="in">
-          <div className="concierge">
-            <div className="cgl">
-              <div className="cgtag">Cycletowns Club · join free</div>
-              <h2>Member rates, local guides &amp; rewards</h2>
+          <div className="hometool">
+            <div className="htl">
+              <div className="kick" style={{ textAlign: "left" }}>Route planner</div>
+              <h2>Build your own loop.</h2>
               <p>
-                Sign up free to save towns, rate the places you ride, join groups and unlock member offers from our partners.
-                Earn status as you contribute and unlock even more.
+                Pick a town, drop a pin where you’re staying and choose how far you feel like going. We find a loop on real
+                roads and paths, show you the climbing, and hand you a GPX for your head unit.
               </p>
-              <div className="cgfeat">
-                <span>♥ Save towns &amp; trips</span>
-                <span>⭐ Rate what you ride</span>
-                <span>🤝 Join groups</span>
-                <span>🎟️ Member offers</span>
+              <ul className="htlist">
+                <li>
+                  <b>Real roads.</b> Routed on OpenStreetMap for road, gravel, MTB or e-bike.
+                </li>
+                <li>
+                  <b>Your pace.</b> Distance, climbing and a time estimate at the speed you actually ride.
+                </li>
+                <li>
+                  <b>Straight to your device.</b> Download the GPX, or join free to save it.
+                </li>
+              </ul>
+              <div className="btnpair">
+                <Link href={`/loop?town=${loopTown.id}`} className="lk-coral big">
+                  Build a loop in {loopTown.name} ›
+                </Link>
+                <Link href="/plan" className="lk-ghost big">
+                  Plan a whole trip
+                </Link>
               </div>
-              <Link href="/membership" className="lk-coral big">
-                See member rewards
-              </Link>
             </div>
-            <div className="cgr">
-              <Photo src={bannerSrc(banners, "home-club", 900)} alt={bannerAlt(banners, "home-club")} />
+            <div className="htr" aria-hidden="true">
+              <div className="htstat">
+                <span>Distance</span>
+                <b>you choose</b>
+              </div>
+              <div className="htstat">
+                <span>Climbing</span>
+                <b>shown</b>
+              </div>
+              <div className="htstat">
+                <span>Your time</span>
+                <b>at your pace</b>
+              </div>
+              <div className="htstat">
+                <span>GPX</span>
+                <b>one tap</b>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* PARTNERS */}
-      <div className="sec2 alt" id="partners">
+      {/* WHY TRUST IT */}
+      <div className="sec2 alt" id="trust">
         <div className="in">
-          <div className="kick">For partners</div>
-          <div className="h2">Run a business riders love?</div>
-          <div className="lead">
-            Cafés, bike shops, stays, brands, tourism boards and travel partners — reach riders who actually go. Enquire and
-            we’ll show you the rest.
+          <div className="kick">Why trust the rankings</div>
+          <div className="h2">Nothing here is for sale.</div>
+          <div className="trustgrid">
+            <div>
+              <b>No paid placements, ever.</b>
+              <p>A town’s rank comes from its score. Partners can’t buy a position on the leaderboard.</p>
+            </div>
+            <div>
+              <b>Every score is labelled.</b>
+              <p>
+                ✎ is our research. ★ is riders. You always see which one a town is ranked on — and riders take over at{" "}
+                {RIDER_THRESHOLD} reviews.
+              </p>
+            </div>
+            <div>
+              <b>Verified rides count double.</b>
+              <p>Connect Strava and we check you actually rode there — rolling out as Strava approves us. Recent reviews count for more than old ones.</p>
+            </div>
+            <div>
+              <b>Checked, not scraped.</b>
+              <p>Events are checked against the organiser’s own site. Photos are what they say they are, and credited.</p>
+            </div>
           </div>
-          <div style={{ textAlign: "center", marginTop: 6 }}>
-            <Link href="/partners" className="lk-coral big">
-              🤝 Enquire to partner ›
+          <div style={{ textAlign: "center", marginTop: 18 }}>
+            <Link href="/how-rankings-work" className="lk-ghost big">
+              How rankings work
             </Link>
           </div>
         </div>
       </div>
 
-      {/* FINAL CTA */}
+      {/* ONE INVITATION */}
       <div className="sec2 alt" style={{ paddingTop: 0 }}>
         <div className="in">
           <div className="finalcta">
-            <h2>Get amongst it.</h2>
-            <p>Find your town, find your people, and help build the most honest rankings in cycling. Free, obviously.</p>
-            <Link href="/join" className="lk-coral big">
-              Join the bunch
-            </Link>
+            <h2>Rode somewhere good?</h2>
+            <p>
+              Join free to save towns and trips, and review the places you’ve ridden. Your reviews are how a town’s score
+              stops being ours and starts being riders’.
+            </p>
+            <div className="fcbtns">
+              <Link href="/join" className="lk-coral big">
+                Join free
+              </Link>
+              <Link href="/membership" className="lk-ghost big fcghost">
+                Membership &amp; rewards
+              </Link>
+            </div>
+            <p className="finalsub">
+              Run a café, shop, stay or tour riders visit? <Link href="/partners">Partner with us ›</Link>
+            </p>
           </div>
         </div>
       </div>

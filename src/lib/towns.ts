@@ -192,3 +192,9 @@ export function gmaps(q: string): string {
 export function money(cur: string, n: number): string {
   return (cur || "$") + Number(n).toLocaleString();
 }
+
+/** "Victoria · Australia", but "Taiwan" rather than "Taiwan · Taiwan" when region and country are the same. */
+export function placeLine(region: string | null | undefined, country: string, sep = " · "): string {
+  const r = (region || "").trim();
+  return r && r.toLowerCase() !== country.trim().toLowerCase() ? `${r}${sep}${country}` : country;
+}

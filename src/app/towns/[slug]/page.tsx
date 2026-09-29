@@ -36,6 +36,7 @@ import {
   type ScoreDims,
   type Town,
   type WhenInfo,
+  placeLine,
 } from "@/lib/towns";
 
 export const dynamicParams = true;
@@ -57,7 +58,12 @@ export async function generateMetadata({ params }: PageProps<"/towns/[slug]">): 
     };
   }
   const l = c.lite.find((x) => x.slug === slug);
-  return l ? { title: `${l.name} — Cycletown`, alternates: alternatesFor(`/towns/${l.slug}`) } : {};
+  // Preview pages carry a name and a stock photo, nothing more. Google treats large numbers of
+  // near-identical template pages as low quality, and that judgement lands on the whole domain —
+  // so they stay out of the index until each has a real guide.
+  return l
+    ? { title: `${l.name} — Cycletown`, alternates: alternatesFor(`/towns/${l.slug}`), robots: { index: false, follow: true } }
+    : {};
 }
 
 /* ---------- helpers ---------- */
@@ -128,7 +134,6 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
               <Link href="/">Cycletowns</Link> › {t.region} › <b>{t.name}</b>
             </div>
             <div className="awards">
-              <span className="award alt">#{rk} ranked Cycletown</span>
               {t.tags.slice(0, 3).map((x) => (
                 <span className="award" key={x}>
                   {x}
@@ -147,7 +152,7 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
                   : `★ riders — ${eff.count} of ${REVIEWS_TO_TAKE_OVER} reviews`}
               </span>
               <span className="sc">
-                {t.flag} {t.region} · {t.country}
+                {t.flag} {placeLine(t.region, t.country)}
               </span>
               <span className="sc">{plural(t.routes.length, "route")} · {plural(t.cafes.length, "café")} · {plural(t.shops.length, "shop")}</span>
             </div>
@@ -155,7 +160,7 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
               <Link href={`/plan?town=${t.id}`} className="lk-coral big">
                 ✨ Plan my trip here
               </Link>
-              <Link href={`/loop?town=${t.id}`} className="lk-ghost big">
+              <Link href={`/loop?town=${t.id}`} className="lk-ghost big onphoto">
                 🔁 Build a loop
               </Link>
               <SaveButton id={t.id} light userId={me?.id ?? null} />
@@ -397,7 +402,7 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
       {/* CAFÉS / SHOPS / THINGS */}
       <SectionCarousel
         title="Best café stops"
-        sub={`${plural(t.cafes.length, "café")}, rider-rated`}
+        sub={`${plural(t.cafes.length, "café")}, researched by us`}
         items={t.cafes.map((p) => ({ key: p.n, node: <CafeCard t={t} p={p} /> }))}
       />
       <SectionCarousel
@@ -507,7 +512,7 @@ async function LiteTownPage({ c, slug, userId }: { c: Catalog; slug: string; use
             <h1>{l.name}</h1>
             <div className="meta">
               <span className="sc">
-                {l.flag} {l.region} · {l.country}
+                {l.flag} {placeLine(l.region, l.country)}
               </span>
               <span className="sc">Guide in progress</span>
             </div>
@@ -520,12 +525,12 @@ async function LiteTownPage({ c, slug, userId }: { c: Catalog; slug: string; use
             <div className="cgtag">On our radar</div>
             <h2>{l.name} is on the Cycletowns list — the full guide is coming.</h2>
             <p>
-              We’re building out routes, café stops, bike shops and rider reviews for {l.name}. Know it well? Join free and be
-              the first to add the local intel that makes a Cycletown.
+              We’re researching routes, café stops and bike shops for {l.name}. Save it and it’ll be in your list when the guide
+              lands. Know it well? Tell us what belongs in it.
             </p>
             <div className="wbar">
-              <Link href={`/join?town=${slug}`} className="lk-coral big">
-                Help build {l.name}
+              <Link href="/contact" className="lk-coral big">
+                Suggest what to include
               </Link>
               <SaveButton id={slug} light userId={userId} />
             </div>
