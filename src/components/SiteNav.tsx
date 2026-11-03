@@ -21,6 +21,7 @@ const PRIMARY: [key: MessageKey, href: string][] = [
   ["nav.routes", "/loop"],
   ["nav.events", "/events"],
   ["nav.news", "/news"],
+  ["nav.ask", "/ask"],
 ];
 
 const SECONDARY: [key: MessageKey, href: string][] = [

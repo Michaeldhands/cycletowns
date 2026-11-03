@@ -57,6 +57,10 @@ environment variables and the password manager, nowhere else.
 | `STRIPE_WEBHOOK_SECRET` | **yes** | Functions | Stripe → the webhook destination → signing secret |
 | `ORS_API_KEY` | **yes** | Functions | openrouteservice.org account. Same key works on the new host |
 | `ORS_BASE_URL` | no | All | Optional override. Only set it if HeiGIT move the endpoint again |
+| `ANTHROPIC_API_KEY` | **yes** | Functions | console.anthropic.com → API keys. Switches on Ask Cycletowns (`/ask`); without it the page says it's coming. Set a monthly spend limit in the console |
+| `ASK_MODEL` | no | All | Optional. Defaults to `claude-haiku-5-5` — fast and cheap. Change only to trial a different model |
+| `ASK_LIMIT_ANON` / `ASK_LIMIT_RIDER` / `ASK_LIMIT_INSIDER` | no | All | Optional daily questions per guest / free rider / Insider. Defaults 8 / 30 / 150 |
+| `ASK_DAILY_CAP` | no | All | Optional ceiling across everyone per day. Default 1500. The bill's backstop |
 | `NEXT_PUBLIC_SITE_URL` | no | All | `https://cycletowns.com` |
 | `STRAVA_CLIENT_ID` | no | All | Strava → Settings → My API Application |
 | `STRAVA_CLIENT_SECRET` | **yes** | Functions | Same page. Without both, ride verification hides itself and reviews still publish |

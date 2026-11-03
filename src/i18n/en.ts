@@ -18,6 +18,7 @@ export const en = {
     towns: "Towns",
     rankings: "Rankings",
     routes: "Build a loop",
+    ask: "Ask",
     events: "Events",
     news: "News",
     feed: "Feed",

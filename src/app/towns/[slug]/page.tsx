@@ -163,6 +163,11 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
               <Link href={`/loop?town=${t.id}`} className="lk-ghost big onphoto">
                 🔁 Build a loop
               </Link>
+              {/victoria/i.test(t.region) && t.country === "Australia" && (
+                <Link href={`/ask?q=${encodeURIComponent(`What should I ride in ${t.name}?`)}`} className="lk-ghost big onphoto">
+                  💬 Ask about {t.name}
+                </Link>
+              )}
               <SaveButton id={t.id} light userId={me?.id ?? null} />
             </div>
           </div>

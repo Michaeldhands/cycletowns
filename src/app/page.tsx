@@ -47,6 +47,9 @@ export default async function Home() {
               The world’s best <b>Cycletowns</b> — researched by us, then ranked by the riders who’ve been there.
             </div>
             <HeroSearch />
+            <div className="heroask">
+              Or just ask: <Link href="/ask?q=Where%20should%20I%20ride%20in%20Victoria%20this%20month%3F">“where should I ride in Victoria this month?” ›</Link>
+            </div>
             <div className="btns">
               <Link href="/towns" className="lk-coral big">
                 Explore towns

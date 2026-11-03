@@ -9,7 +9,7 @@ export default function Page() {
   return (
     <ProsePage kick="Legal" title="Privacy policy" lead="What we collect, why we collect it, and how to get rid of it.">
       <div className="wprose">
-        <p><b>Last updated:</b> 3 September 2026</p>
+        <p><b>Last updated:</b> 3 November 2026</p>
 
         <p>
           Cycletowns is operated by <b>Sport2040</b> (ABN 73 680 648 855), based in Australia. This policy explains what personal information the site collects,
@@ -65,6 +65,21 @@ export default function Page() {
           will have a working unsubscribe link.
         </p>
 
+        <h3>Ask Cycletowns</h3>
+        <p>
+          Ask Cycletowns is a ride concierge built on an AI model from Anthropic. When you ask it something, your
+          question and the conversation so far are sent to Anthropic to generate the answer, together with what we
+          know about how you ride if you are signed in. Anthropic processes this to provide the service and, under its
+          commercial terms, does not use it to train its models. We do not store the conversations themselves.
+        </p>
+        <p>
+          If you are signed in and tell it something lasting about your riding — your discipline, pace, home base — it
+          may save that as a short note so later answers start from it. You can see and delete every note at{" "}
+          <a href="/account/memory">What Ask remembers</a>. We don&rsquo;t save health or other sensitive details. We
+          also count how many questions each person asks per day, to keep the service affordable, and record anonymous
+          topics (which town, discipline or month was asked about) with no link to you, to understand demand.
+        </p>
+
         <h3>Cookies</h3>
         <p>
           We set cookies for one reason: to keep you signed in and to complete the sign-in process securely. There are
@@ -79,6 +94,8 @@ export default function Page() {
           <li><b>Stripe</b> — payments and subscriptions, if you become a member.</li>
           <li><b>Google</b> — only if you choose to sign in with Google.</li>
           <li><b>Resend</b> — delivery of sign-in and account emails.</li>
+          <li><b>Anthropic</b> — the AI model behind Ask Cycletowns, which receives your questions to answer them.</li>
+          <li><b>OpenStreetMap Nominatim</b> — finding a start point when you ask Ask Cycletowns for a loop from a named place.</li>
           <li>
             <b>OpenRouteService and OpenStreetMap</b> — building loop routes and drawing maps. When you build a loop, the
             start point and distance are sent to OpenRouteService. This is not tied to your account, and we do not send
