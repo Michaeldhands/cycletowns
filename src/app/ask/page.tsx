@@ -26,7 +26,7 @@ export default async function AskPage({ searchParams }: PageProps<"/ask">) {
             Tell it how you ride and what you&rsquo;re after. It answers from our researched guides, builds loops on real
             roads and plans the days — and says so when it doesn&rsquo;t know.
           </div>
-          <AskConcierge enabled={hasAsk()} signedIn={Boolean(me)} initial={q} />
+          <AskConcierge enabled={hasAsk()} signedIn={Boolean(me)} initial={q} autoSend={Boolean(q) && sp.go === "1"} />
         </div>
       </div>
       <Footer />

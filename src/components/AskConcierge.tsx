@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
 import type { AskEvent, AskTurn, Card, EventLite, LoopCard, PlanCard, TownCardData, TownGuideCard } from "@/lib/ask/cards";
 import { elevationPath, loopGrade, prettyHours, toGpx } from "@/lib/loops";
+import { starters as seasonalStarters } from "@/lib/ask/starters";
 
 /* The Ask Cycletowns panel. The conversation lives in this component's state only — reload and
    it's gone, which is the honest default until riders choose otherwise. */
@@ -10,13 +11,6 @@ import { elevationPath, loopGrade, prettyHours, toGpx } from "@/lib/loops";
 type Part = { kind: "text"; text: string } | { kind: "card"; card: Card };
 type Msg = { role: "user" | "assistant"; parts: Part[] };
 
-const STARTERS = [
-  "Where should I ride in Victoria this autumn?",
-  "A gravel weekend away from Melbourne",
-  "What events are coming up in the next three months?",
-  "Plan three days in Bright for a strong road rider",
-  "A 60 km road loop from Daylesford",
-];
 
 const msgText = (m: Msg) => m.parts.map((p) => (p.kind === "text" ? p.text : cardSummary(p.card))).join("").trim();
 
@@ -32,9 +26,24 @@ function cardSummary(c: Card): string {
   }
 }
 
-export function AskConcierge({ enabled, signedIn, initial }: { enabled: boolean; signedIn: boolean; initial?: string }) {
+export type AskProps = {
+  enabled: boolean;
+  signedIn: boolean;
+  /** Text to start with. Sent straight away when `autoSend` is true, otherwise left in the box. */
+  initial?: string;
+  autoSend?: boolean;
+  /** A question pushed in from outside (the hero box, "Ask about Bright"). `n` changes each time. */
+  pending?: { q: string; n: number } | null;
+  starters?: string[];
+  greeting?: string | null;
+  compact?: boolean;
+};
+
+export function AskConcierge({ enabled, signedIn, initial, autoSend, pending, starters, greeting, compact }: AskProps) {
   const [msgs, setMsgs] = useState<Msg[]>([]);
-  const [input, setInput] = useState(initial || "");
+  const [input, setInput] = useState(autoSend ? "" : initial || "");
+  const [chips] = useState(() => starters || seasonalStarters());
+  const sent = useRef<number | string | null>(null);
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -43,6 +52,17 @@ export function AskConcierge({ enabled, signedIn, initial }: { enabled: boolean;
   useEffect(() => {
     end.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [msgs, status]);
+
+  // Questions that arrive from elsewhere on the page. The ref stops the same one being sent twice.
+  useEffect(() => {
+    const q = pending?.q || (autoSend ? initial : undefined);
+    const key = pending ? pending.n : autoSend ? "initial" : null;
+    if (!q || key === null || sent.current === key) return;
+    sent.current = key;
+    const t = setTimeout(() => ask(q), 0);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pending?.n, autoSend, initial]);
 
   async function ask(question: string) {
     const q = question.trim();
@@ -113,12 +133,13 @@ export function AskConcierge({ enabled, signedIn, initial }: { enabled: boolean;
   }
 
   return (
-    <div className="ask">
+    <div className={"ask" + (compact ? " compact" : "")}>
       {msgs.length === 0 && (
         <div className="askstart">
+          {greeting && <p className="askgreet">{greeting}</p>}
           <p>Ask about where to ride, what to enter, or how to spend a weekend on the bike. Victoria for now.</p>
           <div className="askchips">
-            {STARTERS.map((s) => (
+            {chips.map((s) => (
               <button key={s} type="button" className="askchip" onClick={() => ask(s)}>{s}</button>
             ))}
           </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ServiceWorker } from "@/components/ServiceWorker";
+import { AskDock } from "@/components/AskDock";
 import { DEFAULT_LOCALE, HTML_LANG } from "@/lib/i18n";
 import { siteUrl } from "@/lib/site";
 
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="lp">
         {children}
+        <AskDock />
         <ServiceWorker />
       </body>
     </html>

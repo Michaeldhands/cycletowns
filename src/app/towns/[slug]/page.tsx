@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { alternatesFor } from "@/lib/i18n";
 import { Suspense } from "react";
 import Link from "next/link";
+import { AskButton } from "@/components/AskButton";
 import { notFound } from "next/navigation";
 import { TopBar } from "@/components/SiteNav";
 import { Footer } from "@/components/Footer";
@@ -164,9 +165,9 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
                 🔁 Build a loop
               </Link>
               {/victoria/i.test(t.region) && t.country === "Australia" && (
-                <Link href={`/ask?q=${encodeURIComponent(`What should I ride in ${t.name}?`)}`} className="lk-ghost big onphoto">
+                <AskButton q={`What should I ride in ${t.name}?`} className="lk-ghost big onphoto">
                   💬 Ask about {t.name}
-                </Link>
+                </AskButton>
               )}
               <SaveButton id={t.id} light userId={me?.id ?? null} />
             </div>

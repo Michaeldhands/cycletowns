@@ -6,7 +6,8 @@ import { loadBanners } from "@/lib/banners-data";
 import { LpCarousel } from "@/components/Carousel";
 import { TownCard } from "@/components/Cards";
 import { Photo } from "@/components/Photo";
-import { HeroSearch } from "@/components/HeroSearch";
+import { HeroAsk } from "@/components/HeroAsk";
+import { starters } from "@/lib/ask/starters";
 import { CAT_DEFS } from "@/lib/towns";
 import { loadArticles, loadCatalog, rankTowns } from "@/lib/content";
 import { fetchAllScores } from "@/lib/reviews";
@@ -44,12 +45,10 @@ export default async function Home() {
               next great ride.
             </h1>
             <div className="lede">
-              The world’s best <b>Cycletowns</b> — researched by us, then ranked by the riders who’ve been there.
+              The world’s best <b>Cycletowns</b> — researched by us, then ranked by the riders who’ve been there. Ask
+              where to ride in Victoria, and get a plan back.
             </div>
-            <HeroSearch />
-            <div className="heroask">
-              Or just ask: <Link href="/ask?q=Where%20should%20I%20ride%20in%20Victoria%20this%20month%3F">“where should I ride in Victoria this month?” ›</Link>
-            </div>
+            <HeroAsk chips={starters().slice(0, 3)} />
             <div className="btns">
               <Link href="/towns" className="lk-coral big">
                 Explore towns
