@@ -19,11 +19,13 @@ import { currentUser } from "@/lib/supabase/server";
 import { eventsForTown } from "@/lib/events";
 import { loadEvents } from "@/lib/events-data";
 import { EventCard } from "@/components/EventCards";
-import { REVIEWS_TO_TAKE_OVER, effectiveScore, fetchAllScores, fetchTownReviews } from "@/lib/reviews";
+import { fetchTownReviews } from "@/lib/reviews";
+import { CRITERIA, DISTINCTIONS, distinctionOf } from "@/lib/distinctions";
+import { Distinction } from "@/components/Distinction";
 import { fetchFeed, fetchTownGroups } from "@/lib/community";
 import { isConnected } from "@/lib/strava-server";
 import { hasStrava } from "@/lib/strava";
-import { loadCatalog, rankIn, rankTowns, type Catalog } from "@/lib/content";
+import { loadCatalog, rankTowns, type Catalog } from "@/lib/content";
 import { PostCard, PostComposer } from "@/components/Community";
 import { photoURL, ridePic, townHero, townImages } from "@/lib/images";
 import {
@@ -95,7 +97,6 @@ function DimBar({ label, v }: { label: string; v: number }) {
       <span className="dt">
         <i style={{ width: `${(v / 5) * 100}%` }} />
       </span>
-      <span className="dv">{v.toFixed(1)}</span>
     </div>
   );
 }
@@ -107,25 +108,24 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
   const t = c.towns.find((x) => x.id === slug);
   if (!t) return <LiteTownPage c={c} slug={slug} userId={me?.id ?? null} />;
 
-  const [{ reviews, score }, groups, posts, scores] = await Promise.all([fetchTownReviews(t.id), fetchTownGroups(t.id), fetchFeed({ townId: t.id, limit: 6 }), fetchAllScores()]);
-  const eff = effectiveScore(t, score);
+  const [{ reviews, score }, groups, posts] = await Promise.all([fetchTownReviews(t.id), fetchTownGroups(t.id), fetchFeed({ townId: t.id, limit: 6 })]);
+  const dist = distinctionOf(t);
+  const riders = score && score.review_count > 0 ? score : null;
   const mine = me ? reviews.find((r) => r.user_id === me.id) : undefined;
   const stravaOn = hasStrava() && Boolean(me) && Boolean(mine);
   const stravaConnected = stravaOn && me ? await isConnected(me.id) : false;
   const imgs = townImages(t);
-  const rk = rankIn(c, t.id, scores);
   const geo = c.geo[t.id];
   const w = whenFor(c, t);
   const events = eventsForTown(await loadEvents(), t.id);
   const seedo = c.seeDo[t.id] || [];
-  const dims = Object.keys(DIM_LABELS) as (keyof ScoreDims)[];
-  const related = rankTowns(c, scores).filter((x) => x.id !== t.id && regionOf(x.country) === regionOf(t.country)).slice(0, 4);
+  const related = rankTowns(c).filter((x) => x.id !== t.id && regionOf(x.country) === regionOf(t.country)).slice(0, 4);
   const cat = t.tags[0]?.toLowerCase() || "road";
   const more = related.length >= 2 ? related : c.towns.slice().sort((a, b) => catScore(b, cat) - catScore(a, cat)).filter((x) => x.id !== t.id).slice(0, 4);
 
   return (
     <>
-      <TopBar back={{ href: "/rankings", label: "Rankings" }} />
+      <TopBar back={{ href: "/rankings", label: "The guide" }} />
 
       <div className="whero">
         <Photo src={imgs.length ? photoURL(imgs[0], 1400) : townHero(t, 1400)} alt={t.name} />
@@ -143,15 +143,12 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
             </div>
             <h1>{t.name}</h1>
             <div className="meta">
-              <span className="rk">#{rk} ranked</span>
-              <span className="sc" title="Our editorial score, set at launch from published route, café and safety research">
-                ✎ {t.score.toFixed(1)} editorial
-              </span>
-              <span className="sc" title={`Built from rider reviews once a town has ${REVIEWS_TO_TAKE_OVER}`}>
-                {eff.source === "riders"
-                  ? `★ ${eff.score.toFixed(1)} riders · ${plural(eff.count, "review")}`
-                  : `★ riders — ${eff.count} of ${REVIEWS_TO_TAKE_OVER} reviews`}
-              </span>
+              <Distinction level={dist.level} status={dist.status} variant="onphoto" />
+              {riders && (
+                <span className="sc" title="Riders say — kept separate from the guide's distinction">
+                  Riders say ★ {riders.score.toFixed(1)} · {plural(riders.review_count, "review")}
+                </span>
+              )}
               <span className="sc">
                 {t.flag} {placeLine(t.region, t.country)}
               </span>
@@ -201,15 +198,17 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
           </div>
           <div className="wscorebox" style={{ maxWidth: "none" }}>
             <h3 style={{ fontSize: 14, fontWeight: 800 }}>
-              Why {t.name} sits at #{rk}
+              {DISTINCTIONS[dist.level].name} — {DISTINCTIONS[dist.level].short.toLowerCase()}
             </h3>
-            <div className="csub" style={{ color: "var(--grey-m)", fontSize: 12, margin: "2px 0 8px" }}>
-              {eff.source === "riders"
-                ? `Ranked on the rider score — built from ${plural(eff.count, "published review")}.`
-                : `Ranked on our editorial score until riders take over at ${REVIEWS_TO_TAKE_OVER} reviews${eff.count ? ` (${plural(eff.count, "review")} so far)` : ""}. It is research, not riders — so treat it as a starting point.`}
+            <div className="csub" style={{ color: "var(--grey-m)", fontSize: 12.5, margin: "2px 0 10px", lineHeight: 1.5 }}>
+              {DISTINCTIONS[dist.level].line}{" "}
+              {dist.status === "inspected"
+                ? `Confirmed by an anonymous inspection${t.inspectedAt ? ` (${new Date(t.inspectedAt).toLocaleDateString("en-AU", { month: "long", year: "numeric" })})` : ""}.`
+                : "Provisional — set from desk research until one of our inspectors rides here, unannounced and at our expense."}{" "}
+              <Link href="/how-rankings-work">How the guide works ›</Link>
             </div>
-            {dims.map((k) => (
-              <DimBar key={k} label={DIM_LABELS[k][1]} v={eff.dims[k]} />
+            {CRITERIA.map((k) => (
+              <DimBar key={k.dim} label={k.name} v={t.scoreDims[k.dim]} />
             ))}
             <div style={{ marginTop: 12 }}>
               <a href="#review" className="lk-coral" style={{ fontSize: 13 }}>
@@ -428,15 +427,15 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
       <div className="wsec" id="review">
         <div className="wh">
           <div>
-            <h2>Rider reviews</h2>
-            <span className="wsub">{reviews.length ? `${plural(eff.count, "honest review")} from riders who’ve ridden here` : "honest, from riders who’ve actually ridden here"}</span>
+            <h2>Riders say</h2>
+            <span className="wsub">{riders ? `★ ${riders.score.toFixed(1)} from ${plural(riders.review_count, "rider")}. Riders have their say here — they never change the guide’s distinction.` : "From riders who’ve ridden here. Riders have their say — they never change the guide’s distinction."}</span>
           </div>
         </div>
         <div className="twocol">
           <div>
             {reviews.length === 0 && (
               <div className="unlocknote" style={{ fontSize: 14, padding: 16, marginBottom: 14 }}>
-                No reviews yet — be the first to rate {t.name}. The first {REVIEWS_TO_TAKE_OVER} reviews switch the score from editorial to rider-built.
+                No rider reviews yet — be the first to say how {t.name} rides.
               </div>
             )}
             <div className="wgrid g2">
@@ -484,7 +483,7 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
           </div>
           <div className="wgrid">
             {more.map((x) => (
-              <TownCard key={x.id} t={x} rank={rankIn(c, x.id, scores)} />
+              <TownCard key={x.id} t={x} />
             ))}
           </div>
           <div className="photocredit" style={{ margin: "26px 0 0" }}>
@@ -502,11 +501,10 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
 async function LiteTownPage({ c, slug, userId }: { c: Catalog; slug: string; userId: string | null }) {
   const l = c.lite.find((x) => x.slug === slug);
   if (!l) notFound();
-  const scores = await fetchAllScores();
-  const nearby = rankTowns(c, scores).filter((x) => regionOf(x.country) === regionOf(l.country)).slice(0, 4);
+  const nearby = rankTowns(c).filter((x) => regionOf(x.country) === regionOf(l.country)).slice(0, 4);
   return (
     <>
-      <TopBar back={{ href: "/rankings", label: "Rankings" }} />
+      <TopBar back={{ href: "/rankings", label: "The guide" }} />
       <div className="whero" style={{ height: 320 }}>
         <Photo src={ridePic(null, "lite-" + slug, 1400)} alt="Riding, not this town" />
         <div className="evheronote">Stock riding photo — not {l.name}. A real one comes with the guide.</div>
@@ -555,7 +553,7 @@ async function LiteTownPage({ c, slug, userId }: { c: Catalog; slug: string; use
           </div>
           <div className="wgrid">
             {nearby.map((x) => (
-              <TownCard key={x.id} t={x} rank={rankIn(c, x.id, scores)} />
+              <TownCard key={x.id} t={x} />
             ))}
           </div>
         </div>

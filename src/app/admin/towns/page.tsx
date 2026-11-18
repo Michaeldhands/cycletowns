@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function AdminTowns() {
   const sb = await supabaseServer();
   const [{ data: towns }, { data: scores }] = await Promise.all([
-    sb.from("towns").select("id,name,region,country,flag,status,editorial_score,updated_at").order("status").order("editorial_score", { ascending: false }),
+    sb.from("towns").select("id,name,region,country,flag,status,editorial_score,distinction,distinction_status,updated_at").order("status").order("editorial_score", { ascending: false }),
     sb.from("town_scores").select("town_id, review_count, score"),
   ]);
   const sc: Record<string, { review_count: number; score: number }> = {};
@@ -23,11 +23,11 @@ export default async function AdminTowns() {
         return (
           <div className="acard" key={st} style={{ marginBottom: 16 }}>
             <h3>{st === "full" ? "Full guides" : st === "radar" ? "On the radar" : "Hidden"} · {list.length}</h3>
-            <table className="tbl"><thead><tr><th>Town</th><th>Editorial</th><th>Rider score</th><th>Reviews</th><th>Updated</th><th></th></tr></thead><tbody>
+            <table className="tbl"><thead><tr><th>Town</th><th>Distinction</th><th>Rider score</th><th>Reviews</th><th>Updated</th><th></th></tr></thead><tbody>
               {list.map((t) => (
                 <tr key={t.id}>
                   <td><Link href={`/admin/towns/${t.id}`}><b>{t.flag} {t.name}</b></Link><small style={{ color: "var(--grey-m)" }}> · {t.region}, {t.country}</small></td>
-                  <td>{t.editorial_score != null ? `★ ${Number(t.editorial_score).toFixed(1)}` : "—"}</td>
+                  <td>{t.distinction != null ? ["Selected", "◯", "◯◯", "◯◯◯"][t.distinction] : t.editorial_score != null ? `(${Number(t.editorial_score).toFixed(1)})` : "—"}{t.distinction_status === "inspected" ? " ✓" : ""}</td>
                   <td>{sc[t.id] ? `★ ${Number(sc[t.id].score).toFixed(1)}` : "—"}</td>
                   <td>{sc[t.id]?.review_count ?? 0}</td>
                   <td>{new Date(t.updated_at).toLocaleDateString("en-AU")}</td>

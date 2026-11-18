@@ -45,7 +45,7 @@ export default function Page() {
         <h3>What is public and what is not</h3>
         <p>
           Your reviews, posts, and your display name and profile picture are visible to anyone using the site — that is
-          the point of a rider-ranked guide. Saved loops are shareable by link. <b>Your email address is never shown
+          the point of riders having their say. Saved loops are shareable by link. <b>Your email address is never shown
           publicly</b> and is not visible to other riders. Towns you save and trip plans you have not shared are
           private to your account.
         </p>

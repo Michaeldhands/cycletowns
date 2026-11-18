@@ -103,12 +103,11 @@ export function PartnerDashboardForm({ partner, enabled }: { partner: Partner; e
       <div className="wscorebox" style={{ maxWidth: "none" }}>
         <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 4 }}>Plan: {partner.plan === "claim" ? "Claimed (free)" : partner.plan[0].toUpperCase() + partner.plan.slice(1)}</h3>
         <p className="wsub" style={{ display: "block", marginBottom: 12 }}>
-          {partner.status === "enquiry" ? "We’re verifying your claim — the badge and plans unlock once it’s approved." : partner.plan === "claim" ? "Verified. Upgrade for the dashboard, audience insights and member offers." : `Active${partner.plan_until ? ` · renews ${new Date(partner.plan_until).toLocaleDateString("en-AU")}` : ""}`}
+          {partner.status === "enquiry" ? "We’re verifying your claim — the badge and plans unlock once it’s approved." : partner.plan === "claim" ? "Verified. Become a member for the dashboard and member offers." : `Active${partner.plan_until ? ` · renews ${new Date(partner.plan_until).toLocaleDateString("en-AU")}` : ""}`}
         </p>
         {partner.status === "active" && (
           <div className="wbar" style={{ alignItems: "center" }}>
             {partner.plan === "claim" && enabled && <button className="lk-coral" onClick={() => go("/api/stripe/checkout", { plan: "partner_member", partnerId: partner.id })} disabled={!!busy}>Member — A$49 / mo</button>}
-            {partner.plan !== "featured" && enabled && <button className={partner.plan === "claim" ? "lk-ghost" : "lk-coral"} onClick={() => go("/api/stripe/checkout", { plan: "partner_featured", partnerId: partner.id })} disabled={!!busy}>Featured — A$290 / mo</button>}
             {partner.plan !== "claim" && partner.stripe_customer_id && <button className="lk-ghost" onClick={() => go("/api/stripe/portal")} disabled={!!busy}>Manage billing</button>}
             {!enabled && partner.plan === "claim" && <span className="wsub">Paid plans open shortly.</span>}
             {err && <span style={{ color: "var(--coral-700)", fontSize: 13, fontWeight: 700 }}>{err}</span>}

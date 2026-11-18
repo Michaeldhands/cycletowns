@@ -88,12 +88,11 @@ export default async function Partners() {
         <div className="pkg">
           <div className="pkgcard"><div className="pn">Claim</div><div className="pp">Free</div><div className="pd">Claim your business, earn the verified bike-friendly badge and collect honest rider reviews. <Link href="/partners/claim">Claim now ›</Link></div></div>
           <div className="pkgcard feat"><div className="pn">Member</div><div className="pp">A$49<span style={{ fontSize: 13 }}>/mo</span></div><div className="pd">Your dashboard and member offers to riders — with new reporting added as it ships, at the same price.</div></div>
-          <div className="pkgcard"><div className="pn">Featured</div><div className="pp">A$290<span style={{ fontSize: 13 }}>/mo</span></div><div className="pd">Everything in Member, plus a richer, photo-led listing shown first in its section of your town guide and marked Featured. It never changes a town’s rank or a review.</div></div>
           <div className="pkgcard"><div className="pn">Brand &amp; Tourism</div><div className="pp">Custom</div><div className="pd">For brands, boards &amp; travel partners — promo codes, regional features and co-op campaigns, scoped with you.</div></div>
         </div>
         <div className="csub" style={{ textAlign: "center", margin: "16px auto 0", maxWidth: 680 }}>
-          Founding-partner pricing — locked in for partners who join before public launch. Rankings are never for sale: no tier
-          buys a town a better position, and no partner can change or remove a review.
+          Founding-partner pricing — locked in for partners who join before public launch. The guide is never for sale: no tier
+          buys a distinction, a place in the guide or prominence within it, and no partner can change or remove a review.
         </div>
       </div>
 

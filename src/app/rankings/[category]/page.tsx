@@ -7,6 +7,8 @@ import { Photo } from "@/components/Photo";
 import { ridePic } from "@/lib/images";
 import { CAT_DEFS, CAT_HERO, SCOPES, catDef, catScore, regionOf, placeLine } from "@/lib/towns";
 import { loadCatalog } from "@/lib/content";
+import { DISTINCTIONS, distinctionOf, guideOrder } from "@/lib/distinctions";
+import { Wheels } from "@/components/Distinction";
 
 export const dynamicParams = false;
 export function generateStaticParams() {
@@ -27,29 +29,30 @@ export default async function CategoryPage({ params, searchParams }: PageProps<"
   const d = catDef(category);
   if (!d) notFound();
   const c = await loadCatalog();
-  const full = c.towns.slice().sort((a, b) => catScore(b, d.id) - catScore(a, d.id)).filter((t) => scope === "all" || regionOf(t.country) === scope);
+  // Towns known for this kind of riding first, then the rest of the guide — each with its distinction.
+  const full = c.towns.slice().sort((a, b) => catScore(b, d.id) - catScore(a, d.id) || guideOrder(a, b)).filter((t) => scope === "all" || regionOf(t.country) === scope);
   // radar towns named as heroes for this category
   const heroNames = new Set(CAT_HERO[d.id] || []);
   const lite = c.lite.filter((t) => heroNames.has(t.name) && (scope === "all" || regionOf(t.country) === scope));
   const scopeName = SCOPES.find((s) => s.id === scope)?.label || "🌏 Worldwide";
   return (
     <>
-      <TopBar back={{ href: "/rankings", label: "Rankings" }} />
+      <TopBar back={{ href: "/rankings", label: "The guide" }} />
       <div className="whero" style={{ height: 300 }}>
         <Photo src={ridePic(CAT_IMG[d.id] || d.tag, "cathero-" + d.id, 1400)} />
         <div className="wov">
           <div className="winner">
             <div className="bc">
-              <Link href="/">Cycletowns</Link> › <Link href="/rankings">Rankings</Link> › <b>{d.label}</b>
+              <Link href="/">Cycletowns</Link> › <Link href="/rankings">The guide</Link> › <b>{d.label}</b>
             </div>
             <div className="awards">
               <span className="award alt">
-                {d.icon} {d.label} rankings
+                {d.icon} {d.label}
               </span>
             </div>
             <h1>The best {d.label} Cycletowns</h1>
             <div className="lede" style={{ color: "#fff", opacity: 0.95, maxWidth: 660 }}>
-              {d.blurb} Ranked for {d.label.toLowerCase()} riding — find your next trip.
+              {d.blurb} The towns in the guide for {d.label.toLowerCase()} riding.
             </div>
           </div>
         </div>
@@ -88,9 +91,9 @@ export default async function CategoryPage({ params, searchParams }: PageProps<"
       ) : (
         <div className="wsec" style={{ paddingTop: 0 }}>
           <div className="ranktbl">
-            {full.map((t, i) => (
+            {full.map((t) => (
               <Link href={`/towns/${t.id}`} className="rankrow" key={t.id} style={{ textDecoration: "none", color: "inherit" }}>
-                <span className="rnum">{i + 1}</span>
+                <span className="rnum"><Wheels level={distinctionOf(t).level} size={13} /></span>
                 <span className="rfl">{t.flag}</span>
                 <span className="rnm">
                   {t.name}
@@ -98,10 +101,8 @@ export default async function CategoryPage({ params, searchParams }: PageProps<"
                     {placeLine(t.region, t.country)}
                   </small>
                 </span>
-                <span className="catfit">
-                  {d.icon} top for {d.label.toLowerCase()}
-                </span>
-                <span className="rsc">★ {t.score.toFixed(1)}</span>
+                <span className="catfit">{(CAT_HERO[d.id] || []).includes(t.name) ? `${d.icon} known for ${d.label.toLowerCase()}` : ""}</span>
+                <span className="rsc" style={{ fontSize: 12.5 }}>{DISTINCTIONS[distinctionOf(t).level].short}</span>
                 <span className="rgo">View ›</span>
               </Link>
             ))}

@@ -8,7 +8,7 @@ import { siteUrl } from "@/lib/site";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
   title: { default: "Cycletowns — Find your next great ride", template: "%s · Cycletowns" },
-  description: "The world’s best cycling towns, ranked by the riders who rode them. Routes, café stops, bike shops, groups and trip planning.",
+  description: "The independent guide to the world’s best cycling towns. Routes, café stops, bike shops, groups and trip planning.",
   openGraph: { siteName: "Cycletowns", type: "website", locale: HTML_LANG[DEFAULT_LOCALE].replace("-", "_") },
   // Every page inherits a canonical of its own path unless it sets one. Without this, a page
   // reached with a tracking or state query string looks to a crawler like a separate URL.

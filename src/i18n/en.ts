@@ -16,7 +16,7 @@
 export const en = {
   nav: {
     towns: "Towns",
-    rankings: "Rankings",
+    rankings: "The guide",
     routes: "Build a loop",
     ask: "Ask",
     events: "Events",

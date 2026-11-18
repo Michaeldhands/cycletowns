@@ -239,7 +239,7 @@ function TownsCard({ towns }: { towns: TownCardData[] }) {
     <div className="askcards">
       {towns.map((t) => (
         <Link key={t.id} href={`/towns/${t.id}`} className="askcard">
-          <div className="ack">{t.region}{t.score != null && <span className="acs" title="Our editorial score">✎ {t.score.toFixed(1)}</span>}</div>
+          <div className="ack">{t.region}{t.distinction && <span className="acs" title="Its distinction in the guide">{t.distinction}</span>}</div>
           <div className="acn">{t.name}</div>
           <div className="acd">{t.blurb}</div>
           <div className="actags">{t.tags.map((x) => <span key={x}>{x}</span>)}</div>
@@ -255,7 +255,7 @@ function TownCardView({ t }: { t: TownGuideCard }) {
       <div className="aph">
         <div>
           <div className="acn">{t.name}</div>
-          <div className="ack">Our editorial score ✎ {t.score.toFixed(1)}</div>
+          <div className="ack">{t.distinction}</div>
           {t.best && <div className="acd" style={{ marginTop: 4 }}>Best riding: {t.best}</div>}
         </div>
         <Link href={`/towns/${t.id}`} className="lk-ghost">Full guide ›</Link>

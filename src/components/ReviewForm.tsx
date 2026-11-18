@@ -20,7 +20,7 @@ function Stars({ value, onChange }: { value: number; onChange: (v: number) => vo
   );
 }
 
-/** Rate a town on the five Cyclist Score dimensions. One review per rider per town (editing replaces it). */
+/** Rate a town on the five things the guide judges. One review per rider per town (editing replaces it). */
 export function ReviewForm({ townId, townName, userId, existing }: { townId: string; townName: string; userId: string | null; existing?: Partial<Record<keyof ScoreDims, number>> & { body?: string; ride_type?: string | null } }) {
   const router = useRouter();
   const [dims, setDims] = useState<Record<keyof ScoreDims, number>>({
@@ -57,7 +57,7 @@ export function ReviewForm({ townId, townName, userId, existing }: { townId: str
   if (state === "done")
     return (
       <div className="unlocknote" style={{ fontSize: 14, padding: 16 }}>
-        ⭐ Thanks — your review of {townName} is live and counts toward its Cyclist Score.
+        ⭐ Thanks — your review of {townName} is live and now part of what riders say about it.
       </div>
     );
   return (

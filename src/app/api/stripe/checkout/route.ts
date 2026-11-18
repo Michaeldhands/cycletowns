@@ -9,6 +9,9 @@ export async function POST(req: NextRequest) {
   if (!me) return NextResponse.json({ error: "Log in first." }, { status: 401 });
   const { plan, partnerId } = (await req.json().catch(() => ({}))) as { plan?: PlanKey; partnerId?: string };
   if (!plan || !PLANS[plan]) return NextResponse.json({ error: "Unknown plan." }, { status: 400 });
+  // Featured placement was withdrawn: paid prominence sits badly with an independent guide. Existing
+  // subscriptions still map in the webhook; no new ones can start.
+  if (plan === "partner_featured") return NextResponse.json({ error: "That plan is no longer offered." }, { status: 400 });
   const isPartner = plan.startsWith("partner_");
   if (isPartner) {
     if (!partnerId) return NextResponse.json({ error: "Missing listing." }, { status: 400 });

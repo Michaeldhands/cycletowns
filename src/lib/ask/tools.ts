@@ -1,4 +1,5 @@
 import "server-only";
+import { DISTINCTIONS, distinctionOf } from "@/lib/distinctions";
 import type Anthropic from "@anthropic-ai/sdk";
 import { loadCatalog, type Catalog } from "@/lib/content";
 import { loadEvents } from "@/lib/events-data";
@@ -129,7 +130,11 @@ async function data() {
 
 const vicTowns = (c: Catalog) => c.towns.filter((t) => isVic(t.region, t.country));
 
-const townCard = (t: Town): TownCardData => ({ id: t.id, name: t.name, region: t.region, blurb: t.blurb, score: t.score, tags: t.tags.slice(0, 3), guide: true });
+const distLabel = (t: Town) => {
+  const d = distinctionOf(t);
+  return `${DISTINCTIONS[d.level].name} · ${d.status}`;
+};
+const townCard = (t: Town): TownCardData => ({ id: t.id, name: t.name, region: t.region, blurb: t.blurb, distinction: distLabel(t), tags: t.tags.slice(0, 3), guide: true });
 
 const disciplineMatches = (t: Town, d: string) => {
   if (!d || d === "any") return true;
@@ -169,9 +174,9 @@ export async function runTool(name: string, input: Record<string, unknown>, ctx:
       ctx.signal({ tool: name, discipline: d });
       return {
         result: {
-          with_full_guide: guides.map((t) => ({ id: t.id, name: t.name, blurb: t.blurb, editorial_score: t.score, tags: t.tags })),
+          with_full_guide: guides.map((t) => ({ id: t.id, name: t.name, blurb: t.blurb, distinction: distLabel(t), tags: t.tags })),
           on_radar_no_guide_yet: radar.map((l) => l.name),
-          note: "Scores are Cycletowns editorial scores until five rider reviews take over.",
+          note: "Distinctions: Selected < One Wheel (worth a ride) < Two Wheels (worth a weekend) < Three Wheels (worth the trip). Provisional = not yet inspected in person.",
         },
         card: { type: "towns", towns: guides.map(townCard) },
       };
@@ -187,7 +192,7 @@ export async function runTool(name: string, input: Record<string, unknown>, ctx:
       ctx.signal({ tool: name, town_id: t.id });
       return {
         result: {
-          id: t.id, name: t.name, blurb: t.blurb, editorial_score: t.score, tags: t.tags,
+          id: t.id, name: t.name, blurb: t.blurb, distinction: distLabel(t), tags: t.tags,
           routes: t.routes.map((r) => ({ name: r.n, note: r.note, km: r.km, climbing_m: r.vert, discipline: rideDiscipline(r) })),
           cafes: t.cafes.map((p) => ({ name: p.n, note: p.note, verified_bike_friendly: !!p.verified })),
           bike_shops: t.shops.map((p) => ({ name: p.n, note: p.note, hire: !!p.hire })),
@@ -198,7 +203,7 @@ export async function runTool(name: string, input: Record<string, unknown>, ctx:
         },
         card: {
           type: "town",
-          town: { id: t.id, name: t.name, blurb: t.blurb, score: t.score, best: w?.best, routes: t.routes.map(lite), cafes: t.cafes.map(lite), shops: t.shops.map(lite) },
+          town: { id: t.id, name: t.name, blurb: t.blurb, distinction: distLabel(t), best: w?.best, routes: t.routes.map(lite), cafes: t.cafes.map(lite), shops: t.shops.map(lite) },
         },
       };
     }

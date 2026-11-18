@@ -1,28 +1,22 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { DIM_LABELS, SCOPES, knownFor, plural, regionOf, type LiteTown, type Region, type ScoreDims, type Town, placeLine } from "@/lib/towns";
-import { REVIEWS_TO_TAKE_OVER, rankValue, type TownScore } from "@/lib/reviews-types";
+import { SCOPES, knownFor, plural, regionOf, type LiteTown, type Region, type Town, placeLine } from "@/lib/towns";
+import { CRITERIA, DISTINCTIONS, distinctionOf, guideOrder, type Level } from "@/lib/distinctions";
+import type { TownScore } from "@/lib/reviews-types";
+import { Wheels } from "./Distinction";
 
-const DIMS = Object.keys(DIM_LABELS) as (keyof ScoreDims)[];
+/* The guide, grouped by distinction — the way the Michelin Guide lists restaurants. No league
+   table inside a tier: a town either is worth the trip or it isn't. Rider reviews appear beside
+   each town as "Riders say" and never move it. */
 
-/** Leaderboard with a region filter. Full-guide towns are ranked; radar towns are listed unscored. */
 export function RankTable({ full: allFull, lite: allLite, scores = {}, initialScope = "all" }: { full: Town[]; lite: LiteTown[]; scores?: Record<string, TownScore>; initialScope?: "all" | Region }) {
   const [scope, setScope] = useState<"all" | Region>(initialScope);
   const [open, setOpen] = useState<string | null>(null);
 
-  /** Which score a town is ranked on, and what it's built from. */
-  const eff = (t: Town) => {
-    const s = scores[t.id];
-    const count = s?.review_count || 0;
-    if (s && count >= REVIEWS_TO_TAKE_OVER) {
-      return { score: Number(s.score), dims: { cafes: +s.cafes, routes: +s.routes, safety: +s.safety, climbs: +s.climbs, storage: +s.storage } as ScoreDims, riders: true, count, verified: s.verified_count || 0 };
-    }
-    return { score: t.score, dims: t.scoreDims, riders: false, count, verified: 0 };
-  };
-
-  const full = allFull.filter((t) => scope === "all" || regionOf(t.country) === scope).sort((a, b) => rankValue(b.score, scores[b.id]) - rankValue(a.score, scores[a.id]));
+  const full = allFull.filter((t) => scope === "all" || regionOf(t.country) === scope).sort(guideOrder);
   const lite = allLite.filter((t) => scope === "all" || regionOf(t.country) === scope);
+  const tiers = ([3, 2, 1, 0] as Level[]).map((lv) => ({ lv, towns: full.filter((t) => distinctionOf(t).level === lv) }));
 
   return (
     <>
@@ -34,85 +28,76 @@ export function RankTable({ full: allFull, lite: allLite, scores = {}, initialSc
           </button>
         ))}
       </div>
-      <div className="rankkey">
-        <span>
-          <b>✎ Editorial</b> — our own score, from published route, café and safety research.
-        </span>
-        <span>
-          <b>★ Riders</b> — built from riders’ published reviews, weighted towards recent and ride-verified ones. It
-          replaces the editorial score at {REVIEWS_TO_TAKE_OVER} reviews, and that is the score a town is ranked on.
-        </span>
-      </div>
-      <div className="ranktbl v2" id="rankTbl">
-        <div className="rankhead">
-          <span className="rnum">#</span>
-          <span className="rfl"></span>
-          <span className="rnm">Cycletown</span>
-          <span className="rstrength">Known for</span>
-          <span className="rsc">Score</span>
-          <span className="rmv">Rider reviews</span>
-          <span className="rgo"></span>
-        </div>
-        {full.map((t, i) => {
-          const e = eff(t);
-          const isOpen = open === t.id;
-          return (
-            <div key={t.id}>
-              <div className="rankrow lb">
-                <span className="rnum">{i + 1}</span>
-                <span className="rfl">{t.flag}</span>
-                <Link href={`/towns/${t.id}`} className="rnm" style={{ textDecoration: "none", color: "inherit" }}>
-                  {t.name}
-                  <small>{placeLine(t.region, t.country)}</small>
-                </Link>
-                <span className="rstrength">{knownFor(t)}</span>
-                <span className="rsc" title={e.riders ? "Rider score" : "Our editorial score — riders take over at " + REVIEWS_TO_TAKE_OVER + " reviews"}>
-                  {e.riders ? "★" : "✎"} {e.score.toFixed(1)}
-                  <small className="rsrc">{e.riders ? "riders" : "editorial"}</small>
-                </span>
-                <span className="rmv flat">
-                  {e.riders ? plural(e.count, "review") : `${e.count} of ${REVIEWS_TO_TAKE_OVER}`}
-                  <small>{e.riders ? (e.verified ? `${e.verified} ride-verified` : "published") : "to take over"}</small>
-                </span>
-                <button className="rgo rwhy" onClick={() => setOpen(isOpen ? null : t.id)} aria-expanded={isOpen}>
-                  {isOpen ? "Hide ▲" : "Why? ▾"}
-                </button>
-              </div>
-              {isOpen && (
-                <div className="rankwhy">
-                  <div className="rankwhyh">
-                    {e.riders
-                      ? `Ranked on the rider score — ${plural(e.count, "published review")}${e.verified ? `, ${e.verified} ride-verified` : ""}. Recent rides and verified ones count for more, and a town with more reviews is ordered ahead of a thinly-reviewed one on the same average. Our editorial score was ${t.score.toFixed(1)}.`
-                      : `Ranked on our editorial score. No rider score yet — reviews take over at ${REVIEWS_TO_TAKE_OVER}, and there ${e.count === 1 ? "is 1" : `are ${e.count}`} so far.`}
-                  </div>
-                  <div className="rankwhyg">
-                    {DIMS.map((k) => (
-                      <div className="rwd" key={k}>
-                        <span className="rwdl">
-                          {DIM_LABELS[k][0]} {DIM_LABELS[k][1]}
-                        </span>
-                        <span className="rwdbar">
-                          <i style={{ width: `${(e.dims[k] / 5) * 100}%` }} />
-                        </span>
-                        <span className="rwdv">{e.dims[k].toFixed(1)}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <Link href={`/towns/${t.id}#review`} className="rankwhyl">
-                    Ridden {t.name}? Add your score ›
-                  </Link>
-                </div>
-              )}
+
+      {tiers.map(({ lv, towns }) => (
+        <section className="tier" key={lv}>
+          <div className="tierh">
+            <Wheels level={lv} size={20} />
+            <div>
+              <h3>{DISTINCTIONS[lv].name}{lv > 0 && <span> · {DISTINCTIONS[lv].short}</span>}</h3>
+              <p>{DISTINCTIONS[lv].line}</p>
             </div>
-          );
-        })}
-        {full.length === 0 && <div className="rankrow" style={{ color: "var(--grey-m)" }}>No full guides in this region yet.</div>}
-      </div>
+          </div>
+          {towns.length === 0 ? (
+            <p className="tierempty">
+              {lv === 3
+                ? "None yet. The third wheel is only awarded after an inspection in person — and our inspections are just beginning."
+                : "None in this region yet."}
+            </p>
+          ) : (
+            <ul className="tierlist">
+              {towns.map((t) => {
+                const d = distinctionOf(t);
+                const s = scores[t.id];
+                const isOpen = open === t.id;
+                return (
+                  <li key={t.id}>
+                    <div className="tierrow">
+                      <span className="tflag">{t.flag}</span>
+                      <Link href={`/towns/${t.id}`} className="tname">
+                        {t.name}
+                        <small>{placeLine(t.region, t.country)}</small>
+                      </Link>
+                      <span className="tknown">{knownFor(t)}</span>
+                      <span className="triders" title="Riders say — published rider reviews, shown beside our verdict; they never change it">
+                        {s && s.review_count > 0 ? <>★ {Number(s.score).toFixed(1)} <small>{plural(s.review_count, "rider review")}</small></> : <small>No rider reviews yet</small>}
+                      </span>
+                      <span className="tstat">{d.status === "provisional" ? "Provisional" : "Inspected"}</span>
+                      <button className="rwhy" onClick={() => setOpen(isOpen ? null : t.id)} aria-expanded={isOpen}>
+                        {isOpen ? "Hide ▲" : "Why? ▾"}
+                      </button>
+                    </div>
+                    {isOpen && (
+                      <div className="rankwhy">
+                        <div className="rankwhyh">
+                          {d.status === "provisional"
+                            ? "A provisional distinction, from our research. It becomes final — up or down — once an inspector has ridden the town."
+                            : "Awarded after an inspection in person."}{" "}
+                          How it measures up on the five things we judge:
+                        </div>
+                        <div className="rankwhyg">
+                          {CRITERIA.map((c) => (
+                            <div className="rwd" key={c.dim}>
+                              <span className="rwdl">{c.name}</span>
+                              <span className="rwdbar"><i style={{ width: `${(t.scoreDims[c.dim] / 5) * 100}%` }} /></span>
+                            </div>
+                          ))}
+                        </div>
+                        <Link href={`/towns/${t.id}`} className="rankwhyl">Read the {t.name} guide ›</Link>
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
+      ))}
 
       {lite.length > 0 && (
         <div className="radarlist">
           <h3>On our radar · {lite.length}</h3>
-          <p>Guides in progress. Unscored until we’ve researched them — tap one for a preview.</p>
+          <p>Not in the guide yet. Researched next — tap one for what we know so far.</p>
           <div className="radarchips">
             {lite.map((t) => (
               <Link href={`/towns/${t.slug}`} key={t.slug} className="radarchip">

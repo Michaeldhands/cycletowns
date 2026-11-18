@@ -15,13 +15,14 @@ export default function About() {
         <p>
           It started with a simple frustration: the best intel about where to ride lives in riders’ heads, not on the sites
           trying to sell you a holiday. So we built the place that puts riders first — a living, global guide to the world’s
-          great cycling towns, researched by us and then ranked by the people who ride them.
+          great cycling towns, chosen and judged by us, with riders free to have their say beside it.
         </p>
         <h3>Why we’re different</h3>
         <p>
-          No paid placements, ever. Every town is scored on the five things that matter most — routes, café culture, road
-          safety, climbs and bike storage — first by us, then by the riders who’ve been there, and we never blend the two
-          into one number. <Link href="/how-rankings-work">See exactly how rankings work ›</Link>
+          No one pays for a place in the guide, ever. Every town is judged on the same five things — the riding, the climbing,
+          the roads, the stops and the welcome — and the best carry one, two or three wheels. Our inspectors ride
+          unannounced and pay their own way; until they have, a distinction is marked provisional. What riders think sits
+          beside it, never inside it. <Link href="/how-rankings-work">How the guide works ›</Link>
         </p>
         <h3>What you can do</h3>
         <p>
@@ -31,13 +32,13 @@ export default function About() {
         <h3>The community</h3>
         <p>
           Join free to contribute — review the towns you’ve ridden, and post ride reports.
-          Five rider reviews and a town’s score stops being ours and becomes riders’. Points earn you status, from Rider to
+          Points earn you status, from Rider to
           Insider to <b>Champion</b> — but status is recognition only: every rider’s review is weighted the same way.
         </p>
         <h3>For partners</h3>
         <p>
           Cafés, bike shops, stays, brands and tourism boards can partner with us to reach riders who actually go. Partners
-          never buy a place in the rankings. <Link href="/partners">Partner with us ›</Link>
+          never buy a place or a distinction in the guide. <Link href="/partners">Partner with us ›</Link>
         </p>
         <h3>The vision</h3>
         <p>
@@ -49,7 +50,7 @@ export default function About() {
       </div>
       <div className="row btnpair" style={{ gap: 10, marginTop: 20, flexWrap: "wrap" }}>
         <Link href="/towns" className="lk-coral big">Explore towns</Link>
-        <Link href="/how-rankings-work" className="lk-ghost big">How rankings work</Link>
+        <Link href="/how-rankings-work" className="lk-ghost big">How the guide works</Link>
       </div>
     </ProsePage>
   );

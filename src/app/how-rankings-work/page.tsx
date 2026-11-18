@@ -1,108 +1,101 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ProsePage } from "@/components/Prose";
-import { REVIEWS_TO_TAKE_OVER } from "@/lib/reviews-types";
+import { Wheels } from "@/components/Distinction";
+import { CRITERIA, DISTINCTIONS, type Level } from "@/lib/distinctions";
 import { VERIFY_RADIUS_KM, VERIFY_WINDOW_DAYS } from "@/lib/strava";
 
-export const metadata: Metadata = { title: "How rankings work" };
+export const metadata: Metadata = {
+  title: "How the guide works",
+  description: "Distinctions, the five things we judge, anonymous inspections and why no one can pay for a place in the Cycletowns guide.",
+};
 
-const EXAMPLE: [string, number][] = [["Cafés", 4.8], ["Routes", 4.9], ["Road safety", 4.6], ["Climbs", 4.7], ["Bike storage", 4.5]];
+const LEVELS: Level[] = [3, 2, 1, 0];
 
-export default function HowRankings() {
+export default function HowTheGuideWorks() {
   return (
     <ProsePage
-      kick="How rankings work"
-      title="Every Cycletown earns its place."
-      lead="No town can buy its place. Here is exactly how the Cyclist Score is calculated today, and what we haven't built yet."
+      kick="How the guide works"
+      title="Chosen, not bought."
+      lead="Every town in the guide is a good place to ride. The best carry a distinction. Here is how they are given — and what isn't built yet."
     >
-      <div className="wscorebox" style={{ maxWidth: "none", margin: "8px 0 6px" }}>
-        <h3 style={{ fontSize: 14, fontWeight: 800 }}>The Cyclist Score — five things that matter</h3>
-        <div className="csub" style={{ color: "var(--grey-m)", fontSize: 12, margin: "2px 0 8px" }}>An example breakdown</div>
-        {EXAMPLE.map(([l, v]) => (
-          <div className="dimrow" key={l}>
-            <span className="dl">{l}</span>
-            <span className="dt"><i style={{ width: `${(v / 5) * 100}%` }} /></span>
-            <span className="dv">{v.toFixed(1)}</span>
+      <div className="distlegend">
+        {LEVELS.map((l) => (
+          <div key={l} className="distlegend-row">
+            <span className="distlegend-mark">{l ? <Wheels level={l} size={20} /> : <span className="dist-sel">Selected</span>}</span>
+            <span>
+              <b>{DISTINCTIONS[l].name}</b> — {DISTINCTIONS[l].short.toLowerCase()}
+              <small>{DISTINCTIONS[l].line}</small>
+            </span>
           </div>
         ))}
       </div>
       <div className="wprose">
+        <h3>What we judge</h3>
+        <p>The same five things, in every town, whatever the riding:</p>
+        <ul>
+          {CRITERIA.map((c) => (
+            <li key={c.dim}>
+              <b>{c.name}.</b> {c.what}
+            </li>
+          ))}
+        </ul>
         <p>
-          Every town is scored on the same five dimensions — café culture, routes &amp; rides, road safety, climbs, and bike
-          storage. Together they capture what actually makes a town great to ride.
+          A distinction is a judgement of the whole, not a sum of the parts. We don’t publish decimal scores: the difference
+          between a 4.6 and a 4.7 is false precision, and it invites people to argue about the wrong thing.
         </p>
-        <h3>Two scores, kept apart</h3>
+
+        <h3>Inspected anonymously, at our expense</h3>
         <p>
-          A town carries an <b>editorial score</b> and, once riders have reviewed it, a <b>rider score</b>. We show both
-          separately and never blend them, so you can always see which one a town is ranked on.
+          Our inspectors ride each town as any visitor would — unannounced, booking and paying for their own rooms, coffees and
+          repairs. Nobody in town knows they are there, so nobody gets special treatment. They are paid by Cycletowns and by no
+          one else.
         </p>
         <p>
-          The <b>editorial score</b> is set by the Cycletowns team from published route data, local knowledge and riding the
-          place. It is research, not riders — a starting point, and we label it as one.
+          <b>Where we are today:</b> inspections are only just beginning, and we are recruiting inspectors. Until a town has
+          been inspected its distinction is marked <b>provisional</b> — set from desk research: published routes, local
+          knowledge and the people who ride there. The third wheel is never awarded provisionally. It has to be earned in
+          person.
+        </p>
+
+        <h3>No one pays for a distinction</h3>
+        <p>
+          Not towns, not regions, not businesses, not brands. Nobody can buy a wheel, a place in the guide, or a word of what we
+          write. Partners can advertise, and a business can claim and update its own listing — neither changes a distinction,
+          and both are labelled as what they are.
         </p>
         <p>
-          The <b>rider score</b> is built from every published review of that town. At{" "}
-          <b>{REVIEWS_TO_TAKE_OVER} reviews</b> it replaces the editorial score, and from then on that is what the town is
-          ranked on. Two things change how much a given review counts:
+          If a region or tourism body ever funds our coverage of an area — so that inspectors can get there sooner — we will
+          say so plainly on every page of that coverage. Funding can decide <i>when</i> we look. It never decides what we find.
+        </p>
+
+        <h3>Riders say</h3>
+        <p>
+          Beside every town sits what riders think of it — reviews from signed-in Cycletowns accounts, one per rider per town.
+          It is shown separately and never changes the distinction, so a town can’t be talked up (or down) into one.
         </p>
         <ul>
           <li>
-            <b>How recent it is.</b> A review’s weight halves every 18 months from the date the rider says they were
-            there. Cafés close, bike lanes open, roads get resurfaced — a score should follow.
+            <b>Recent counts for more.</b> A review’s weight halves every 18 months from when the rider was there. Cafés close,
+            roads get resurfaced.
           </li>
           <li>
-            <b>Whether the ride is verified.</b> A review with a verified ride counts twice what an unverified one does.
-            Everyone’s review still counts.
+            <b>Verified rides count double.</b> Connect Strava and we look for one of your rides starting within{" "}
+            {VERIFY_RADIUS_KM} km of the town, within {VERIFY_WINDOW_DAYS} days of the date on your review. We read the start
+            point and date and nothing else; disconnect and we delete what we kept. <i>Powered by Strava.</i>
           </li>
         </ul>
-        <h3>Ride verification</h3>
-        <p>
-          A rider can connect Strava, and we check for one of their own rides starting within {VERIFY_RADIUS_KM} km of the
-          town, within {VERIFY_WINDOW_DAYS} days of the date on their review. If we find one, the review is marked{" "}
-          <b>✓ Ride verified</b>.
-        </p>
-        <p>
-          We read each ride’s start point and date and nothing else — no routes, times, names, or anything we could show
-          to anyone. We keep that the check passed and the id of the ride that passed it; disconnect and we revoke our
-          access and delete both. <i>Powered by Strava.</i>
-        </p>
-        <h3>More reviews beat fewer</h3>
-        <p>
-          A town with sixty reviews averaging 4.5 is a safer bet than one with five averaging 4.6, and the leaderboard
-          orders them that way — on the score minus one standard error, so a thin review count is held to a higher bar.
-          This affects <i>order only</i>. The number we show you is always the weighted average the riders actually gave;
-          we never display a figure adjusted for our own confidence. For the same reason a town still on its editorial
-          score is ordered a little below its face value: evidence from riders should move a town up the board, never
-          down.
-        </p>
-        <h3>Who can review</h3>
-        <p>
-          Reviews come from signed-in Cycletowns accounts, one per rider per town, and they publish straight away. We
-          remove anything we can’t stand behind.
-        </p>
-        <h3>No pay-to-play — ever</h3>
-        <p>
-          Brands and destinations can advertise, and a business can claim and update its own listing. Neither moves a town
-          up the leaderboard, and neither ever will. Placement is earned, never sold. It’s the whole point.
-        </p>
+
         <h3>What we haven’t built yet</h3>
         <p>
-          Verification works with <b>Strava</b> only. Record on a Garmin, Wahoo or Komoot without syncing to Strava and
-          there is currently no way to verify your ride — a GPX upload is the obvious next step and isn’t built. We don’t
-          re-check on any schedule that a café or shop we list is still open. And most towns don’t yet have enough reviews
-          for the weighting above to be doing much work.
+          Ride verification works with Strava only — a GPX upload is the obvious next step and isn’t built. We don’t yet
+          re-check on a schedule that each café or shop we list is still open. And most towns are still provisional.
         </p>
-        <p>
-          The <b>Cycletowns Crown</b> — an annual World’s Best Cycletown, weighted towards the Cyclist Score with a capped
-          rider vote alongside it — is planned, not running. No crown has been awarded and no vote is open.
-        </p>
-        <p style={{ color: "var(--grey-m)" }}>
-          If we ever change how the score is calculated, this page changes with it on the same day.
-        </p>
+        <p style={{ color: "var(--grey-m)" }}>If we ever change how the guide works, this page changes with it on the same day.</p>
       </div>
       <div className="row btnpair" style={{ gap: 10, marginTop: 20, flexWrap: "wrap" }}>
-        <Link href="/rankings" className="lk-coral big">See the leaderboard</Link>
-        <Link href="/join" className="lk-ghost big">Review a town you’ve ridden</Link>
+        <Link href="/rankings" className="lk-coral big">See the guide</Link>
+        <Link href="/about" className="lk-ghost big">About Cycletowns</Link>
       </div>
     </ProsePage>
   );

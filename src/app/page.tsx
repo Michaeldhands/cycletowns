@@ -10,9 +10,9 @@ import { HeroAsk } from "@/components/HeroAsk";
 import { starters } from "@/lib/ask/starters";
 import { CAT_DEFS } from "@/lib/towns";
 import { loadArticles, loadCatalog, rankTowns } from "@/lib/content";
-import { fetchAllScores } from "@/lib/reviews";
 import { OriginalCard } from "@/components/NewsCards";
-import { REVIEWS_TO_TAKE_OVER as RIDER_THRESHOLD } from "@/lib/reviews-types";
+import { DISTINCTIONS } from "@/lib/distinctions";
+import { Wheels } from "@/components/Distinction";
 
 export const revalidate = 300;
 
@@ -24,11 +24,10 @@ export const revalidate = 300;
    one on every page), and three separate sign-up pitches saying the same thing. */
 
 export default async function Home() {
-  const [c, articles, banners, scores] = await Promise.all([loadCatalog(), loadArticles(), loadBanners(), fetchAllScores()]);
-  const ranked = rankTowns(c, scores);
+  const [c, articles, banners] = await Promise.all([loadCatalog(), loadArticles(), loadBanners()]);
+  const ranked = rankTowns(c);
   const feat = ranked.slice(0, 8);
   const loopTown = c.towns.find((t) => t.id === "bright") || ranked[0];
-  const anyRiderRanked = ranked.some((t) => (scores?.[t.id]?.review_count ?? 0) >= RIDER_THRESHOLD);
 
   return (
     <>
@@ -45,7 +44,7 @@ export default async function Home() {
               next great ride.
             </h1>
             <div className="lede">
-              The world’s best <b>Cycletowns</b> — researched by us, then ranked by the riders who’ve been there. Ask
+              The world’s best <b>Cycletowns</b> — chosen and judged independently, with riders’ views alongside. Ask
               where to ride in Victoria, and get a plan back.
             </div>
             <HeroAsk chips={starters().slice(0, 3)} />
@@ -77,22 +76,29 @@ export default async function Home() {
       {/* TOP RANKED */}
       <div className="sec2 alt" id="towns">
         <div className="in">
-          <div className="kick">The leaderboard</div>
+          <div className="kick">The guide</div>
           <div className="h2">The world’s best Cycletowns</div>
+          <div className="distkey">
+            {([1, 2, 3] as const).map((l) => (
+              <div key={l}>
+                <Wheels level={l} size={18} />
+                <b>{DISTINCTIONS[l].short}</b>
+                <span>{DISTINCTIONS[l].line.split(". ")[0]}.</span>
+              </div>
+            ))}
+          </div>
           <div className="lead">
-            {anyRiderRanked
-              ? "Ranked by riders where enough have reviewed a town, and on our own research where they haven’t yet."
-              : `Ranked on our own research for now — once a town has ${RIDER_THRESHOLD} rider reviews, their score takes over.`}{" "}
-            <span className="nowrap">✎ marks an editorial score.</span> No paid placements, ever.
+            Every town in the guide is a good place to ride. The best carry one, two or three wheels. Distinctions stay
+            provisional until our inspectors have ridden there, unannounced. No one pays for one, ever.
           </div>
           <LpCarousel>
-            {feat.map((t, i) => (
-              <TownCard key={t.id} t={t} rank={i + 1} />
+            {feat.map((t) => (
+              <TownCard key={t.id} t={t} />
             ))}
           </LpCarousel>
           <div style={{ textAlign: "center", marginTop: 20 }}>
             <Link href="/rankings" className="lk-coral big">
-              See the full leaderboard ›
+              See the whole guide ›
             </Link>
           </div>
         </div>
@@ -173,23 +179,23 @@ export default async function Home() {
       {/* WHY TRUST IT */}
       <div className="sec2 alt" id="trust">
         <div className="in">
-          <div className="kick">Why trust the rankings</div>
+          <div className="kick">Why trust the guide</div>
           <div className="h2">Nothing here is for sale.</div>
           <div className="trustgrid">
             <div>
-              <b>No paid placements, ever.</b>
-              <p>A town’s rank comes from its score. Partners can’t buy a position on the leaderboard.</p>
+              <b>No one pays for a distinction.</b>
+              <p>Not towns, not regions, not brands. Partners can’t buy a wheel, a place in the guide or a word of a review.</p>
             </div>
             <div>
-              <b>Every score is labelled.</b>
+              <b>Inspected anonymously.</b>
               <p>
-                ✎ is our research. ★ is riders. You always see which one a town is ranked on — and riders take over at{" "}
-                {RIDER_THRESHOLD} reviews.
+                Inspectors ride each town unannounced and pay their own way. Until they have, a distinction is marked
+                provisional — and the third wheel is only ever awarded in person.
               </p>
             </div>
             <div>
-              <b>Verified rides count double.</b>
-              <p>Connect Strava and we check you actually rode there — rolling out as Strava approves us. Recent reviews count for more than old ones.</p>
+              <b>Riders say, separately.</b>
+              <p>Rider reviews sit beside the guide, never inside it — so a town can’t be talked up into a distinction.</p>
             </div>
             <div>
               <b>Checked, not scraped.</b>
@@ -198,7 +204,7 @@ export default async function Home() {
           </div>
           <div style={{ textAlign: "center", marginTop: 18 }}>
             <Link href="/how-rankings-work" className="lk-ghost big">
-              How rankings work
+              How the guide works
             </Link>
           </div>
         </div>
@@ -210,8 +216,8 @@ export default async function Home() {
           <div className="finalcta">
             <h2>Rode somewhere good?</h2>
             <p>
-              Join free to save towns and trips, and review the places you’ve ridden. Your reviews are how a town’s score
-              stops being ours and starts being riders’.
+              Join free to save towns and trips, and review the places you’ve ridden. Riders say sits beside every town in
+              the guide — the honest view from the saddle.
             </p>
             <div className="fcbtns">
               <Link href="/join" className="lk-coral big">

@@ -3,12 +3,14 @@
 import { hasSupabase, supabasePublic } from "@/lib/supabase/server";
 import { LITE_TOWNS, RACES, TOWNS, TOWN_GEO, TOWN_SEEDO, TOWN_WHEN, slugify, type LiteTown, type Race, type SeeDo, type Town, type WhenInfo } from "@/lib/towns";
 import { ARTICLES, type Article } from "@/lib/news";
-import { rankValue, type TownScore } from "@/lib/reviews-types";
+import { type TownScore } from "@/lib/reviews-types";
+import { guideOrder } from "@/lib/distinctions";
 
 export type TownRow = {
   id: string; name: string; region: string; country: string; flag: string; currency: string; status: "full" | "radar" | "hidden";
   editorial_score: number | null; editorial_dims: Town["scoreDims"] | null; photo: string | null; gallery: string[]; tags: string[]; personas: string[];
   blurb: string; lat: number | null; lng: number | null; when_info: WhenInfo | null; see_do: SeeDo[] | null;
+  distinction?: number | null; distinction_status?: "provisional" | "inspected" | null; inspected_at?: string | null;
 };
 export type PlaceRow = {
   id: string; town_id: string; kind: "cafe" | "shop" | "route" | "stay" | "thing"; name: string; note: string; editorial_rating: number | null;
@@ -36,6 +38,7 @@ export function rowToTown(t: TownRow, places: PlaceRow[], verified?: Set<string>
     // top eight towns wore one picture — so fall back to the bundled photo first.
     score: Number(t.editorial_score ?? 4), photo: t.photo ?? BUNDLED_PHOTO[t.id], gallery: t.gallery?.length ? t.gallery : BUNDLED_GALLERY[t.id] || [], tags: t.tags || [], personas: t.personas || [],
     blurb: t.blurb || "", scoreDims: t.editorial_dims || { cafes: 4, routes: 4, safety: 4, climbs: 4, storage: 4 },
+    distinction: t.distinction ?? undefined, distinctionStatus: t.distinction_status ?? undefined, inspectedAt: t.inspected_at ?? undefined,
     cafes: mine.filter((p) => p.kind === "cafe").map((p) => toPlace(p, verified)),
     shops: mine.filter((p) => p.kind === "shop").map((p) => toPlace(p, verified)),
     routes: mine.filter((p) => p.kind === "route").map((p) => toPlace(p, verified)),
@@ -93,12 +96,11 @@ export async function loadCatalog(): Promise<Catalog> {
 }
 
 /**
- * The one ordering, used everywhere a rank is shown. Pass the rider scores wherever you have
- * them: a town that reads "#4 ranked" on its own page and sits 7th on the leaderboard is the
- * kind of thing that costs you a reader's trust for the whole site.
+ * Guide order, used everywhere towns are listed: distinction first (the inspectors' verdict), then
+ * alphabetical. Rider reviews never move a town — they are shown beside it as "Riders say".
  */
-export const rankTowns = (c: Catalog, scores?: Record<string, TownScore>) =>
-  c.towns.slice().sort((a, b) => rankValue(b.score, scores?.[b.id]) - rankValue(a.score, scores?.[a.id]));
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const rankTowns = (c: Catalog, _scores?: Record<string, TownScore>) => c.towns.slice().sort(guideOrder);
 
 export const rankIn = (c: Catalog, id: string, scores?: Record<string, TownScore>) =>
   rankTowns(c, scores).findIndex((t) => t.id === id) + 1;

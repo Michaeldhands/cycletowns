@@ -27,6 +27,10 @@ export type Town = {
   personas: string[];
   blurb: string;
   scoreDims: ScoreDims;
+  /** The guide's distinction, 0 (Selected) to 3 wheels. Unset = derived from score. See lib/distinctions. */
+  distinction?: number;
+  distinctionStatus?: "provisional" | "inspected";
+  inspectedAt?: string;
   cafes: Place[];
   shops: Place[];
   routes: Place[];

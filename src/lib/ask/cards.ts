@@ -7,7 +7,7 @@ export type TownCardData = {
   name: string;
   region: string;
   blurb: string;
-  score: number | null;      // editorial score; null for towns without a guide yet
+  distinction: string | null; // e.g. "Two Wheels · provisional"; null for towns without a guide yet
   tags: string[];
   guide: boolean;            // false = "on our radar", no researched guide yet
 };
@@ -18,7 +18,7 @@ export type TownGuideCard = {
   id: string;
   name: string;
   blurb: string;
-  score: number;
+  distinction: string;
   best?: string;
   routes: PlaceLite[];
   cafes: PlaceLite[];

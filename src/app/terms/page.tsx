@@ -34,17 +34,17 @@ export default function Page() {
           <li>Reviews of a business you own, work for, or compete with.</li>
           <li>Anything false, abusive, harassing, or that identifies someone without their consent.</li>
           <li>Anything unlawful, or anything that infringes someone else&rsquo;s copyright.</li>
-          <li>Automated or bulk content, or anything designed to game the rankings or points.</li>
+          <li>Automated or bulk content, or anything designed to game reviews or points.</li>
         </ul>
         <p>
           We can remove content and close accounts that break these rules. We would rather explain than delete, so we
           will usually tell you why.
         </p>
 
-        <h3>Rankings and points</h3>
+        <h3>The guide and points</h3>
         <p>
-          Rankings are built from rider ratings alongside our own editorial scoring, and how that works is set out on
-          our <a href="/how-rankings-work">How rankings work</a> page. Points and rewards have no cash value, cannot be
+          Distinctions in the guide are our own editorial judgement; rider reviews are shown alongside them and do not
+          change them. How that works is set out on our <a href="/how-rankings-work">How the guide works</a> page. Points and rewards have no cash value, cannot be
           transferred or sold, and we may adjust or remove points obtained by gaming the system. We may change how
           points are earned; we will not take away points you have already fairly earned without telling you.
         </p>
@@ -60,8 +60,8 @@ export default function Page() {
 
         <h3>Partners and advertising</h3>
         <p>
-          Businesses can claim and pay for a listing. Paid placement is always labelled as such, and paying does not
-          buy a better ranking or a better rider rating.
+          Businesses can claim and pay for a listing. Anything paid for is always labelled as such, and paying never
+          buys a place in the guide, a distinction or a better rider rating.
         </p>
 
         <h3>Routes, plans and riding — read this one</h3>
@@ -90,7 +90,7 @@ export default function Page() {
 
         <h3>Our content</h3>
         <p>
-          The Cycletowns name, logo, design, editorial writing and rankings are ours. Please don&rsquo;t copy the site
+          The Cycletowns name, logo, design, editorial writing and distinctions are ours. Please don&rsquo;t copy the site
           wholesale, scrape it, or republish our guides as your own. Quoting us with a link is welcome.
         </p>
 

@@ -45,7 +45,7 @@ export function VerifyRide({ townId, townName, verified, connected }: { townId: 
         <b>Verify your ride</b>
         <span>
           Connect Strava and we’ll check for one of your own rides starting near {townName}. Verified reviews count for
-          more in the rider score. We read only the start point and date — never your routes, times or ride names — and we
+          more in what riders say. We read only the start point and date — never your routes, times or ride names — and we
           delete what we hold the moment you disconnect.
         </span>
       </div>

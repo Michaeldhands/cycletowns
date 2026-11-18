@@ -36,7 +36,7 @@ export default async function Membership() {
         <div className="wgrid">
           {[
             ["♥", "Save towns & trips", "Keep a shortlist of the places you want to ride, synced across your devices."],
-            ["⭐", "Rate what you ride", "Your reviews shape each town’s Cyclist Score. Verified riders, honest rankings."],
+            ["⭐", "Rate what you ride", "Say how each town really rides. Riders say sits beside every town in the guide."],
             ["🤝", "Groups & rides", "Join local crews and visiting bunches, and find a ride wherever you land."],
             ["📣", "The feed", "Ride reports, café finds and road intel from riders in every Cycletown."],
           ].map(([e, t, s]) => (
@@ -51,7 +51,7 @@ export default async function Membership() {
           <div className="cgl">
             <div className="cgtag">★ Insider · A$7 / month or A$80 / year</div>
             <h2>Go Insider. Back the bunch.</h2>
-            <p>Insider is how Cycletowns stays independent — no paid rankings, no selling your data. It’s mostly a way to back the site. Here’s exactly what it gets you today.</p>
+            <p>Insider is how Cycletowns stays independent — no paid distinctions, no selling your data. It’s mostly a way to back the site. Here’s exactly what it gets you today.</p>
             <div className="cgfeat">
               <span>⚡ Double points on everything</span>
               <span>★ Insider status straight away</span>
@@ -71,7 +71,7 @@ export default async function Membership() {
           {[
             ["Rider", "Free to join", "Browse everything, save trips, review towns, join groups."],
             ["Insider", "Subscribe, or earn 250 points", "Double points, and member offers as partners come on board."],
-            ["Champion", "Earn 1,000 points", "A 👑 beside your name on your reviews and posts. Recognition, not extra weight — the score counts every rider’s review the same way."],
+            ["Champion", "Earn 1,000 points", "A 👑 beside your name on your reviews and posts. Recognition, not extra weight — every rider’s review counts the same way."],
           ].map(([n, s, d], i) => (
             <div className="wcard" style={{ padding: 20, border: i === 2 ? "2px solid var(--coral)" : "1px solid var(--line)" }} key={n}>
               <div className="pcr" style={{ textAlign: "left" }}>{i === 2 ? "★ Top tier" : "Tier"}</div>

@@ -20,8 +20,7 @@ export function Footer() {
               <Logo h={36} />
             </div>
             <p>
-              Made by cyclists, for cyclists. The discovery hub for cycle tourism — every town researched by us, then ranked by
-              the riders who’ve been there.
+              Made by cyclists, for cyclists. The discovery hub for cycle tourism — every town chosen and judged by us, independently.
             </p>
             <div className="ftsoc">
               <a href="https://www.instagram.com/cycletowns" target="_blank" rel="noopener" title="Instagram @cycletowns">
@@ -38,7 +37,7 @@ export function Footer() {
           <div className="ftcol">
             <h4>Explore</h4>
             <Link href="/towns">Towns</Link>
-            <Link href="/rankings">Rankings</Link>
+            <Link href="/rankings">The guide</Link>
             <Link href="/news">News</Link>
             <Link href="/shop">Shop</Link>
             <Link href="/plan">Plan a trip</Link>
@@ -65,7 +64,7 @@ export function Footer() {
           <div className="ftcol">
             <h4>Company</h4>
             <Link href="/about">About us</Link>
-            <Link href="/how-rankings-work">How rankings work</Link>
+            <Link href="/how-rankings-work">How the guide works</Link>
             <Link href="/careers">Careers</Link>
             <Link href="/contact">Contact</Link>
           </div>

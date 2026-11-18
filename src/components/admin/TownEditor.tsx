@@ -75,7 +75,23 @@ export function TownForm({ town, isNew }: { town: TownRow; isNew?: boolean }) {
         <Field label="Country"><input value={t.country} onChange={(e) => set("country", e.target.value)} /></Field>
         <Field label="Flag emoji"><input value={t.flag} onChange={(e) => set("flag", e.target.value)} /></Field>
         <Field label="Currency symbol"><input value={t.currency} onChange={(e) => set("currency", e.target.value)} /></Field>
-        <Field label="Editorial launch score (0–5)" hint="Used until the town has 5 rider reviews">
+        <Field label="Distinction" hint="Our judgement. Three wheels only after an inspection.">
+          <select value={t.distinction ?? ""} onChange={(e) => set("distinction", e.target.value === "" ? null : Number(e.target.value))}>
+            <option value="">From research score</option>
+            <option value="0">Selected</option>
+            <option value="1">One Wheel — worth a ride</option>
+            <option value="2">Two Wheels — worth a weekend</option>
+            <option value="3">Three Wheels — worth the trip</option>
+          </select>
+        </Field>
+        <Field label="Status" hint="Inspected = ridden in person, unannounced">
+          <select value={t.distinction_status ?? "provisional"} onChange={(e) => set("distinction_status", e.target.value as "provisional" | "inspected")}>
+            <option value="provisional">Provisional</option>
+            <option value="inspected">Inspected</option>
+          </select>
+        </Field>
+        <Field label="Inspected on"><input type="date" value={t.inspected_at ?? ""} onChange={(e) => set("inspected_at", e.target.value || null)} /></Field>
+        <Field label="Research score (0–5)" hint="Internal — sets a provisional distinction, never shown">
           <input type="number" step="0.1" min="0" max="5" value={t.editorial_score ?? ""} onChange={(e) => set("editorial_score", e.target.value === "" ? null : (Number(e.target.value) as unknown as number))} />
         </Field>
         <Field label="Latitude"><input type="number" step="0.0001" value={t.lat ?? ""} onChange={(e) => set("lat", e.target.value === "" ? null : Number(e.target.value))} /></Field>

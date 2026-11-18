@@ -47,7 +47,7 @@ export default async function News() {
               ))}
             </div>
           </div>
-          <div className="nbandhd"><h3>✎ Cycletowns Originals</h3><span className="wsub">Written by our team, from the towns we rank</span></div>
+          <div className="nbandhd"><h3>✎ Cycletowns Originals</h3><span className="wsub">Written by our team, from the towns in the guide</span></div>
           <div className="newsgrid">
             {ARTICLES.map((a, i) => <NewsGridCard key={i} a={a} idx={i} />)}
           </div>
