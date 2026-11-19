@@ -9,7 +9,7 @@ export default function Page() {
   return (
     <ProsePage kick="Legal" title="Privacy policy" lead="What we collect, why we collect it, and how to get rid of it.">
       <div className="wprose">
-        <p><b>Last updated:</b> 3 November 2026</p>
+        <p><b>Last updated:</b> 19 November 2026</p>
 
         <p>
           Cycletowns is operated by <b>Sport2040</b> (ABN 73 680 648 855), based in Australia. This policy explains what personal information the site collects,
@@ -64,6 +64,28 @@ export default function Page() {
           know. We will not add you to a marketing list without asking you first, and any marketing email we do send
           will have a working unsubscribe link.
         </p>
+        <p>
+          <b>The newsletter.</b> You can subscribe without an account. We keep your email address, the page you signed
+          up from, the exact wording you agreed to, and when you confirmed — so we can show you asked to hear from us. We
+          only send it once you click the confirmation link we email you. Unsubscribe with one click from any issue; we
+          then stop sending and keep only the record that you unsubscribed, so you are never added back by mistake.
+        </p>
+
+        <h3>Ride verification with Strava</h3>
+        <p>
+          If you choose to connect Strava, we look for one of your own rides starting near a town you have reviewed,
+          around the date you gave. We read only each ride&rsquo;s start point and date — never your routes, times or
+          ride names. We keep whether the check passed and the id of the ride that passed it, plus the access tokens
+          Strava gives us to make the check. Disconnect at any time from your account page and we revoke our access and
+          delete all of it.
+        </p>
+
+        <h3>Partner enquiries</h3>
+        <p>
+          If you enquire about partnering with us or claim a business listing, we keep the details you give us — your
+          name, business, email, the type of business and town, and your message — to reply and manage the
+          relationship, including in our customer-relationship system.
+        </p>
 
         <h3>Ask Cycletowns</h3>
         <p>
@@ -93,7 +115,13 @@ export default function Page() {
           <li><b>Netlify</b> — hosting. It keeps standard server logs, including IP addresses, for security and diagnostics.</li>
           <li><b>Stripe</b> — payments and subscriptions, if you become a member.</li>
           <li><b>Google</b> — only if you choose to sign in with Google.</li>
-          <li><b>Resend</b> — delivery of sign-in and account emails.</li>
+          <li><b>Resend</b> — delivery of sign-in, account and newsletter emails.</li>
+          <li><b>Strava</b> — only if you connect it, to verify a ride for a review.</li>
+          <li><b>Attio</b> — our customer-relationship system, for partner and business enquiries.</li>
+          <li>
+            <b>Sentry</b> — error monitoring. When something breaks it receives technical details of the error. It is set
+            not to receive your email address or IP address, and it never records your screen.
+          </li>
           <li><b>Anthropic</b> — the AI model behind Ask Cycletowns, which receives your questions to answer them.</li>
           <li><b>OpenStreetMap Nominatim</b> — finding a start point when you ask Ask Cycletowns for a loop from a named place.</li>
           <li>
@@ -110,9 +138,10 @@ export default function Page() {
         <h3>How long we keep it</h3>
         <p>
           We keep your account for as long as it exists. If you delete your account we remove your profile, saved towns,
-          trip plans and loops. Reviews and posts may remain, with your name removed, because other riders&rsquo;
-          rankings depend on them — tell us if you want yours taken down entirely and we will remove them. Payment
-          records are kept for as long as Australian tax and record-keeping law requires.
+          trip plans and loops. Reviews and posts may remain, with your name removed, because they are part of
+          what riders say about a town — tell us if you want yours taken down entirely and we will remove them. Payment
+          records are kept for as long as Australian tax and record-keeping law requires. Partner enquiries are kept
+          while we are in touch, and deleted on request.
         </p>
 
         <h3>Your rights</h3>
