@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { hasSupabaseClient, supabaseBrowser } from "@/lib/supabase/client";
 import { Avatar } from "./Avatar";
 
-type Me = { name: string; avatar: string | null; points: number };
+type Me = { name: string; avatar: string | null };
 let cached: Me | null | undefined; // undefined = not loaded yet
 
-/** Log-in button for guests; avatar + points for signed-in riders. Reads the session in the browser so pages stay static. */
+/** Log-in button for guests; avatar for signed-in riders. Reads the session in the browser so pages stay static. */
 export function AccountChip({ compact = false }: { compact?: boolean }) {
   const [me, setMe] = useState<Me | null | undefined>(cached);
   useEffect(() => {
@@ -20,8 +20,8 @@ export function AccountChip({ compact = false }: { compact?: boolean }) {
         setMe(null);
         return;
       }
-      const { data: p } = await sb.from("profiles").select("display_name, avatar_url, points").eq("id", data.user.id).maybeSingle();
-      cached = { name: p?.display_name || data.user.email?.split("@")[0] || "Rider", avatar: p?.avatar_url || null, points: p?.points || 0 };
+      const { data: p } = await sb.from("profiles").select("display_name, avatar_url").eq("id", data.user.id).maybeSingle();
+      cached = { name: p?.display_name || data.user.email?.split("@")[0] || "Rider", avatar: p?.avatar_url || null };
       setMe(cached);
     };
     load();
@@ -37,7 +37,7 @@ export function AccountChip({ compact = false }: { compact?: boolean }) {
   return (
     <Link href="/account" className="savepill" style={{ textDecoration: "none", padding: "5px 12px 5px 5px" }} title={me.name}>
       <Avatar name={me.name} url={me.avatar} size={28} />
-      <span style={{ fontSize: 12.5 }}>★ {me.points}</span>
+      <span style={{ fontSize: 12.5 }}>Account</span>
     </Link>
   );
 }

@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { currentUser, supabaseServer } from "@/lib/supabase/server";
 import { PLANS, ensurePrice, hasStripe, siteUrl, stripe, type PlanKey } from "@/lib/stripe/server";
 
-/** Start a Stripe Checkout session for Insider membership. Body: { plan: "month" | "year" } */
+/** Start a Stripe Checkout session for rider membership. Body: { plan: "month" | "year" } */
 export async function POST(req: NextRequest) {
   if (!hasStripe()) return NextResponse.json({ error: "Payments aren’t switched on yet." }, { status: 503 });
   const me = await currentUser();

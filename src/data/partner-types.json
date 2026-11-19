@@ -7,12 +7,12 @@
   "now": [
    "Verified bike-friendly badge on the town guide",
    "Claim your listing and keep it accurate",
-   "Riders saving your town and reviewing it, in your dashboard",
-   "Member offers shown to Cycletowns riders"
+   "Riders saving your town and reviewing it, in your dashboard"
   ],
   "next": [
    "Listing views and enquiries",
-   "List repairs, hire or experiences"
+   "List repairs, hire or experiences",
+   "Offers shown to Cycletowns riders"
   ]
  },
  {
@@ -21,12 +21,12 @@
   "name": "Brands",
   "pitch": "Bikes, gear & apparel — reach riders while they’re planning where to ride next.",
   "now": [
-   "Member offers and promo codes shown to riders",
    "Reach riders by town and discipline"
   ],
   "next": [
    "Click and redemption reporting",
-   "Attributed sales"
+   "Attributed sales",
+   "Offers and promo codes shown to riders"
   ]
  },
  {
@@ -49,12 +49,11 @@
   "e": "🏡",
   "name": "Accommodation",
   "pitch": "Hotels, stays & B&Bs — be the obvious place for visiting riders to stay.",
-  "now": [
-   "Member offers and rates shown to riders"
-  ],
+  "now": [],
   "next": [
    "Listed on the town guide",
-   "Bookings from the trip planner"
+   "Bookings from the trip planner",
+   "Offers and rates shown to riders"
   ]
  },
  {
@@ -62,12 +61,11 @@
   "e": "✈️",
   "name": "Travel & transport",
   "pitch": "Airlines, bike transport, transfers, rail & car hire — getting riders and their bikes to the start line.",
-  "now": [
-   "Member offers shown to riders travelling with bikes"
-  ],
+  "now": [],
   "next": [
    "Offered in the trip planner at the moment of need",
-   "Bookings reporting"
+   "Bookings reporting",
+   "Offers shown to riders travelling with bikes"
   ]
  },
  {
@@ -75,12 +73,11 @@
   "e": "🧑‍🦱",
   "name": "Guides & experiences",
   "pitch": "Local guides, tour operators & clinics — fill your rides.",
-  "now": [
-   "Member offers shown to riders"
-  ],
+  "now": [],
   "next": [
    "Listed and bookable on the town guide",
-   "Ratings and bookings in your dashboard"
+   "Ratings and bookings in your dashboard",
+   "Offers shown to riders"
   ]
  },
  {
@@ -88,12 +85,11 @@
   "e": "🛡️",
   "name": "Insurance & cover",
   "pitch": "Travel insurance, bike cover & roadside — protect every ride.",
-  "now": [
-   "Member offers shown to travelling riders"
-  ],
+  "now": [],
   "next": [
    "Offered alongside trip plans",
-   "Redemption reporting"
+   "Redemption reporting",
+   "Offers shown to travelling riders"
   ]
  },
  {

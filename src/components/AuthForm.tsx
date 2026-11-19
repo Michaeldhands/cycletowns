@@ -49,7 +49,7 @@ export function AuthForm({ mode, next = "/account" }: { mode: "join" | "login"; 
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" onKeyDown={(e) => e.key === "Enter" && sendLink()} />
       </div>
       <button className="btn btn-coral" style={{ borderRadius: 13 }} onClick={sendLink} disabled={state === "busy"}>
-        {mode === "join" ? "Join free — email me a link" : "Email me a sign-in link"}
+        {mode === "join" ? "Create my free account — email me a link" : "Email me a sign-in link"}
       </button>
       {state === "error" && <div style={{ color: "var(--coral-700)", fontSize: 13, fontWeight: 700, marginTop: 8 }}>{msg}</div>}
       <p style={{ fontSize: 12, color: "var(--grey-m)", marginTop: 12, textAlign: "center" }}>No passwords. We email you a link that signs you in. By continuing you agree to our terms and privacy policy.</p>

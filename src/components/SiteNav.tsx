@@ -8,11 +8,11 @@ import { t, type MessageKey } from "@/i18n";
 /* One navigation for the whole site.
 
    It used to be two: a nine-link bar on the home page and a different set of pill buttons on
-   every inner page (with Shop and Rewards but no Rankings, Events or News). On a phone the inner
+   every inner page (with Shop but no Rankings, Events or News). On a phone the inner
    one stacked seven buttons into a 185px block that covered the town name.
 
    Five primary links, because those are the five things a first-time visitor came for. Pages
-   that are still filling up (feed, shop, offers) and the business-facing ones live in the phone
+   that are still filling up (feed, shop) and the business-facing ones live in the phone
    menu and the footer, where people who want them will find them. */
 
 const PRIMARY: [key: MessageKey, href: string][] = [

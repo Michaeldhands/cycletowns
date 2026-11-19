@@ -75,7 +75,7 @@ export default async function Partners() {
               <div className="pem">{p.e}</div>
               <h3>{clean(p.name)}</h3>
               <p>{clean(p.pitch)}</p>
-              <ul className="pnow">{p.now.map((b) => <li key={b}><span className="plive">Live</span>{clean(b)}</li>)}</ul>
+              {p.now.length > 0 ? <ul className="pnow">{p.now.map((b) => <li key={b}><span className="plive">Live</span>{clean(b)}</li>)}</ul> : <p className="wsub" style={{ display: "block", margin: "6px 0" }}>Nothing live yet — talk to us about being first.</p>}
               {p.next.length > 0 && <ul className="pnext">{p.next.map((b) => <li key={b}><span className="pnx">Next</span>{clean(b)}</li>)}</ul>}
               <div className="pbtns"><a href={`#enquire`} className="lk-coral">Enquire ›</a></div>
             </div>
@@ -87,7 +87,7 @@ export default async function Partners() {
         <div className="wh"><div><h2>Membership tiers</h2><span className="wsub">claim your spot free · become a member for the growth tools</span></div></div>
         <div className="pkg">
           <div className="pkgcard"><div className="pn">Claim</div><div className="pp">Free</div><div className="pd">Claim your business, earn the verified bike-friendly badge and collect honest rider reviews. <Link href="/partners/claim">Claim now ›</Link></div></div>
-          <div className="pkgcard feat"><div className="pn">Member</div><div className="pp">A$49<span style={{ fontSize: 13 }}>/mo</span></div><div className="pd">Your dashboard and member offers to riders — with new reporting added as it ships, at the same price.</div></div>
+          <div className="pkgcard feat"><div className="pn">Member</div><div className="pp">A$49<span style={{ fontSize: 13 }}>/mo</span></div><div className="pd">Your dashboard, with new reporting added as it ships, at the same price.</div></div>
           <div className="pkgcard"><div className="pn">Brand &amp; Tourism</div><div className="pp">Custom</div><div className="pd">For brands, boards &amp; travel partners — promo codes, regional features and co-op campaigns, scoped with you.</div></div>
         </div>
         <div className="csub" style={{ textAlign: "center", margin: "16px auto 0", maxWidth: 680 }}>

@@ -60,7 +60,7 @@ export function PartnerClaim({ userId, email, towns, places }: { userId: string 
         </>
       )}
       <div className="field"><label>Your name</label><input value={name} onChange={(e) => setName(e.target.value)} maxLength={80} /></div>
-      <button className="lk-coral big" onClick={submit} disabled={busy}>{busy ? "Sending…" : userId ? "Claim this listing" : "Continue — join free to claim"}</button>
+      <button className="lk-coral big" onClick={submit} disabled={busy}>{busy ? "Sending…" : userId ? "Claim this listing" : "Continue — sign up free to claim"}</button>
       {msg && <div style={{ color: "var(--coral-700)", fontSize: 13, fontWeight: 700, marginTop: 8 }}>{msg}</div>}
       <p style={{ fontSize: 12, color: "var(--grey-m)", marginTop: 12 }}>Claiming is free. We check every claim by hand (usually within one business day) before the verified badge goes live.</p>
     </div>
@@ -103,7 +103,7 @@ export function PartnerDashboardForm({ partner, enabled }: { partner: Partner; e
       <div className="wscorebox" style={{ maxWidth: "none" }}>
         <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 4 }}>Plan: {partner.plan === "claim" ? "Claimed (free)" : partner.plan[0].toUpperCase() + partner.plan.slice(1)}</h3>
         <p className="wsub" style={{ display: "block", marginBottom: 12 }}>
-          {partner.status === "enquiry" ? "We’re verifying your claim — the badge and plans unlock once it’s approved." : partner.plan === "claim" ? "Verified. Become a member for the dashboard and member offers." : `Active${partner.plan_until ? ` · renews ${new Date(partner.plan_until).toLocaleDateString("en-AU")}` : ""}`}
+          {partner.status === "enquiry" ? "We’re verifying your claim — the badge and plans unlock once it’s approved." : partner.plan === "claim" ? "Verified. Become a member for the dashboard." : `Active${partner.plan_until ? ` · renews ${new Date(partner.plan_until).toLocaleDateString("en-AU")}` : ""}`}
         </p>
         {partner.status === "active" && (
           <div className="wbar" style={{ alignItems: "center" }}>

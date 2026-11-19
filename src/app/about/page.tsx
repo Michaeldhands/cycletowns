@@ -31,9 +31,9 @@ export default function About() {
         </p>
         <h3>The community</h3>
         <p>
-          Join free to contribute — review the towns you’ve ridden, and post ride reports.
-          Points earn you status, from Rider to
-          Insider to <b>Champion</b> — but status is recognition only: every rider’s review is weighted the same way.
+          Subscribe free for the newsletter, or create a free account to review the towns you’ve ridden and post ride
+          reports. Riders who want to back the work can <Link href="/membership#join">join as members</Link> — membership
+          pays for inspections no town can buy, and gives cyclists a stronger voice.
         </p>
         <h3>For partners</h3>
         <p>
@@ -43,7 +43,7 @@ export default function About() {
         <h3>The vision</h3>
         <p>
           Cycling has never just been about the ride — it’s about the people you share it with. Cycletowns is built to{" "}
-          <b>connect the cycle-tourism community</b>: riders, locals, creators and the businesses that look after them, all in
+          <b>connect the cycle-tourism community</b>: riders, locals and the businesses that look after them, all in
           one place. A home for everyone who shares the passion — where like-minded riders find the best places to ride, find
           their people, and pass on what they know, so every trip after gets a little better.
         </p>

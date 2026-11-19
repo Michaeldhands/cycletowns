@@ -1592,3 +1592,14 @@ a.catchip,a.scopechip{text-decoration:none}
 .distlegend-row b{font-size:15px}
 .distlegend-row small{display:block;font-size:13px;color:var(--grey-d);margin-top:2px}
 .distlegend-mark{display:flex;justify-content:flex-start}
+
+/* membership: two doors */
+.doors{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:2px solid var(--ink);max-width:1000px;margin:0 auto}
+.door{padding:26px 28px 30px}
+.door+.door{border-left:1px solid var(--line)}
+.doork{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--coral-700)}
+.door h2{font-family:var(--disp);text-transform:uppercase;font-weight:400;font-size:40px;line-height:1;margin:6px 0 10px}
+.door>p{font-size:15px;color:var(--grey-d);line-height:1.55;margin-bottom:14px}
+.doorlist{margin:0 0 18px 18px;padding:0;font-size:14px;line-height:1.6}
+.doorfine{font-size:12.5px!important;color:var(--grey-d);margin-top:14px!important}
+@media(max-width:760px){.doors{grid-template-columns:1fr}.door{padding:22px 4px}.door+.door{border-left:none;border-top:1px solid var(--line)}}

@@ -34,8 +34,6 @@ const STATIC: [path: string, changeFrequency: Entry["changeFrequency"], priority
   ["/membership", "monthly", 0.6],
   ["/partners", "monthly", 0.6],
   ["/about", "monthly", 0.5],
-  ["/offers", "weekly", 0.4],
-  ["/creators", "monthly", 0.3],
   ["/careers", "monthly", 0.3],
   ["/contact", "yearly", 0.3],
   ["/image-credits", "monthly", 0.2],

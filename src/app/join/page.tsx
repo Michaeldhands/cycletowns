@@ -4,7 +4,7 @@ import { ProsePage } from "@/components/Prose";
 import { AuthForm } from "@/components/AuthForm";
 import { currentUser } from "@/lib/supabase/server";
 
-export const metadata: Metadata = { title: "Join free" };
+export const metadata: Metadata = { title: "Create a free account" };
 
 export default async function Join({ searchParams }: PageProps<"/join">) {
   const sp = await searchParams;
@@ -18,9 +18,9 @@ export default async function Join({ searchParams }: PageProps<"/join">) {
   const next = review ? `/towns/${review}#review` : town ? `/towns/${town}` : raw || "/account";
   return (
     <ProsePage
-      kick="Join free"
+      kick="Free account"
       title="Free, and it stays free."
-      lead="Save towns and trips, review the places you’ve ridden and join groups. Insider is optional."
+      lead="Save towns and trips, add your view to Riders say, and let Ask Cycletowns remember how you ride. Membership is optional."
     >
       <AuthForm mode="join" next={next} />
     </ProsePage>

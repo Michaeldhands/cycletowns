@@ -197,7 +197,7 @@ export function PlanBuilder({ towns, data, initialTown, userId }: { towns: TownO
               {userId ? (
                 <button className="lk-coral" onClick={save} disabled={busy || !!saved}>{saved ? "Saved ✓" : busy ? "Saving…" : "Save this plan"}</button>
               ) : (
-                <Link href={`/join?next=${encodeURIComponent(`/plan?town=${town.id}`)}`} className="lk-coral">Join free to save it</Link>
+                <Link href={`/join?next=${encodeURIComponent(`/plan?town=${town.id}`)}`} className="lk-coral">Sign up free to save it</Link>
               )}
             </div>
           </div>

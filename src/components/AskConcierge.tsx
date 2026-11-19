@@ -156,7 +156,7 @@ export function AskConcierge({ enabled, signedIn, initial, autoSend, pending, st
         <div ref={end} />
       </div>
 
-      {notice && <div className="asknotice">{notice} {!signedIn && /join/i.test(notice) && <Link href="/join?next=/ask">Join free ›</Link>}</div>}
+      {notice && <div className="asknotice">{notice} {!signedIn && /join/i.test(notice) && <Link href="/join?next=/ask">Sign up free ›</Link>}</div>}
 
       <form className="askform" onSubmit={(e) => { e.preventDefault(); ask(input); }}>
         <textarea
@@ -174,7 +174,7 @@ export function AskConcierge({ enabled, signedIn, initial, autoSend, pending, st
         {signedIn ? (
           <>Ask Cycletowns remembers what you tell it about how you ride. <Link href="/account/memory">See or delete what it knows ›</Link></>
         ) : (
-          <><Link href="/join?next=/ask">Join free</Link> and Ask Cycletowns remembers how you ride.</>
+          <><Link href="/join?next=/ask">Sign up free</Link> and Ask Cycletowns remembers how you ride.</>
         )}{" "}
         Answers come from our guides; always check conditions before you ride.
       </p>

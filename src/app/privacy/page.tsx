@@ -39,7 +39,7 @@ export default function Page() {
             <b>What you contribute:</b> reviews and ratings of towns, posts, groups you join, cafés and routes you
             suggest, towns you save, trip plans and loops you save.
           </li>
-          <li><b>Your points balance</b> and the record of how you earned it.</li>
+          <li><b>Points</b> recorded before we retired rewards in November 2026, if you earned any. They no longer do anything.</li>
         </ul>
 
         <h3>What is public and what is not</h3>
@@ -52,7 +52,7 @@ export default function Page() {
 
         <h3>Payments</h3>
         <p>
-          Insider membership is billed through Stripe. <b>We never see or store your card details</b> — those go
+          Membership is billed through Stripe. <b>We never see or store your card details</b> — those go
           straight to Stripe, which is certified to handle them. We keep a Stripe customer reference, whether your
           membership is active, whether it is monthly or annual, and when it runs to. Stripe&rsquo;s own privacy policy
           governs what it does with the payment data it holds.

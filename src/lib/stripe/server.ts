@@ -2,8 +2,8 @@ import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 
 export const PLANS = {
-  month: { lookup: "insider_monthly", amount: 700, interval: "month" as const, label: "A$7 / month", product: "Cycletowns Insider", description: "Rider membership — double points, ad-free browsing, members-only partner offers and early access." },
-  year: { lookup: "insider_yearly", amount: 8000, interval: "year" as const, label: "A$80 / year", product: "Cycletowns Insider", description: "Rider membership — double points, ad-free browsing, members-only partner offers and early access." },
+  month: { lookup: "insider_monthly", amount: 700, interval: "month" as const, label: "A$7 / month", product: "Cycletowns Membership", description: "Cycletowns membership — supporting an independent guide and a stronger voice for riders." },
+  year: { lookup: "insider_yearly", amount: 8000, interval: "year" as const, label: "A$80 / year", product: "Cycletowns Membership", description: "Cycletowns membership — supporting an independent guide and a stronger voice for riders." },
   partner_member: { lookup: "partner_member", amount: 4900, interval: "month" as const, label: "A$49 / month", product: "Cycletowns Partner — Member", description: "Verified listing, live dashboard, member offers." },
   partner_featured: { lookup: "partner_featured", amount: 29000, interval: "month" as const, label: "A$290 / month", product: "Cycletowns Partner — Featured", description: "Everything in Member plus priority placement on town and category pages." },
 };

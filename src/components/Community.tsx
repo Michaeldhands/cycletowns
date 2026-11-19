@@ -17,7 +17,7 @@ export function PostComposer({ userId, townId, groupId, towns }: { userId: strin
   if (!userId)
     return (
       <div className="unlocknote" style={{ fontSize: 14, padding: 14 }}>
-        <Link href="/join">Join free</Link> or <Link href="/login">log in</Link> to post. Every post earns 10 points.
+        <Link href="/join">Sign up free</Link> or <Link href="/login">log in</Link> to post.
       </div>
     );
   const send = async () => {
@@ -61,7 +61,7 @@ export function PostCard({ p, showTown = false }: { p: Post; showTown?: boolean 
       <div className="ph">
         <Avatar name={name} url={p.profiles?.avatar_url} size={36} />
         <div>
-          <div className="who">{name}{p.profiles?.tier === "champion" ? " 👑" : ""}</div>
+          <div className="who">{name}</div>
           <div className="when">{timeAgo(p.created_at)}{p.profiles?.home_town ? ` · ${p.profiles.home_town}` : ""}</div>
         </div>
       </div>

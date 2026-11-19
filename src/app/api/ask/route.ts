@@ -63,8 +63,8 @@ export async function POST(req: NextRequest) {
     const msg = me
       ? insider
         ? "That's today's limit reached. It resets at midnight."
-        : "That's today's free questions. Insiders get many more — or come back tomorrow."
-      : "That's the limit for guests today. Join free for more questions, and so Ask Cycletowns remembers how you ride.";
+        : "That's today's free questions. Members get many more — or come back tomorrow."
+      : "That's the limit for guests today. Sign up free for more questions, and so Ask Cycletowns remembers how you ride.";
     return Response.json({ error: msg, limit: true }, { status: 429 });
   }
 

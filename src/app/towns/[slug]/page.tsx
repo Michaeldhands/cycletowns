@@ -446,7 +446,7 @@ export default async function TownPage({ params }: PageProps<"/towns/[slug]">) {
                     <div className="rvtop">
                       <Avatar name={r.profiles?.display_name || "Rider"} url={r.profiles?.avatar_url} size={38} />
                       <div>
-                        <div className="rvname">{r.profiles?.display_name || "Rider"}{r.profiles?.tier === "champion" ? " 👑" : ""}</div>
+                        <div className="rvname">{r.profiles?.display_name || "Rider"}</div>
                         <div className="rvmeta">{[r.ride_type, r.profiles?.home_town].filter(Boolean).join(" · ")} · {new Date(r.created_at).toLocaleDateString("en-AU", { month: "short", year: "numeric" })}</div>
                       </div>
                       <span className="rvsc">

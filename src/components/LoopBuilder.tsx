@@ -256,7 +256,7 @@ export function LoopBuilder({ towns, initialTown, userId, routerOn }: { towns: L
               {userId ? (
                 <button className="lk-coral" onClick={save} disabled={busy || !!saved}>{saved ? "Saved ✓" : "Save loop"}</button>
               ) : (
-                <Link href={`/join?next=${encodeURIComponent(`/loop?town=${town.id}`)}`} className="lk-coral">Join free to save</Link>
+                <Link href={`/join?next=${encodeURIComponent(`/loop?town=${town.id}`)}`} className="lk-coral">Sign up free to save</Link>
               )}
             </div>
           </div>

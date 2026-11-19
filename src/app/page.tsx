@@ -142,7 +142,7 @@ export default async function Home() {
                   <b>Your pace.</b> Distance, climbing and a time estimate at the speed you actually ride.
                 </li>
                 <li>
-                  <b>Straight to your device.</b> Download the GPX, or join free to save it.
+                  <b>Straight to your device.</b> Download the GPX, or sign up free to save it.
                 </li>
               </ul>
               <div className="btnpair">
@@ -214,17 +214,17 @@ export default async function Home() {
       <div className="sec2 alt" style={{ paddingTop: 0 }}>
         <div className="in">
           <div className="finalcta">
-            <h2>Rode somewhere good?</h2>
+            <h2>Ride with us.</h2>
             <p>
-              Join free to save towns and trips, and review the places you’ve ridden. Riders say sits beside every town in
-              the guide — the honest view from the saddle.
+              Subscribe free for new towns, routes and what our inspectors find. Or join as a member and help pay for an
+              independent guide — and a stronger voice for riders.
             </p>
             <div className="fcbtns">
-              <Link href="/join" className="lk-coral big">
-                Join free
+              <Link href="/membership#subscribe" className="lk-coral big">
+                Subscribe free
               </Link>
-              <Link href="/membership" className="lk-ghost big fcghost">
-                Membership &amp; rewards
+              <Link href="/membership#join" className="lk-ghost big fcghost">
+                Join
               </Link>
             </div>
             <p className="finalsub">

@@ -34,7 +34,7 @@ export function ReviewForm({ townId, townName, userId, existing }: { townId: str
   if (!userId)
     return (
       <div className="unlocknote" style={{ fontSize: 14, padding: 16 }}>
-        <Link href={`/join?review=${townId}`}>Join free</Link> or <Link href={`/login?next=/towns/${townId}%23review`}>log in</Link> to review {townName}. Reviews earn 50 points.
+        <Link href={`/join?review=${townId}`}>Sign up free</Link> or <Link href={`/login?next=/towns/${townId}%23review`}>log in</Link> to review {townName}.
       </div>
     );
   const complete = DIMS.every((d) => dims[d] > 0);

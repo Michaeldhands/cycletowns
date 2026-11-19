@@ -34,25 +34,23 @@ export default function Page() {
           <li>Reviews of a business you own, work for, or compete with.</li>
           <li>Anything false, abusive, harassing, or that identifies someone without their consent.</li>
           <li>Anything unlawful, or anything that infringes someone else&rsquo;s copyright.</li>
-          <li>Automated or bulk content, or anything designed to game reviews or points.</li>
+          <li>Automated or bulk content, or anything designed to game reviews.</li>
         </ul>
         <p>
           We can remove content and close accounts that break these rules. We would rather explain than delete, so we
           will usually tell you why.
         </p>
 
-        <h3>The guide and points</h3>
+        <h3>The guide</h3>
         <p>
           Distinctions in the guide are our own editorial judgement; rider reviews are shown alongside them and do not
-          change them. How that works is set out on our <a href="/how-rankings-work">How the guide works</a> page. Points and rewards have no cash value, cannot be
-          transferred or sold, and we may adjust or remove points obtained by gaming the system. We may change how
-          points are earned; we will not take away points you have already fairly earned without telling you.
+          change them. How that works is set out on our <a href="/how-rankings-work">How the guide works</a> page.
         </p>
 
         <h3>Membership</h3>
         <p>
-          Insider membership is A$7 per month or A$80 per year, billed through Stripe, and renews automatically until
-          you cancel. You can cancel any time from your account page — you keep your benefits until the end of the
+          Membership is A$7 per month or A$80 per year, billed through Stripe, and renews automatically until
+          you cancel. You can cancel any time from your account page — you remain a member until the end of the
           period you have already paid for. We do not refund part-periods, but if something has genuinely gone wrong,
           email us and we will sort it out. If we change the price we will tell you before it applies to you. Nothing
           in these terms limits your rights under the Australian Consumer Law.

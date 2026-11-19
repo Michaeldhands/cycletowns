@@ -9,7 +9,7 @@ import { ProfileForm } from "@/components/ProfileForm";
 import { SignOutButton } from "@/components/SignOutButton";
 import { SavedList } from "@/components/SavedList";
 import { currentUser, isMember, supabaseServer } from "@/lib/supabase/server";
-import { JoinInsider } from "@/components/MembershipButtons";
+import { JoinMember } from "@/components/MembershipButtons";
 import { hasStripe } from "@/lib/stripe/server";
 import { getTown } from "@/lib/towns";
 import { StravaCard } from "@/components/StravaCard";
@@ -20,16 +20,12 @@ import { hasStrava } from "@/lib/strava";
 export const metadata: Metadata = { title: "Your account" };
 export const dynamic = "force-dynamic";
 
-const TIER: Record<string, string> = { rider: "Rider", insider: "Insider", champion: "Champion 👑" };
 
 export default async function Account() {
   const me = await currentUser();
   if (!me) redirect("/login?next=/account");
   const sb = await supabaseServer();
-  const [{ data: reviews }, { data: events }] = await Promise.all([
-    sb.from("reviews").select("town_id, cafes, routes, safety, climbs, storage, created_at").eq("user_id", me.id).order("created_at", { ascending: false }),
-    sb.from("point_events").select("kind, points, created_at").eq("user_id", me.id).order("created_at", { ascending: false }).limit(10),
-  ]);
+  const { data: reviews } = await sb.from("reviews").select("town_id, cafes, routes, safety, climbs, storage, created_at").eq("user_id", me.id).order("created_at", { ascending: false });
   const strava = hasStrava() ? await getRow(me.id) : null;
   const p = me.profile;
   const name = p?.display_name || me.email?.split("@")[0] || "Rider";
@@ -41,7 +37,7 @@ export default async function Account() {
           <div className="acchead">
             <Avatar name={name} url={p?.avatar_url} size={64} />
             <div>
-              <div className="kick" style={{ textAlign: "left" }}>{TIER[p?.tier || "rider"]} · {p?.points ?? 0} pts</div>
+              <div className="kick" style={{ textAlign: "left" }}>{isMember(p) ? "Member" : "Free account"}</div>
               <div className="h2" style={{ textAlign: "left", margin: "2px 0 0", fontSize: 40 }}>{name}</div>
               <div style={{ color: "var(--grey-d)", fontSize: 13.5 }}>{[p?.rider_type, p?.home_town].filter(Boolean).join(" · ") || "Tell us how you ride below."}</div>
             </div>
@@ -65,9 +61,9 @@ export default async function Account() {
               <div className="wscorebox" style={{ maxWidth: "none", marginBottom: 16 }}>
                 <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 4 }}>Membership</h3>
                 <p className="wsub" style={{ display: "block", marginBottom: 10 }}>
-                  {isMember(p) ? `Insider · renews ${p?.membership_until ? new Date(p.membership_until).toLocaleDateString("en-AU") : "monthly"}` : "Free rider. Insider adds double points, ad-free browsing and member offers."}
+                  {isMember(p) ? `Member · renews ${p?.membership_until ? new Date(p.membership_until).toLocaleDateString("en-AU") : "monthly"}. Thank you for backing the work.` : "Free account. Members pay for the inspections and give riders a stronger voice."}
                 </p>
-                <JoinInsider userId={me.id} member={isMember(p)} enabled={hasStripe()} />
+                <JoinMember userId={me.id} member={isMember(p)} enabled={hasStripe()} />
               </div>
               {hasStrava() && (
                 <Suspense fallback={null}>
@@ -79,7 +75,7 @@ export default async function Account() {
                 <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 8 }}>Your reviews</h3>
                 {!reviews?.length && (
                   <p className="wsub" style={{ display: "block" }}>
-                    None yet. <Link href="/towns">Find a town you’ve ridden</Link> and rate it — 50 points each.
+                    None yet. <Link href="/towns">Find a town you’ve ridden</Link> and say how it rides.
                   </p>
                 )}
                 {(reviews || []).map((r) => {
@@ -94,19 +90,6 @@ export default async function Account() {
                     </div>
                   );
                 })}
-              </div>
-              <div className="wscorebox" style={{ maxWidth: "none" }}>
-                <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 8 }}>Points</h3>
-                {!events?.length && <p className="wsub" style={{ display: "block" }}>Write a review (+50), post a ride (+10), add a café or route (+30).</p>}
-                {(events || []).map((e, i) => (
-                  <div className="grow" key={i}>
-                    <span>{e.kind} · {new Date(e.created_at).toLocaleDateString("en-AU")}</span>
-                    <b>+{e.points}</b>
-                  </div>
-                ))}
-                <p className="wsub" style={{ display: "block", marginTop: 8 }}>
-                  Insider at 250 · Champion at 1,000. <Link href="/membership">How rewards work ›</Link>
-                </p>
               </div>
             </div>
           </div>

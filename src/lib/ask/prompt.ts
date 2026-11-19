@@ -43,9 +43,9 @@ export type RiderContext = {
 
 export function riderPrompt(r: RiderContext | null): string {
   const today = new Date().toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "Australia/Melbourne" });
-  if (!r) return `Today is ${today} (Melbourne time). The rider isn't signed in, so nothing will be remembered after this conversation; if they want that, they can join free at /join.`;
+  if (!r) return `Today is ${today} (Melbourne time). The rider isn't signed in, so nothing will be remembered after this conversation; if they want that, they can sign up free at /join.`;
   const lines = [
-    `Today is ${today} (Melbourne time). The rider is signed in${r.insider ? " and is an Insider member" : ""}.`,
+    `Today is ${today} (Melbourne time). The rider is signed in${r.insider ? " and is a paying member" : ""}.`,
     r.name ? `Name: ${r.name}` : "",
     r.homeTown ? `Home: ${r.homeTown}` : "",
     r.riderType ? `Rides: ${r.riderType}` : "",
