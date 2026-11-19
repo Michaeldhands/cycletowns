@@ -65,6 +65,8 @@ export function Footer() {
             <Link href="/how-rankings-work">How the guide works</Link>
             <Link href="/careers">Careers</Link>
             <Link href="/contact">Contact</Link>
+            <Link href="/privacy">Privacy policy</Link>
+            <Link href="/terms">Terms of use</Link>
           </div>
         </div>
         <div className="ftbar">
